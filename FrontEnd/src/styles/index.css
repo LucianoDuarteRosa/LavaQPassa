@@ -1,0 +1,363 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Noto+Sans+Glagolitic&family=Varela+Round&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Noto+Sans+Glagolitic&family=Signika:wght@300..700&family=Varela+Round&display=swap');
+
+:root {
+    --background-1: #d8f7d4;
+    --background-2: #99c791;
+    --navbar: #528f55fd;
+    --sidbar: #528f55d3;
+    --avatar: #45a049;
+    --box-manager: #f5f5f5;
+    --font-color: #fff;
+    --font-color-secundary: #1d1d1d;
+    --font-color-dark: #275327;
+    --card-manager: #a8fdac;
+    --btn-primary: #4caf50;
+    --btn-primary-hover: #45a049;
+    --btn-secundary-color: #69a06a;
+    --btn-secundary: #fff;
+    --btn-secundary-hover: #e2e2e2;
+    --btn-secundary-dark: #285c29;
+}
+
+body {
+   /* background: linear-gradient(180deg, var(--background-1) 40%, var(--background-2) 100%);
+    background-blend-mode: unset;
+    height: 100vh;*/
+    background-color: var(--background-1)!important;
+}
+
+/*-------------- Navbar ----------------------------*/
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 92px;
+    background-color: var(--navbar);
+    position: relative;
+}
+
+.navbar-box {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: 15%;
+}
+
+/*----------------------------------------------------*/
+/*-------------- sidebar ----------------------------*/
+.sidebar {
+    display: flex;
+    padding: 0!important;
+    margin: 0!important;
+}
+
+.drawer{
+    background-color: var(--sidbar);
+    height: 100%;
+}
+
+.list-item{
+    color: var(--font-color);
+}
+
+.list-icon{
+    color: var(--font-color);
+}
+
+/*----------------------------------------------------*/
+/*---------------------- Dashboard ----------------------*/
+.box-card-dashboard{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.card-area-dashboard{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-dashboard{
+    width: 350px;
+    height: 100px;
+    background-color: var(--sidbar)!important;
+}
+
+.card-dashboard-title{
+    font-size: 1rem;
+    text-align: center;
+    font-weight: 700!important;
+    color: var(--font-color);
+}
+
+.card-dashboard-text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-weight: 700!important;
+    color: var(--font-color);
+    font-size: 2.6rem!important;
+}
+
+/*----------------------------------------------------*/
+/*---------------------- Avatar ----------------------*/
+.avatar {
+    background-color: var(--avatar) !important;
+}
+
+/*----------------------------------------------------*/
+/*---------------------Box----------------------------*/
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 89vh;
+}
+
+/*----------------------------------------------------*/
+/*---------------------- Buttons ---------------------*/
+.primary-button {
+    background-color: var(--btn-primary) !important;
+    color: var(--font-color)"important";
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+    width: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.primary-button:hover {
+    background-color: var(--btn-primary-hover) !important;
+}
+
+.secundary-button {
+    background-color: var(--btn-secundary);
+    color: var(--btn-secundary-color);
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    width: 30%;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+}
+
+.secundary-button:hover {
+    background-color: var(--btn-secundary-hover)
+}
+
+.primary-button-manager {
+    text-decoration: none;
+    text-align: center;
+    background-color: var(--btn-secundary-color);
+    color: var(--font-color);
+    border: none;
+    border-radius: 12px;
+    padding: 5px 15px 5px 15px;
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: 700;
+    margin-top: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.primary-button-manager:hover {
+    background-color: var(--btn-secundary-dark);
+}
+
+/*-------------------------------------------------*/
+/*------------------Manager------------------------*/
+.main-manager {
+    margin-top: 40px;
+}
+
+.box-manage {
+    text-align: center;
+}
+
+.tile-manager {
+    color: var(--font-color-dark);
+    font-weight: 1000;
+}
+
+.manager-cards {
+    padding: 15px 15px 20px 15px;
+    margin: 15px;
+    background-color: var(--box-manager) !important;
+    box-shadow: none !important;
+    border-radius: 12px !important;
+    color: var(--font-color-dark) !important;
+    width: 550px;
+}
+
+.box-manage-main {
+    text-align: start;
+    margin-top: 0;
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    grid-template-rows: 1fr;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 30px;
+}
+
+.box-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0;
+}
+
+.box-manager-user {
+    margin-top: 12%;
+    width: 550px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--box-manager);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box-container-search {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0;
+}
+
+.box-manager-search {
+    margin-top: 5%;
+    width: 1200px;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--box-manager);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box-manager-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.box-manager-client {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--box-manager);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box-manager-client-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    align-items: center;
+    background-color: var(--box-manager);
+    border-radius: 12px;
+    margin: 5px;
+    gap: 10px;
+}
+
+.textfield-client {
+    width: 340px !important;
+}
+
+.textfield-client-pix {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50% !important;
+}
+
+.box-manager-pix {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.textfield-client input::-webkit-inner-spin-button,
+.textfield-client input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.textfield-product input::-webkit-inner-spin-button,
+.textfield-product input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.box-container-product {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0;
+}
+
+.box-manager-product {
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--box-manager);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box-manager-product-main {
+    width: 550px;
+}
+
+.box-manager-detailsaccount-main {
+    width: 800px;
+}
+
+.box-manager-sale-main {
+    width: 700px;
+}
+
+/*---------------imagens de cadastro não usar por enquanto--------------------*/
+/* .box-manager-product-img{
+    padding: 10px;
+    width: 350px;
+}
+
+.box-manager-product-load{
+    height: 320px;
+    width: 100%;
+    border: 1px solid #0303037e;
+    margin: 0!important;
+    padding: 0!important;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 4px 3px 8px #0303037e;
+} */
