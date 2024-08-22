@@ -146,6 +146,12 @@ class AccountsPayableModel {
     return this.executeSQL(sql, [updatePayable.Note, updatePayable.Active, updatePayable.IdAccountPayable]);
   }
 
+  dashPayable(date) {
+    const sql =  `SELECT * FROM AccountsPayable WHERE DueDate BETWEEN ? AND ?;
+`;
+    return this.executeSQL(sql, [date.firstDay, date.lastDay]);
+  }
+
 }
 
 module.exports = new AccountsPayableModel();

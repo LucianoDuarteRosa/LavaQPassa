@@ -107,6 +107,23 @@ class Converter {
             return error.message;
         }
     }
+
+    getMonthStartAndEndDates() {
+        const now = new Date();
+
+        const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+        const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+        const firstDayFormatted = firstDay.toISOString().split('.')[0];
+        const lastDayFormatted = lastDay.toISOString().split('.')[0];
+
+        let dateReturn = {
+            firstDay: firstDayFormatted,
+            lastDay: lastDayFormatted
+        }
+
+        return dateReturn
+    }
 }
 
 module.exports = new Converter();

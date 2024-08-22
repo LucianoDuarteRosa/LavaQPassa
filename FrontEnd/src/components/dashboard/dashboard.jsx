@@ -1,4 +1,7 @@
 import * as React from 'react';
+import axios from "axios";
+import { useEffect } from 'react';
+import { useAuth } from '../login/authContext';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,7 +22,7 @@ const data = [
 
 const otherSetting = {
     height: 350,
-    yAxis: [{ label: 'Venda dos Últimos 12 Mêses' }],
+    yAxis: [{ label: 'Vendas dos últimos 12 mêses' }],
     grid: { horizontal: true },
     sx: {
         [`& .${axisClasses.left} .${axisClasses.label}`]: {
@@ -127,7 +130,56 @@ const dataset = [
 
 const valueFormatter = (value) => `${value}mm`;
 
-export default function Dashboard() {
+function Dashboard() {
+    const userToken = JSON.parse(localStorage.getItem('user')) || {};
+    const token = userToken.token || "";
+    const { logout } = useAuth();
+
+    const [payables, setPayables] = useState([]);
+    const [saleYears, setSalesYear] = useState([]);
+
+    useEffect(() => {
+        const fetchPayables = async () => {
+            try {
+                const response = await axios.get("http://localhost:3000/accountspayable", {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setPayables(response.data);
+            } catch (error) {
+                console.error(error);
+                if (error.response && error.response.status === 401) {
+                    logout();
+                }
+                setPayables([]);
+                const errorMessage = error.response?.data?.error || "Erro ao carregar contas a pagar mensal.";
+            }
+        };
+
+        const fetchSalesYear = async () => {
+            try {
+                const response = await axios.get("http://localhost:3000/saleyear", {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setPayables(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+                if (error.response && error.response.status === 401) {
+                    logout();
+                }
+                setSalesYear([]);
+                const errorMessage = error.response?.data?.error || "Erro ao carregar vendas mensal.";
+            }
+        };
+
+        fetchSalesYear();
+        fetchPayables();
+    }, []);
+
     return (
         <Box className='sidebar'>
             <CssBaseline />
@@ -182,7 +234,7 @@ export default function Dashboard() {
                                         Contas a Pagar - Mensal
                                     </Typography>
                                     <Typography variant="body2" className='card-dashboard-text'>
-                                        R$2250,00
+                                    R$ {parseFloat(payables.account).toFixed(2).replace('.', ',')}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
@@ -192,11 +244,11 @@ export default function Dashboard() {
                                 <CardContent>
                                     <Typography gutterBottom
                                         className='card-dashboard-title'
-                                        >
+                                    >
                                         Contas quitadas
                                     </Typography>
                                     <Typography className='card-dashboard-text'>
-                                        R$350,00
+                                        R$ {parseFloat(payables.paids).toFixed(2).replace('.', ',')}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
@@ -206,11 +258,11 @@ export default function Dashboard() {
                                 <CardContent>
                                     <Typography gutterBottom
                                         className='card-dashboard-title'
-                                        >
+                                    >
                                         Contas a vencer
                                     </Typography>
                                     <Typography className='card-dashboard-text'>
-                                        R$1900,00
+                                        R$ {parseFloat(payables.billsDue).toFixed(2).replace('.', ',')}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
@@ -223,3 +275,5 @@ export default function Dashboard() {
         </Box>
     );
 }
+
+export default Dashboard;

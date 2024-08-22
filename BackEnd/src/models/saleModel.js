@@ -118,6 +118,19 @@ class SaleModel {
     return this.executeSQL(sql, [updateSale.SaleStatus, updateSale.IdSale]);
   }
 
+  saleYear() {
+    const sql = `
+        SELECT 
+            DATE_FORMAT(SaleDate, '%Y-%m') as saleMonth,
+            SUM(SalePrice) as totalSales  
+        FROM Sale
+        WHERE SaleDate >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+        GROUP BY saleMonth
+        ORDER BY saleMonth;
+    `;
+    return this.executeSQL(sql);
+  }
+
 }
 
 module.exports = new SaleModel();
