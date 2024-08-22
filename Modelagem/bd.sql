@@ -286,25 +286,60 @@ INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleD
 
 -- Mês de Agosto
 INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
-(100.00, 130.00, 5, 2, 1, '2023-08-06 10:00:00', 'Dinheiro', 'Finalizada'),
-(85.00, 110.00, 1, 1, 2, '2023-08-18 15:00:00', 'Cartão Crédito', 'Finalizada');
+(100.00, 1030.00, 5, 2, 1, '2023-08-06 10:00:00', 'Dinheiro', 'Finalizada'),
+(85.00, 1100.00, 1, 1, 2, '2023-08-18 15:00:00', 'Cartão Crédito', 'Finalizada');
 
 -- Mês de Setembro
 INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
-(95.00, 125.00, 2, 2, 1, '2023-09-12 09:00:00', 'Cheque', 'Finalizada'),
-(110.00, 140.00, 3, 1, 2, '2023-09-25 14:00:00', 'Cartão Débito', 'Finalizada');
+(95.00, 1025.00, 2, 2, 1, '2023-09-12 09:00:00', 'Cheque', 'Finalizada'),
+(110.00, 1040.00, 3, 1, 2, '2023-09-25 14:00:00', 'Cartão Débito', 'Finalizada');
 
 -- Mês de Outubro
 INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
-(120.00, 150.00, 4, 1, 1, '2023-10-08 10:00:00', 'Crediário', 'Finalizada'),
-(100.00, 130.00, 5, 2, 2, '2023-10-20 15:00:00', 'Dinheiro', 'Finalizada');
+(120.00, 1050.00, 4, 1, 1, '2023-10-08 10:00:00', 'Crediário', 'Finalizada'),
+(100.00, 1030.00, 5, 2, 2, '2023-10-20 15:00:00', 'Dinheiro', 'Finalizada');
 
 -- Mês de Novembro
 INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
-(110.00, 140.00, 1, 1, 1, '2023-11-10 12:00:00', 'Cartão Crédito', 'Finalizada'),
-(95.00, 120.00, 2, 1, 2, '2023-11-22 13:00:00', 'Cheque', 'Finalizada');
+(110.00, 1400.00, 1, 1, 1, '2023-11-10 12:00:00', 'Cartão Crédito', 'Finalizada'),
+(95.00, 1200.00, 2, 1, 2, '2023-11-22 13:00:00', 'Cheque', 'Finalizada');
 
 -- Mês de Dezembro
 INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
-(130.00, 160.00, 3, 2, 1, '2023-12-05 11:00:00', 'Cartão Débito', 'Finalizada'),
-(80.00, 105.00, 4, 2, 2, '2023-12-18 14:00:00', 'Dinheiro', 'Finalizada');
+(130.00, 1600.00, 3, 2, 1, '2023-12-05 11:00:00', 'Cartão Débito', 'Finalizada'),
+(80.00, 1050.00, 4, 2, 2, '2023-12-18 14:00:00', 'Dinheiro', 'Finalizada');
+
+-- Mês de Janeiro 2024
+INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
+(120.00, 1500.00, 1, 1, 1, '2024-01-10 10:00:00', 'Dinheiro', 'Finalizada'),
+(110.00, 1400.00, 2, 2, 2, '2024-01-20 14:00:00', 'Cartão Crédito', 'Finalizada');
+
+-- Mês de Fevereiro 2024
+INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
+(100.00, 1300.00, 3, 1, 1, '2024-02-08 09:00:00', 'Cheque', 'Finalizada'),
+(90.00, 1105.00, 4, 2, 2, '2024-02-22 16:00:00', 'Cartão Débito', 'Finalizada');
+
+-- Mês de Março 2024
+INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
+(130.00, 1600.00, 5, 1, 1, '2024-03-05 12:00:00', 'Crediário', 'Finalizada'),
+(120.00, 1500.00, 1, 2, 2, '2024-03-18 11:00:00', 'Dinheiro', 'Finalizada');
+
+-- Mês de Abril 2024
+INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
+(110.00, 1400.00, 2, 1, 1, '2024-04-10 10:00:00', 'Cartão Crédito', 'Finalizada'),
+(95.00, 1250.00, 3, 2, 2, '2024-04-22 15:00:00', 'Cheque', 'Finalizada');
+
+-- Mês de Maio 2024
+INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
+(105.00, 1305.00, 4, 1, 1, '2024-05-08 10:00:00', 'Cartão Débito', 'Finalizada'),
+(85.00, 1100.00, 5, 2, 2, '2024-05-20 14:00:00', 'Dinheiro', 'Finalizada');
+
+-- Mês de Junho 2024
+INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
+(115.00, 1450.00, 1, 2, 1, '2024-06-10 11:00:00', 'Crediário', 'Finalizada'),
+(90.00, 1200.00, 2, 1, 2, '2024-06-22 13:00:00', 'Cartão Crédito', 'Finalizada');
+
+-- Mês de Julho 2024
+INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
+(130.00, 1600.00, 3, 2, 1, '2024-07-05 12:00:00', 'Cheque', 'Finalizada'),
+(100.00, 1300.00, 4, 1, 2, '2024-07-18 15:00:00', 'Cartão Débito', 'Finalizada');

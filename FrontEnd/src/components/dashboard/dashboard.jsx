@@ -10,7 +10,6 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart } from '@mui/x-charts/PieChart';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import { CardActionArea } from '@mui/material';
 
 
@@ -20,15 +19,28 @@ const data = [
     { id: 2, value: 20, label: 'Acessórios' },
 ];
 
-const otherSetting = {
-    height: 350,
-    yAxis: [{ label: 'Vendas dos últimos 12 mêses' }],
-    grid: { horizontal: true },
-    sx: {
-        [`& .${axisClasses.left} .${axisClasses.label}`]: {
-            transform: 'translateX(-10px)',
+const chartSettingSale = {
+    height: 320,
+    xAxis: [
+        {
+            label: 'Meses',
+            scaleType: 'band',
+            dataKey: 'saleMonth',
+            valueFormatter: (month, context) => {
+                const [year, monthNumber] = month.split('-');
+                return context.location === 'tick'
+                    ? `${monthNumber}/${year}`
+                    : `${monthNumber}/${year}`;
+            },
         },
-    },
+    ],
+    yAxis: [
+        {
+            position: 'top',
+            tickLabelMargin: 0,
+        },
+    ],
+    grid: { horizontal: true },
 };
 
 const chartSetting = {
@@ -129,6 +141,7 @@ const dataset = [
 ];
 
 const valueFormatter = (value) => `${value}mm`;
+const valueFormatterSale = (value) => `R$ ${parseFloat(value).toFixed(2).replace('.', ',')}`;
 
 function Dashboard() {
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
@@ -164,8 +177,7 @@ function Dashboard() {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                setPayables(response.data);
-                console.log(response.data);
+                setSalesYear(response.data);
             } catch (error) {
                 console.error(error);
                 if (error.response && error.response.status === 401) {
@@ -185,24 +197,21 @@ function Dashboard() {
             <CssBaseline />
             <Box
                 margin={'10px'}
-                component="main"
                 sx={{ flexGrow: 1 }}
             >
                 <Typography>
+                    <Typography className='dashboard-title-barchart'>Vendas dos últimos 12 mêses</Typography>
                     <BarChart
-                        dataset={dataset}
-                        xAxis={[
-                            {
-                                scaleType: 'band',
-                                dataKey: 'month',
-                                valueFormatter: (month, context) =>
-                                    context.location === 'tick'
-                                        ? `${month.slice(0, 3)} \n2023`
-                                        : `${month} 2023`,
-                            },
-                        ]}
-                        series={[{ dataKey: 'seoul', valueFormatter }]}
-                        {...otherSetting}
+                        dataset={saleYears}  
+                        xAxis={chartSettingSale.xAxis}
+                        series={[{ dataKey: 'totalSales', valueFormatterSale, color: '#285c29' }]}
+                        margin={{
+                            top: 20,
+                            right: 20,
+                            left: 60, 
+                            bottom: 20,
+                        }}
+                        {...chartSettingSale}
                     />
                 </Typography>
 
@@ -234,7 +243,7 @@ function Dashboard() {
                                         Contas a Pagar - Mensal
                                     </Typography>
                                     <Typography variant="body2" className='card-dashboard-text'>
-                                    R$ {parseFloat(payables.account).toFixed(2).replace('.', ',')}
+                                        R$ {parseFloat(payables.account).toFixed(2).replace('.', ',')}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>

@@ -138,11 +138,7 @@ function UpdateAccountsPayable() {
       }
 
       const testDueDate = validator.dateValidator(formData.duedate);
-      const today = new Date().toISOString().split('T')[0];
-      if (formData.duedate < today) {
-        errors.push("A data de vencimento não pode ser anterior à data atual.");
-      }
-
+  
       if (testNote !== true) {
         errors.push(testNote);
       }

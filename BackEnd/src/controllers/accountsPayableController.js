@@ -115,7 +115,7 @@ class AccountsPayableController {
     const testIdClientSupplier = validator.integerValidator(reqBody.idclient);
     const testRegistrationDate = validator.dateValidator(reqBody.registrationdate);
     const testDueDate = validator.dateValidator(reqBody.duedate);
-    let registrationdate = converter.toMySQLDate();
+    let registrationdate = converter.toMySQLDate(reqBody.registrationdate);
 
     if (testAmount !== true) {
       errors.push(testAmount);
