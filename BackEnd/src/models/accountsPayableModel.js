@@ -148,7 +148,7 @@ class AccountsPayableModel {
 
   dashPayable(date) {
     const sql =  `SELECT * FROM AccountsPayable WHERE DueDate BETWEEN ? AND ?;
-`;
+      `;
     return this.executeSQL(sql, [date.firstDay, date.lastDay]);
   }
 

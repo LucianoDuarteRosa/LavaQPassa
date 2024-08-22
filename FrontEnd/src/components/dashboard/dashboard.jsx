@@ -13,12 +13,6 @@ import CardContent from '@mui/material/CardContent';
 import { CardActionArea } from '@mui/material';
 
 
-const data = [
-    { id: 0, value: 10, label: 'Roupas' },
-    { id: 1, value: 15, label: 'Calçados' },
-    { id: 2, value: 20, label: 'Acessórios' },
-];
-
 const chartSettingSale = {
     height: 320,
     xAxis: [
@@ -32,12 +26,6 @@ const chartSettingSale = {
                     ? `${monthNumber}/${year}`
                     : `${monthNumber}/${year}`;
             },
-        },
-    ],
-    yAxis: [
-        {
-            position: 'top',
-            tickLabelMargin: 0,
         },
     ],
     grid: { horizontal: true },
@@ -150,6 +138,7 @@ function Dashboard() {
 
     const [payables, setPayables] = useState([]);
     const [saleYears, setSalesYear] = useState([]);
+    const [data, setSalesGroup] = useState([]);
 
     useEffect(() => {
         const fetchPayables = async () => {
@@ -166,7 +155,6 @@ function Dashboard() {
                     logout();
                 }
                 setPayables([]);
-                const errorMessage = error.response?.data?.error || "Erro ao carregar contas a pagar mensal.";
             }
         };
 
@@ -184,12 +172,31 @@ function Dashboard() {
                     logout();
                 }
                 setSalesYear([]);
-                const errorMessage = error.response?.data?.error || "Erro ao carregar vendas mensal.";
+            }
+        };
+
+        const fetchSalesGroup = async () => {
+            try {
+                const response = await axios.get("http://localhost:3000/salegroup", {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setSalesGroup(response.data);
+                console.log(response.data)
+            } catch (error) {
+                console.error(error);
+                if (error.response && error.response.status === 401) {
+                    logout();
+                }
+                setSalesGroup([]);
+                const errorMessage = error.response?.data?.error || "Erro ao carregar vendas por grupo.";
             }
         };
 
         fetchSalesYear();
         fetchPayables();
+        fetchSalesGroup();
     }, []);
 
     return (
