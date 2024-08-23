@@ -4,7 +4,7 @@
 :root {
     --background-1: #d8f7d4;
     --background-2: #99c791;
-    --navbar: #528f55fd;
+    --navbar: #528e55fd;
     --sidbar: #528f55d3;
     --avatar: #45a049;
     --box-manager: #f5f5f5;
@@ -18,6 +18,9 @@
     --btn-secundary: #fff;
     --btn-secundary-hover: #e2e2e2;
     --btn-secundary-dark: #285c29;
+    --piechart1: #2e96ff;
+    --piechart2: #02b2af;
+    --piechart3: #b800d8;
 }
 
 body {
@@ -95,7 +98,7 @@ body {
 .card-dashboard{
     width: 350px;
     height: 100px;
-    background-color: var(--sidbar)!important;
+    background-color: #2e96ff!important;
 }
 
 .card-dashboard-title{

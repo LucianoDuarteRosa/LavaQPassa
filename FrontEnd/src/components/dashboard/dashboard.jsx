@@ -41,95 +41,7 @@ const chartSetting = {
     height: 430,
 };
 
-const dataset = [
-    {
-        london: 59,
-        paris: 57,
-        newYork: 86,
-        seoul: 21,
-        month: 'January',
-    },
-    {
-        london: 50,
-        paris: 52,
-        newYork: 78,
-        seoul: 28,
-        month: 'February',
-    },
-    {
-        london: 47,
-        paris: 53,
-        newYork: 106,
-        seoul: 41,
-        month: 'March',
-    },
-    {
-        london: 54,
-        paris: 56,
-        newYork: 92,
-        seoul: 73,
-        month: 'April',
-    },
-    {
-        london: 57,
-        paris: 69,
-        newYork: 92,
-        seoul: 99,
-        month: 'May',
-    },
-    {
-        london: 60,
-        paris: 63,
-        newYork: 103,
-        seoul: 144,
-        month: 'June',
-    },
-    {
-        london: 59,
-        paris: 60,
-        newYork: 105,
-        seoul: 319,
-        month: 'July',
-    },
-    {
-        london: 65,
-        paris: 60,
-        newYork: 106,
-        seoul: 249,
-        month: 'August',
-    },
-    {
-        london: 51,
-        paris: 51,
-        newYork: 95,
-        seoul: 131,
-        month: 'September',
-    },
-    {
-        london: 60,
-        paris: 65,
-        newYork: 97,
-        seoul: 55,
-        month: 'October',
-    },
-    {
-        london: 67,
-        paris: 64,
-        newYork: 76,
-        seoul: 48,
-        month: 'November',
-    },
-    {
-        london: 61,
-        paris: 70,
-        newYork: 103,
-        seoul: 25,
-        month: 'December',
-    },
-];
-
-const valueFormatter = (value) => `${value}mm`;
-const valueFormatterSale = (value) => `R$ ${parseFloat(value).toFixed(2).replace('.', ',')}`;
+const valueFormatter = (value) => `R$ ${value.toFixed(2).replace('.', ',')}`;
 
 function Dashboard() {
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
@@ -138,7 +50,8 @@ function Dashboard() {
 
     const [payables, setPayables] = useState([]);
     const [saleYears, setSalesYear] = useState([]);
-    const [data, setSalesGroup] = useState([]);
+    const [saleGroup, setSalesGroup] = useState([]);
+    const [saleSubGroup, setSalesSubGroup] = useState([]);
 
     useEffect(() => {
         const fetchPayables = async () => {
@@ -183,17 +96,34 @@ function Dashboard() {
                     }
                 });
                 setSalesGroup(response.data);
-                console.log(response.data)
             } catch (error) {
                 console.error(error);
                 if (error.response && error.response.status === 401) {
                     logout();
                 }
                 setSalesGroup([]);
-                const errorMessage = error.response?.data?.error || "Erro ao carregar vendas por grupo.";
             }
         };
 
+        const fetchSalesSubGroup = async () => {
+            try {
+                const response = await axios.get("http://localhost:3000/salesubgroup", {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setSalesSubGroup(response.data);
+                console.log(response.data)
+            } catch (error) {
+                console.error(error);
+                if (error.response && error.response.status === 401) {
+                    logout();
+                }
+                setSalesSubGroup([]);
+            }
+        };
+
+        fetchSalesSubGroup();
         fetchSalesYear();
         fetchPayables();
         fetchSalesGroup();
@@ -211,7 +141,7 @@ function Dashboard() {
                     <BarChart
                         dataset={saleYears}  
                         xAxis={chartSettingSale.xAxis}
-                        series={[{ dataKey: 'totalSales', valueFormatterSale, color: '#285c29' }]}
+                        series={[{ dataKey: 'totalSales', valueFormatter, color: '#388e3c' }]}
                         margin={{
                             top: 20,
                             right: 20,
@@ -226,18 +156,18 @@ function Dashboard() {
                     <PieChart
                         series={[
                             {
-                                data,
+                                data: saleGroup,
                                 highlightScope: { faded: 'global', highlighted: 'item' },
-                                faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+                                faded: { innerRadius: 20, additionalRadius: -20, color: 'green' },         
                             },
                         ]}
                         height={430}
                         width={600}
                     />
                     <BarChart
-                        dataset={dataset}
-                        yAxis={[{ scaleType: 'band', dataKey: 'month' }]}
-                        series={[{ dataKey: 'seoul', valueFormatter }]}
+                        dataset={saleSubGroup}
+                        yAxis={[{ scaleType: 'band', dataKey: 'label' }]}
+                        series={[{ dataKey: 'value', valueFormatter,color: '#02b2af'  }]}
                         layout="horizontal"
                         grid={{ vertical: true }}
                         {...chartSetting}

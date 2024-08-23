@@ -98,6 +98,27 @@ class SaleDetailModel {
     return this.executeSQL(sql, [date.firstDay, date.lastDay]);
   }
 
+  saleSubGroup(date) {
+    const sql = `SELECT 
+          SaleDetail.IdSaleDetail, 
+          SaleDetail.IdSale, 
+          SaleDetail.IdProduct, 
+          Product.ProductName,
+          Product.IdSubGroup,
+          SubGroup.SubGroupName,
+          SubGroup.IdGroup,
+          ProductGroup.GroupName,
+          Product.SalePrice
+      FROM SaleDetail
+      JOIN Product ON SaleDetail.IdProduct = Product.IdProduct 
+      JOIN SubGroup ON Product.IdSubGroup = SubGroup.IdSubGroup
+      JOIN ProductGroup ON SubGroup.IdGroup = ProductGroup.IdGroup
+      JOIN Sale ON SaleDetail.IdSale = Sale.IdSale
+      WHERE Sale.SaleDate BETWEEN ? AND ?
+      ORDER BY SubGroup.SubGroupName`;
+    return this.executeSQL(sql, [date.firstDay, date.lastDay]);
+  }
+
 }
 
 module.exports = new SaleDetailModel();

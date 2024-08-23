@@ -65,22 +65,22 @@ class DashboardController {
 
     async saleSubGroup(req, res) {
         const date = converter.getMonthStartAndEndDates();
-        console.log(date);
+
         try {
-            const result = await saleDetailModel.saleGroup(date);
+            const result = await saleDetailModel.saleSubGroup(date);
             let dateReturn = [];
 
-            result.map(product => {
-                let existingGroup = dateReturn.find(item => item.group === product.ProductGroup);
+            result.forEach(product => {
+                let existingGroup = dateReturn.find(item => item.label === product.SubGroupName);
 
                 if (existingGroup) {
-                    existingGroup.sale += product.SalePrice;
+                    existingGroup.value += product.SalePrice;
                 } else {
-                    dateReturn.push({ label: product.ProductGroup, value: product.SalePrice });
+                    dateReturn.push({value: product.SalePrice , label: product.SubGroupName});
                 }
             });
 
-            res.status(200).json(dateReturn)
+            res.status(200).json(dateReturn);
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
