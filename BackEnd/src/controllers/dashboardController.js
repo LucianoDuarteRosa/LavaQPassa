@@ -7,7 +7,6 @@ class DashboardController {
 
     async accountsPayable(req, res) {
         const date = converter.getMonthStartAndEndDates();
-
         try {
             const result = await accountsPayableModel.dashPayable(date);
 

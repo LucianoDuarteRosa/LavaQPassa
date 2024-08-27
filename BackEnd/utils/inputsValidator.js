@@ -232,6 +232,19 @@ class InputValidator {
         }
     }
 
+    integerMinMaxValidator(value, min, max) {
+        try {
+            const parsedNumber = parseInt(value, 10);
+            if (Number.isInteger(parsedNumber) && parsedNumber >= min && parsedNumber <= max) {
+                return true;
+            } else {
+                throw new Error(`Valor inválido, digite somente números entre ${min} e ${max}.`);
+            }
+        } catch (error) {
+            return error.message;
+        }
+    }
+
     passwordValidator(password, minLength = 8) {
         try {
             if (password.length >= minLength && /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password) && /[^A-Za-z0-9]/.test(password)) {

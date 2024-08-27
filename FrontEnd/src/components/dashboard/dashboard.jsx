@@ -113,7 +113,6 @@ function Dashboard() {
                     }
                 });
                 setSalesSubGroup(response.data);
-                console.log(response.data)
             } catch (error) {
                 console.error(error);
                 if (error.response && error.response.status === 401) {
