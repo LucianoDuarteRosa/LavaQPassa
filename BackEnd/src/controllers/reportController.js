@@ -1,5 +1,5 @@
 const accountsPayableModel = require("../models/accountsPayableModel");
-const saleDeatilModel = require("../models/saleDetailModel");
+const saleDetailModel = require("../models/saleDetailModel");
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
@@ -54,7 +54,7 @@ class ReportController {
           doc.fontSize(25).font('Times-Bold').text(`Relatório ${month}/${year}`, 200);
           doc.fontSize(12).font('Times-Bold').text(`Nome: ${payable.ClientSupplierName}`, 30);
           doc.fontSize(12).font('Times-Bold').text(`Telefone: ${payable.Phone}`, 30);
-          doc.fontSize(12).font('Times-Bold').text(`E-mail: ${payable.Email}`, 30);
+          doc.fontSize(12).font('Times-Bold').text(`Chave-Pix: ${payable.TypeKey} - ${payable.PixKey}`, 30);
           doc.fontSize(12).font('Times-Bold').text(`Endereço: ${payable.Address}, n° ${payable.Number}, ${payable.Neighborhood}, ${payable.City}-${payable.State}`, 30);
 
           const tableTop = 280;
@@ -87,12 +87,9 @@ class ReportController {
         saleDetail.forEach((saleDetail) => {
           // Verifica se precisa adicionar uma nova página
           if (productCount > 0 && productCount % 12 === 0) {
-            // Escreve o número da página no canto inferior antes de adicionar uma nova página
             doc.fontSize(10).font('Times-Roman').text(`Página ${currentPage}`, 500, 700);
-            currentPage++; // Incrementa o contador de páginas
-            doc.addPage(); // Adiciona uma nova página
-
-            // Redefine as posições Y e o contador de produtos para a nova página
+            currentPage++;
+            doc.addPage();
             productCount = 0;
             // Desenha os cabeçalhos novamente na nova página
             drawInitialHeaders();
@@ -108,8 +105,8 @@ class ReportController {
           valueCostProduct += saleDetail.CostPrice;
           valueSaleProduct += saleDetail.SalePrice;
           // Desenha bordas ao redor das células
-          drawTableLine(doc, y - 10); // Linha superior da célula
-          drawTableLine(doc, y + 15); // Linha inferior da célula
+          drawTableLine(doc, y - 10);
+          drawTableLine(doc, y + 15);
           productCount++;
         });
         doc.font('Times-Bold').text(`R$ ${valueCostProduct.toFixed(2)}`, costX, mapY + 25);
@@ -118,7 +115,7 @@ class ReportController {
         // Desenha a última linha após a tabela
         drawTableLine(doc, tableTop + 40 + (productCount * 25));
 
-        doc.fontSize(20).font('Times-Bold').text(`QRCode Pix`, 200, mapY + 100);
+        doc.fontSize(20).font('Times-Bold').text(`QRCode Pix`, 100, mapY + 120);
 
         doc.fontSize(10).font('Times-Roman').text(`Página ${currentPage}`, 500, 700);
         // Se não for o último cliente, adiciona uma nova página
@@ -130,7 +127,6 @@ class ReportController {
       });
 
       doc.end();
-
 
       stream.on('finish', () => {
         // Enviar o PDF gerado ao cliente
