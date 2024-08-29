@@ -2,22 +2,22 @@
 const dbConnection = require("../../db/dbConnection");
 
 class AccountsPayableModel {
-  
+
   executeSQL(sql, parametros = "") {
-    
-    return new Promise( function (resolve, reject) {
-        
-       
-        dbConnection.query(sql, parametros, function (error, resposta) {
-          
-          if (error) {
-            return reject(error);
-          }
 
-          return resolve(resposta);
-        });
+    return new Promise(function (resolve, reject) {
 
-      }
+
+      dbConnection.query(sql, parametros, function (error, resposta) {
+
+        if (error) {
+          return reject(error);
+        }
+
+        return resolve(resposta);
+      });
+
+    }
     );
   }
 
@@ -45,12 +45,12 @@ class AccountsPayableModel {
       JOIN User ON Sale.IdUser = User.IdUser
       JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier 
       ORDER BY AccountsPayable.DueDate`;
-    return this.executeSQL(sql); 
+    return this.executeSQL(sql);
   }
-  
+
 
   read(id) {
-    const sql =  `SELECT
+    const sql = `SELECT
         AccountsPayable.IdAccountPayable, 
         AccountsPayable.Amount, 
         AccountsPayable.IdClientSupplier,
@@ -70,12 +70,12 @@ class AccountsPayableModel {
       JOIN Sale ON AccountsPayable.IdSale = Sale.IdSale
       JOIN User ON Sale.IdUser = User.IdUser
       JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier
-      WHERE AccountsPayable.IdAccountPayable = ?`; 
-    return this.executeSQL(sql, id); 
+      WHERE AccountsPayable.IdAccountPayable = ?`;
+    return this.executeSQL(sql, id);
   }
 
   readSale(id) {
-    const sql =  `SELECT
+    const sql = `SELECT
         AccountsPayable.IdAccountPayable, 
         AccountsPayable.Amount, 
         AccountsPayable.IdClientSupplier,
@@ -95,8 +95,8 @@ class AccountsPayableModel {
       JOIN Sale ON AccountsPayable.IdSale = Sale.IdSale
       JOIN User ON Sale.IdUser = User.IdUser
       JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier
-      WHERE AccountsPayable.IdSale = ?`; 
-    return this.executeSQL(sql, id); 
+      WHERE AccountsPayable.IdSale = ?`;
+    return this.executeSQL(sql, id);
   }
 
 
@@ -129,16 +129,16 @@ class AccountsPayableModel {
         OR AccountsPayable.Amount LIKE ?`;
     const values = [parametro, `%${parametro}%`, `%${parametro}%`, `%${parametro}%`, `%${parametro}%`, `%${parametro}%`];
     return this.executeSQL(sql, values);
-  }  
+  }
 
   create(newAccountsPayable) {
-    const sql = "INSERT INTO AccountsPayable SET ?"; 
+    const sql = "INSERT INTO AccountsPayable SET ?";
     return this.executeSQL(sql, newAccountsPayable);
   }
 
   update(updateAccountsPayable, id) {
     const sql = "UPDATE AccountsPayable SET ? WHERE IdAccountPayable = ?";
-    return this.executeSQL(sql, [updateAccountsPayable, id]); 
+    return this.executeSQL(sql, [updateAccountsPayable, id]);
   }
 
   updateActive(updatePayable) {
@@ -147,15 +147,38 @@ class AccountsPayableModel {
   }
 
   dashPayable(date) {
-    const sql =  `SELECT * FROM AccountsPayable WHERE DueDate BETWEEN ? AND ?;
+    const sql = `SELECT * FROM AccountsPayable WHERE DueDate BETWEEN ? AND ?;
       `;
     return this.executeSQL(sql, [date.firstDay, date.lastDay]);
   }
 
-  dashPayableReport(date) {
-    const sql =  `SELECT * FROM AccountsPayable WHERE DueDate BETWEEN ? AND ?;
-      `;
-    return this.executeSQL(sql, [date.firstDay, date.lastDay]);
+  dashPayableReport(month, year) {
+    const sql = `
+    SELECT
+        AccountsPayable.IdAccountPayable, 
+        AccountsPayable.Amount, 
+        AccountsPayable.IdClientSupplier,
+        ClientSupplier.ClientSupplierName,
+        ClientSupplier.Phone,
+        ClientSupplier.City,
+        ClientSupplier.TypeKey,
+        ClientSupplier.PixKey,
+        AccountsPayable.IdSale, 
+        AccountsPayable.IdStore
+    FROM 
+        AccountsPayable
+    JOIN 
+        Sale ON AccountsPayable.IdSale = Sale.IdSale
+    JOIN 
+        ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier
+    WHERE 
+        AccountsPayable.DueDate BETWEEN ? AND ?
+        AND AccountsPayable.Active = 1 
+        AND AccountsPayable.Paid = 0
+        AND Sale.IdSale > 0 
+        AND Sale.IdSale IS NOT NULL
+    `;
+    return this.executeSQL(sql, [month, year]);
   }
 
 }

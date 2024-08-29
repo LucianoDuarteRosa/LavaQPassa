@@ -3,7 +3,9 @@ const saleDetailModel = require("../models/saleDetailModel");
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
-const validator = require('../../utils/inputsValidator')
+const validator = require('../../utils/inputsValidator');
+const PixString = require('../../utils/pixString');
+const QRCode = require('qrcode');
 
 class ReportController {
 
@@ -15,10 +17,10 @@ class ReportController {
     const testYear = validator.integerMinMaxValidator(year, 4, 4);
 
     if (testMonth !== true) {
-      errors.push(testMonth)
+      errors.push(testMonth);
     }
     if (testYear !== true) {
-      errors.push(testYear)
+      errors.push(testYear);
     }
     if (errors.length > 0) {
       return res.status(400).json({ errors });
@@ -29,7 +31,7 @@ class ReportController {
     }
 
     try {
-      const result = accountsPayableModel.dashPayableReport(month, year); // arrumar esse metódo
+      const result = await accountsPayableModel.dashPayableReport(month, year); // Presumindo que essa função retorna uma promessa
       const imagePath = path.join(__dirname, 'public', 'image', 'logo.jpg');
       const imagePathSave = path.join(__dirname, 'public', 'report');
 
@@ -38,8 +40,7 @@ class ReportController {
       const stream = fs.createWriteStream(filePath);
       doc.pipe(stream);
 
-      result.forEach((payable, index) => {
-
+      for (const [index, payable] of result.entries()) {
         let currentPage = 1; // Inicia o contador de páginas
         let productCount = 0; // Contador de produtos
 
@@ -67,7 +68,7 @@ class ReportController {
           doc.text('Descrição', nameProductX, tableTop);
           doc.text('Preço de Custo', costX, tableTop);
           doc.text('Preço de Venda', priceX, tableTop);
-          drawTableLine(doc, tableTop + 15);
+          this.drawTableLine(doc, tableTop + 15);
         };
 
         drawInitialHeaders();
@@ -82,9 +83,11 @@ class ReportController {
         // Linhas da tabela
         let valueCostProduct = 0;
         let valueSaleProduct = 0;
-        let mapY = 0
+        let mapY = 0;
 
-        saleDetail.forEach((saleDetail) => {
+        const saleDetail = await saleDetailModel.read(payable.IdSale);
+
+        for (const saleDetailItem of saleDetail) {
           // Verifica se precisa adicionar uma nova página
           if (productCount > 0 && productCount % 12 === 0) {
             doc.fontSize(10).font('Times-Roman').text(`Página ${currentPage}`, 500, 700);
@@ -98,24 +101,38 @@ class ReportController {
           const y = tableTop + 25 + (productCount * 25);
           mapY = y;
           doc.fontSize(10).font('Times-Roman');
-          doc.text(saleDetail.IdProduct, codProductX, y);
-          doc.text(saleDetail.ProductName, nameProductX, y);
-          doc.text(`R$ ${saleDetail.CostPrice.toFixed(2)}`, costX, y);
-          doc.text(`R$ ${saleDetail.SalePrice.toFixed(2)}`, priceX, y);
-          valueCostProduct += saleDetail.CostPrice;
-          valueSaleProduct += saleDetail.SalePrice;
+          doc.text(saleDetailItem.IdProduct, codProductX, y);
+          doc.text(saleDetailItem.ProductName, nameProductX, y);
+          doc.text(`R$ ${saleDetailItem.CostPrice.toFixed(2)}`, costX, y);
+          doc.text(`R$ ${saleDetailItem.SalePrice.toFixed(2)}`, priceX, y);
+          valueCostProduct += saleDetailItem.CostPrice;
+          valueSaleProduct += saleDetailItem.SalePrice;
           // Desenha bordas ao redor das células
-          drawTableLine(doc, y - 10);
-          drawTableLine(doc, y + 15);
+          this.drawTableLine(doc, y - 10);
+          this.drawTableLine(doc, y + 15);
           productCount++;
-        });
+        }
         doc.font('Times-Bold').text(`R$ ${valueCostProduct.toFixed(2)}`, costX, mapY + 25);
         doc.font('Times-Bold').text(`R$ ${valueSaleProduct.toFixed(2)}`, priceX, mapY + 25);
 
         // Desenha a última linha após a tabela
-        drawTableLine(doc, tableTop + 40 + (productCount * 25));
+        this.drawTableLine(doc, tableTop + 40 + (productCount * 25));
 
+        // Gerar o QR Code Pix
+        const pixString = PixString.gerarPixString(
+          payable.TypeKey,
+          payable.PixKey,
+          valueSaleProduct, // Você pode ajustar o valor conforme necessário
+          payable.ClientSupplierName,
+          payable.City,
+          'Acerto mensal.' // Ajuste conforme necessário
+        );
+
+        const qrCodeImage = await QRCode.toBuffer(pixString, { type: 'png' });
+
+        // Adiciona o QR Code ao PDF
         doc.fontSize(20).font('Times-Bold').text(`QRCode Pix`, 100, mapY + 120);
+        doc.image(qrCodeImage, 100, mapY + 150, { fit: [150, 150] });
 
         doc.fontSize(10).font('Times-Roman').text(`Página ${currentPage}`, 500, 700);
         // Se não for o último cliente, adiciona uma nova página
@@ -124,7 +141,7 @@ class ReportController {
           productCount = 0;
           currentPage = 1;
         }
-      });
+      }
 
       doc.end();
 
@@ -141,7 +158,8 @@ class ReportController {
       });
 
     } catch (error) {
-
+      console.error('Error generating report:', error);
+      res.status(500).send('Error generating report');
     }
   }
 
