@@ -152,13 +152,18 @@ class AccountsPayableModel {
     return this.executeSQL(sql, [date.firstDay, date.lastDay]);
   }
 
-  dashPayableReport(month, year) {
+  dashPayableReport(date) {
     const sql = `
     SELECT
         AccountsPayable.IdAccountPayable, 
         AccountsPayable.Amount, 
         AccountsPayable.IdClientSupplier,
         ClientSupplier.ClientSupplierName,
+        ClientSupplier.Address,
+        ClientSupplier.Number,
+        ClientSupplier.Neighborhood,
+        ClientSupplier.City,
+        ClientSupplier.State,
         ClientSupplier.Phone,
         ClientSupplier.City,
         ClientSupplier.TypeKey,
@@ -177,8 +182,9 @@ class AccountsPayableModel {
         AND AccountsPayable.Paid = 0
         AND Sale.IdSale > 0 
         AND Sale.IdSale IS NOT NULL
+      ORDER BY ClientSupplier.ClientSupplierName;
     `;
-    return this.executeSQL(sql, [month, year]);
+    return this.executeSQL(sql, [date.firstDay, date.lastDay]);
   }
 
 }

@@ -5,26 +5,26 @@ class PixString {
         const payloadFormatIndicator = '000201';
         const merchantCategoryCode = '52040000';
         const transactionCurrency = '5303986';
-        const transactionAmount = '54' + valor.toFixed(2).replace('.', '').padStart(4, '0');
+        const transactionAmount = '54' + valor.replace('.', '').padStart(4, '0');
         const countryCode = '5802BR';
         const merchantName = '59' + nomeRecebedor.length.toString().padStart(2, '0') + nomeRecebedor;
         const merchantCity = '60' + cidadeRecebedor.length.toString().padStart(2, '0') + cidadeRecebedor;
         const additionalDataFieldTemplate = '62' + (6 + descricao.length).toString().padStart(2, '0') + '0503' + descricao.length.toString().padStart(2, '0') + descricao;
         const crc16 = '6304';
-
+        console.log(transactionAmount);
         let merchantAccountInformation = '';
 
         switch (tipoChave) {
-            case 'cpf':
+            case 'CPF/CNPJ':
                 merchantAccountInformation = '26' + (4 + chave.length).toString().padStart(2, '0') + '0014br.gov.bcb.pix01' + chave.length.toString().padStart(2, '0') + chave;
                 break;
-            case 'email':
+            case 'Email':
                 merchantAccountInformation = '26' + (4 + chave.length).toString().padStart(2, '0') + '0016br.gov.bcb.pix01' + chave.length.toString().padStart(2, '0') + chave;
                 break;
-            case 'telefone':
+            case 'Telefone':
                 merchantAccountInformation = '26' + (4 + chave.length).toString().padStart(2, '0') + '0017br.gov.bcb.pix01' + chave.length.toString().padStart(2, '0') + chave;
                 break;
-            case 'aleatoria':
+            case 'Chave Aleatória':
                 merchantAccountInformation = '26' + (4 + chave.length).toString().padStart(2, '0') + '0018br.gov.bcb.pix01' + chave.length.toString().padStart(2, '0') + chave;
                 break;
             default:
@@ -58,5 +58,9 @@ class PixString {
         return await QRCode.toDataURL(pixString, { errorCorrectionLevel: 'H', type: 'image/png' });
     }
 }
+
+module.exports = new PixString();
+
+
 
 module.exports = new PixString();
