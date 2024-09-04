@@ -24,6 +24,7 @@ import Client from '../components/clientsupplier/createClientSupplier';
 import Payable from '../components/accountsPayable/searchAccountsPayable';
 import Receivable from '../components/accountsReceivable/searchAccountsReceivable';
 import Dashboard from '../components/dashboard/dashboard';
+import MonthPayment from '../components/monthPayment/monthPayment';
 import "../styles/index.css"
 
 const drawerWidth = 240;
@@ -177,7 +178,7 @@ export default function PermanentDrawerLeft() {
 
         {selectedItem === 'month' && (
           <Typography>
-            Esta é a página de Acerto Mensal.
+            <MonthPayment />
           </Typography>
         )}
       </Box>

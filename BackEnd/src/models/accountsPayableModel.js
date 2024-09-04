@@ -177,14 +177,16 @@ class AccountsPayableModel {
     JOIN 
         ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier
     WHERE 
-        AccountsPayable.DueDate BETWEEN ? AND ?
+        DATE(AccountsPayable.DueDate) = ?
         AND AccountsPayable.Active = 1 
         AND AccountsPayable.Paid = 0
         AND Sale.IdSale > 0 
         AND Sale.IdSale IS NOT NULL
-      ORDER BY ClientSupplier.ClientSupplierName;
+    ORDER BY ClientSupplier.ClientSupplierName;
     `;
-    return this.executeSQL(sql, [date.firstDay, date.lastDay]);
+
+    // Aqui, 'date' será uma string no formato 'YYYY-MM-DD'
+    return this.executeSQL(sql, [date]);
   }
 
 }

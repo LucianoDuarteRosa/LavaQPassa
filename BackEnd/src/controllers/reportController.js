@@ -19,7 +19,6 @@ class ReportController {
 
   async readList(req, res) {
     const { month, year } = req.body;
-    const date = converter.getMonthStartAndEndDates();
     let errors = [];
 
     const testMonth = validator.integerValidator(parseInt(month));
@@ -40,6 +39,7 @@ class ReportController {
     }
 
     try {
+      const date = converter.monthTenth(year, month);
       const result = await accountsPayableModel.dashPayableReport(date);
       const imagePath = path.join(__dirname, '..', '..', 'public', 'image', 'logo.jpg');
       const imagePathSave = path.join(__dirname, '..', '..', 'public', 'report');

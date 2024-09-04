@@ -49,6 +49,19 @@ class Converter {
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
 
+    monthTenth(year, month) {
+        // Cria uma nova data baseada no ano e no mês fornecido, ajustando para o dia 10
+        const date = new Date(year, month - 1, 10);
+    
+        // Formata os valores de ano, mês, dia, horas, minutos e segundos
+        const formattedYear = date.getFullYear();
+        const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+    
+        // Retorna a data formatada no padrão MySQL
+        return `${formattedYear}-${formattedMonth}-${day}`;
+    }
+
 
     toMySQLDate(dateInput = new Date()) {
         let date;
