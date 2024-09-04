@@ -1,12 +1,11 @@
 const accountsPayableModel = require("../models/accountsPayableModel");
 const saleDetailModel = require("../models/saleDetailModel");
+const converter = require('../../utils/converter');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
 const validator = require('../../utils/inputsValidator');
-const PixString = require('../../utils/pixString');
-const QRCode = require('qrcode');
-const converter = require('../../utils/converter');
+const QrCodePix = require('qrcode-pix');
 
 function drawTableLine(doc, y) {
   doc.lineWidth(0.5)
@@ -57,7 +56,7 @@ class ReportController {
       let valueSaleProduct = 0;
       let mapY = 0;
 
-      for (const [index, payable] of result.entries()) {
+      for (let [index, payable] of result.entries()) {
         if (payable.ClientSupplierName !== previousClientName) {
           previousClientName = payable.ClientSupplierName;
 
@@ -116,16 +115,41 @@ class ReportController {
           doc.font('Times-Bold').text(`R$ ${valueSaleProduct.toFixed(2)}`, 450, mapY + 25);
           drawTableLine(doc, 280 + 40 + (productCount * 25));
 
-          const pixString = PixString.gerarPixString(
-            payable.TypeKey,
-            payable.PixKey,
-            parseFloat(valueSaleProduct).toFixed(2),
-            payable.ClientSupplierName,
-            payable.City,
-            'Acerto mensal.'
-          );
+          var pixkey = payable.PixKey;
 
-          const qrCodeImage = await PixString.gerarQRCodeBase64(pixString);
+          if (payable.TypeKey == "Telefone") {
+            // Remove espaços em branco e caracteres especiais
+            pixkey = pixkey.replace(/\s+/g, '').replace(/[^0-9]/g, '');
+
+            // Verifica se o número começa com "55" ou "+55"
+            if (pixkey.startsWith("55")) {
+              // Remove o zero após o "55", se houver
+              if (pixkey[2] === "0") {
+                pixkey = `+55${pixkey.substring(3)}`;
+              } else {
+                pixkey = `+${pixkey}`;
+              }
+            } else {
+              // Remove o zero inicial, se houver, e adiciona "+55"
+              if (pixkey.startsWith("0")) {
+                pixkey = pixkey.substring(1);
+              }
+              pixkey = `+55${pixkey}`;
+            }
+          }
+          const qrCodePix = QrCodePix.QrCodePix({
+            version: '01',
+            key: pixkey, // Chave Pix (e-mail neste caso)
+            name: payable.ClientSupplierName, // Nome do recebedor
+            city: payable.City, // Cidade do recebedor
+            transactionId: '', // ID da transação (max 25 caracteres)
+            message: 'Acerto Mensal', // Mensagem (Opcional)
+            cep: payable.ZipCode, // CEP (Opcional)
+            value: valueCostProduct, // Valor da transação
+            currency: '986', // Código da moeda (BRL)
+            country: 'BR', // País do recebedor
+          });
+          const qrCodeImage = await qrCodePix.base64();
 
           doc.fontSize(20).font('Times-Bold').text(`QRCode Pix`, 100, mapY + 195);
           doc.image(qrCodeImage, 250, mapY + 120, { fit: [150, 150] });
@@ -146,7 +170,7 @@ class ReportController {
       stream.on('finish', () => {
         res.download(filePath, (err) => {
           if (err) {
-            console.error('Error sending file:', err);
+            console.error('Erro em enviar o arquivo:', err);
             // Evita enviar outra resposta caso ocorra um erro ao enviar o arquivo
           }
           fs.unlinkSync(filePath);
@@ -154,9 +178,9 @@ class ReportController {
       });
 
     } catch (error) {
-      console.error('Error generating report:', error);
+      console.error('Erro en gerar o relatório:', error);
       if (!res.headersSent) {
-        res.status(500).send('Error generating report');
+        res.status(500).send('Erro en gerar o relatório.');
       }
     }
   }

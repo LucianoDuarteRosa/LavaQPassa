@@ -831,7 +831,6 @@ function CreateClientSupplier() {
                             <option value="Email">Email</option>
                             <option value="CPF/CNPJ">CPF/CNPJ</option>
                             <option value="Chave Aleatória">Chave Aleatória</option>
-                            <option value="Chave Pix">Chave PIX</option>
                         </TextField>
                         {formData.typekey && (
                             <TextField

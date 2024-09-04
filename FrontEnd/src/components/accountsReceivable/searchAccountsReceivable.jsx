@@ -44,11 +44,11 @@ function SearchAccountsReceivable() {
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
-  const applyFilters = (receivableData) => {
-    const filtered = receivableData.filter(payable => {
-      const dueDate = new Date(payable.DueDate);
-      const start = new Date(startDate);
-      const end = new Date(endDate);
+  const applyFilters = (payablesData) => {
+    const filtered = payablesData.filter(payable => {
+      const dueDate = payable.DueDate.split('T')[0]; // Mantém apenas a parte da data
+      const start = startDate;
+      const end = endDate;
 
       const matchesActive = showActiveOnly ? payable.Active : true;
       const matchesPaid = showPaidOnly ? !payable.Paid : true;

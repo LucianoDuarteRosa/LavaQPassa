@@ -158,6 +158,7 @@ class SaleController {
     }
   }
 
+  
   async update(req, res) {
     const { id } = req.params;
     const reqBody = req.body;

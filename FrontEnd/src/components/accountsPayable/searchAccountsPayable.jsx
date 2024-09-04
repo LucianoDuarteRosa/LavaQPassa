@@ -46,9 +46,9 @@ function SearchAccountsPayable() {
 
   const applyFilters = (payablesData) => {
     const filtered = payablesData.filter(payable => {
-      const dueDate = new Date(payable.DueDate);
-      const start = new Date(startDate);
-      const end = new Date(endDate);
+      const dueDate = payable.DueDate.split('T')[0]; // Mantém apenas a parte da data
+      const start = startDate;
+      const end = endDate;
 
       const matchesActive = showActiveOnly ? payable.Active : true;
       const matchesPaid = showPaidOnly ? !payable.Paid : true;

@@ -192,7 +192,7 @@ function SubGroupSearch() {
               </Button>
             </Box>
             {filteredSubGroups.length > 0 && (
-              <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxWidth: '100%', maxHeight: 400, overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px" }}>
+              <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxWidth: '100%', maxHeight: 350, overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px" }}>
                 <Table>
                   <TableHead>
                     <TableRow>

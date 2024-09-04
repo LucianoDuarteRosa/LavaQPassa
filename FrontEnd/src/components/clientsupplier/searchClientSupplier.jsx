@@ -194,7 +194,7 @@ function SearchClientSupplier() {
                 Buscar
               </Button>
             </Box>
-            <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxHeight: 800, overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px" }}>
+            <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxHeight: 800, overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px",maxHeight: 350}}>
               <Table>
                 <TableHead>
                   <TableRow>
