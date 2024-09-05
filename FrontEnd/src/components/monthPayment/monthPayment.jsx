@@ -8,7 +8,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { CircularProgress } from '@mui/material';
 
-
 function MonthPayment() {
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
@@ -19,15 +18,25 @@ function MonthPayment() {
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
 
-    const handleDownloadPdf = async () => {
-        let date = { month: month, year: year };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
+        if (month < 1 || month > 12) {
+            alert('O mês deve estar entre 1 e 12.');
+            return;
+        }
+        if (year <= 0) {
+            alert('O ano deve ser um valor positivo.');
+            return;
+        }
+
+        let date = { month: month, year: year };
         try {
-            setLoading(true);
-            const response = await axios.get('http://localhost:3000/report', { date }, {
+            const response = await axios.post(`http://localhost:3000/report`, { ...date }, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Authorization': `Bearer ${token}`,
+                },
+                responseType: 'blob'
             });
 
             // Create URL for PDF
@@ -44,69 +53,120 @@ function MonthPayment() {
             setLoading(false);
         } catch (error) {
             console.error('Error downloading PDF:', error);
+            alert('Houve um erro ao gerar o PDF. Tente novamente.');
             setLoading(false);
         }
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        handleDownloadPdf();
-    };
+    React.useEffect(() => {
+        return () => {
+            if (pdfData) {
+                URL.revokeObjectURL(pdfData);
+            }
+        };
+    }, [pdfData]);
 
     return (
         <Box className='sidebar'>
             <CssBaseline />
-            <Box margin={'10px'} sx={{ flexGrow: 1 }}>
-                <Typography variant="h5">Gerar Relatório em PDF</Typography>
+            <Box sx={{ flexGrow: 1 }} >
                 {!pdfData ? (
-                    <Box
-                        component="form"
-                        onSubmit={handleSubmit}
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 2,
-                            marginTop: '20px',
-                        }}
-                    >
-                        <TextField
-                            required
-                            label="Mês"
-                            type="number"
-                            value={month}
-                            onChange={(e) => setMonth(e.target.value)}
-                            inputProps={{ min: 1, max: 12 }}
-                        />
-                        <TextField
-                            required
-                            label="Ano"
-                            type="number"
-                            value={year}
-                            onChange={(e) => setYear(e.target.value)}
-                        />
-                        <Button variant="contained" color="primary" type="submit" disabled={loading}>
-                            {loading ? <CircularProgress size={24} /> : 'Gerar PDF'}
-                        </Button>
+                    <Box className="box-month-payment">
+                        <Box
+                            className="box-manager-user"
+                            component="form"
+                            onSubmit={handleSubmit}
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 2,
+                                marginTop: '20px',
+                            }}
+                        >
+                            <Typography variant="h5" className='dashboard-title-barchart'>Gerar Relatório em PDF</Typography>
+                            <TextField
+                                margin="normal"
+                                required
+                                label="Mês"
+                                value={month}
+                                onChange={(e) => setMonth(e.target.value)}
+                                inputProps={{ min: 1, max: 12 }}
+                                InputLabelProps={{
+                                    sx: {
+                                        color: '#0303037e',
+                                        '&.Mui-focused': {
+                                            color: '#030303',
+                                        },
+                                    },
+                                }}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#030303af',
+                                        },
+                                    },
+                                }}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                label="Ano"
+                                value={year}
+                                onChange={(e) => setYear(e.target.value)}
+                                InputLabelProps={{
+                                    sx: {
+                                        color: '#0303037e',
+                                        '&.Mui-focused': {
+                                            color: '#030303',
+                                        },
+                                    },
+                                }}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#030303af',
+                                        },
+                                    },
+                                }}
+                            />
+                            <Button variant="contained" color="primary" type="submit" disabled={loading}
+                                className='primary-button' sx={{ width: '30%' }}>
+                                {loading ? <CircularProgress size={24} /> : 'Gerar PDF'}
+                            </Button>
+                        </Box>
+
                     </Box>
                 ) : (
-                    <Box>
-                        <Typography variant="h6">Relatório Gerado:</Typography>
-                        {/* Display the PDF */}
-                        <iframe
-                            src={pdfData}
-                            style={{ width: '100%', height: '500px' }}
-                            title="PDF Preview"
-                        />
-                        <Box sx={{ marginTop: '20px', textAlign: 'center' }}>
-                            {/* Download button */}
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                href={downloadUrl}
-                                download={`relatorio-${month}-${year}.pdf`}
-                            >
-                                Baixar PDF
-                            </Button>
+                    <Box className="box-month-payment-pdf">
+                        <Box className="box-month-payment-pdf-report">
+                            <Typography variant="h5" className='dashboard-title-barchart'>Relatório:</Typography>
+                            <iframe
+                                src={pdfData}
+                                title="PDF Preview"
+                            />
+                            <Box sx={{ marginTop: '20px', textAlign: 'center' }}>
+                                {/* Download button */}
+                                <Button
+                                    variant="contained"
+                                    href={downloadUrl}
+                                    download={`relatorio-${month}-${year}.pdf`}
+                                    className='primary-button' sx={{ width: '15%' }}
+                                >
+                                    Baixar PDF
+                                </Button>
+                            </Box>
                         </Box>
                     </Box>
                 )}

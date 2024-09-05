@@ -120,6 +120,39 @@ body {
 
 /*----------------------------------------------------*/
 /*---------------------- Avatar ----------------------*/
+.box-month-payment{
+    margin-top: 10% ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}   
+
+.box-month-payment-pdf{
+    margin: 10px ;
+    margin-top: 2% ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.box-month-payment-pdf-report iframe{
+    width: 1500px;
+    height: 600px;
+    margin: 10px;
+    padding: 0px;
+}
+
+.box-month-payment-pdf-report{
+    padding: 20px;
+    background-color: var(--box-manager);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/*----------------------------------------------------*/
+/*---------------------- Avatar ----------------------*/
 .avatar {
     background-color: var(--avatar) !important;
 }

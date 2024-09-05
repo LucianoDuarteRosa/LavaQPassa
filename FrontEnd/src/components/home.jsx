@@ -17,7 +17,6 @@ import SsidChartIcon from '@mui/icons-material/SsidChart';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
-import { BarChart } from '@mui/x-charts/BarChart';
 import CreateProduct from '../components/product/createProduct';
 import Sale from '../components/sale/createSale';
 import Client from '../components/clientsupplier/createClientSupplier';
@@ -109,6 +108,7 @@ export default function PermanentDrawerLeft() {
           </ListItem>
 
           <Divider />
+
           {/* 
           <ListItem disablePadding>
             <ListItemButton onClick={() => handleDrawerItemClick('report')}>
