@@ -162,9 +162,16 @@ function MonthPayment() {
                                     variant="contained"
                                     href={downloadUrl}
                                     download={`relatorio-${month}-${year}.pdf`}
-                                    className='primary-button' sx={{ width: '15%' }}
+                                    className='primary-button' sx={{ width: '15%', marginRight: '20px' }}
                                 >
                                     Baixar PDF
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => setPdfData(null)}
+                                    className='primary-button' sx={{ width: '15%' }}
+                                >
+                                    Voltar
                                 </Button>
                             </Box>
                         </Box>
