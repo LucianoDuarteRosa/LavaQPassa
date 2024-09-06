@@ -148,7 +148,6 @@ body {
     padding: 20px;
     background-color: var(--box-manager);
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /*----------------------------------------------------*/
@@ -242,10 +241,10 @@ body {
     padding: 15px 15px 20px 15px;
     margin: 15px;
     background-color: var(--box-manager) !important;
-    box-shadow: none !important;
     border-radius: 12px !important;
     color: var(--font-color-dark) !important;
     width: 550px;
+    box-shadow: 1px 2px 5px #0303037e!important;
 }
 
 .box-manage-main {

@@ -44,7 +44,7 @@ export default function Navbar() {
               textDecoration: 'none',
             }}
           >
-            LavaQPassa
+            LavaQPassa Brechó
           </Link>
         </Typography>
         {user && (
