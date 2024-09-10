@@ -1,4 +1,4 @@
-const imageModel = require("../models/imageModel");
+/*const imageModel = require("../models/imageModel");
 const validator = require("../../utils/inputsValidator")
 
 
@@ -87,3 +87,4 @@ class ImageController {
 }
 
 module.exports = new ImageController();
+*/

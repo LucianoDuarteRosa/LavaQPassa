@@ -9,18 +9,182 @@ const validator = require('../../utils/inputsValidator');
 
 class UserController {
 
+
   readList(req, res) {
+    /*
+      #swagger.tags = ['Usuário']
+      #swagger.summary = 'Busca por usuários'
+      #swagger.description = 'Retorna uma lista de usuários cadastrados'
+   
+      #swagger.parameters['Authorization'] = {
+        in: 'header',
+        description: 'Token JWT do usuário logado',
+        required: true,
+        type: 'string'
+      }
+   
+      #swagger.responses[200] = {
+        description: 'Consulta lista os usuários',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              additionalProperties: {
+                type: 'object',
+                properties: {
+                  IdUser: { type: 'integer' },
+                  UserName: { type: 'string'},
+                  UserEmail: { type: 'string'},
+                  Active: { type: 'bollean'},
+                  IdProfile: { type: 'integer'},
+                  UserProfile: { type: 'string'}
+                }
+              }
+            }
+          }
+        }
+      }
+   
+      #swagger.responses[404] = {
+        description: 'Sem dados a retornar',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Nenhum usuário encontrado!' }
+              }
+            }
+          }
+        }
+      }
+
+        #swagger.responses[401] = {
+        description: 'Token inválido, expirado ou sem o token',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Token inválido' }
+              }
+            }
+          }
+        }
+      }
+   
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+    */
     const retorno = userModel.readList();
     return retorno
       .then((result) => result.length == 0
         ? res.status(404).send("Nenhum usuário encontrado!")
         : res.status(200).json(result)
       )
-      .catch((error) => res.status(400).json(error.message));
+      .catch((error) => res.status(500).json(error.message));
   }
 
-
   read(req, res) {
+    /*
+      #swagger.tags = ['Usuário']
+      #swagger.summary = 'Busca por usuários [id]'
+      #swagger.description = 'Retorna o usuário com do id enviado como parametro'
+   
+      #swagger.parameters['Authorization'] = {
+        in: 'header',
+        description: 'Token JWT do usuário logado',
+        required: true,
+        type: 'string'
+      }
+   
+      #swagger.responses[200] = {
+        description: 'Retorna o usuário com o ID enviado como parâmetro',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                IdUser: { type: 'integer' },
+                UserName: { type: 'string' },
+                UserEmail: { type: 'string' },
+                Active: { type: 'boolean' },
+                IdProfile: { type: 'integer' },
+                UserProfile: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+
+      #swagger.responses[404] = {
+        description: 'Sem dados a retornar',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Nenhum usuário encontrado!' }
+              }
+            }
+          }
+        }
+      }
+
+      #swagger.responses[400] = {
+        description: 'Erro de validação dos campos de entrada',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string'}
+              }
+            }
+          }
+        }
+      }
+
+        #swagger.responses[401] = {
+        description: 'Token inválido, expirado ou sem o token',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Token inválido' }
+              }
+            }
+          }
+        }
+      }
+   
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+    */
+
     const { id } = req.params;
     const errors = [];
 
@@ -41,12 +205,87 @@ class UserController {
           ? res.status(404).send("Usuário não encontrado!")
           : res.status(200).json(result)
       )
-      .catch((error) => res.status(400).json(error.message));
+      .catch((error) => res.status(500).json(error.message));
   }
 
   search(req, res) {
+    /*
+     #swagger.tags = ['Usuário']
+     #swagger.summary = 'Pesquisa usuários [parametro]'
+     #swagger.description = 'Retorna o usuário com do parametro for localizado no IdUser, UserName ou UserEmail'
+  
+     #swagger.parameters['Authorization'] = {
+       in: 'header',
+       description: 'Token JWT do usuário logado',
+       required: true,
+       type: 'string'
+     }
+  
+     #swagger.responses[200] = {
+       description: 'Retorna os usuários localizados com o parametro enviado',
+       content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              additionalProperties: {
+                type: 'object',
+                properties: {
+                  IdUser: { type: 'integer' },
+                  UserName: { type: 'string'},
+                  UserEmail: { type: 'string'},
+                  Active: { type: 'bollean'},
+                  IdProfile: { type: 'integer'},
+                  UserProfile: { type: 'string'}
+                }
+              }
+            }
+          }
+        } 
+     }
+     #swagger.responses[404] = {
+       description: 'Sem dados a retornar',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               message: { type: 'string', example: 'Nenhum usuário encontrado!' }
+             }
+           }
+         }
+       }
+     }
 
-    const { id } = req.params;
+       #swagger.responses[401] = {
+       description: 'Token inválido, expirado ou sem o token',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               message: { type: 'string', example: 'Token inválido' }
+             }
+           }
+         }
+       }
+     }
+  
+     #swagger.responses[500] = {
+       description: 'Erro interno do servidor',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               error: { type: 'string' }
+             }
+           }
+         }
+       }
+     }
+   */
+   
+     const { id } = req.params;
 
     const retorno = userModel.search(id);
     return retorno
@@ -55,22 +294,113 @@ class UserController {
           ? res.status(404).send("Nenhum usuário encontrado!")
           : res.status(200).json(result)
       )
-      .catch((error) => res.status(400).json(error.message));
+      .catch((error) => res.status(500).json(error.message));
   }
 
   async create(req, res) {
+    /*
+       #swagger.tags = ['Usuário']
+       #swagger.summary = 'Criar usuário'
+       #swagger.description = 'Cria o usuário no banco de dados com o objeto que veio no body'
+    
+       #swagger.parameters['Authorization'] = {
+         in: 'header',
+         description: 'Token JWT do usuário logado',
+         required: true,
+         type: 'string'
+       }
+
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                name: { type: 'string'},
+                email: { type: 'string'},
+                password: { type: 'string'},
+                profile: { type: 'integer'}
+              }
+            }
+          }
+        }
+      }
+        
+      #swagger.responses[201] = {
+        description: 'Cadastro efetuado com sucesso',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Usuário criado com sucesso!' }
+              }
+            }
+          }
+        }
+      }
+    
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string', example: 'Erro ao acessar o banco de dados.' }
+              }
+            }
+          }
+        }
+      }
+  
+      #swagger.responses[401] = {
+        description: 'Token inválido, expirado ou sem o token',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Token inválido' }
+              }
+            }
+          }
+        }
+      }
+    
+      #swagger.responses[400] = {
+        description: 'Erro ao tentar cadastrar o nome de usuário ou e-mail',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string', example: 'Nome de usuário ou e-mail já cadastrado' }
+              }
+            }
+          }
+        }
+      }
+  */
+
     const { name, email, password, profile } = req.body;
     const errors = [];
 
     // Validações
     const testName = validator.allValidator(name, 2, 15);
     const testEmail = validator.emailValidator(email);
+    const testProfile = validator.integerValidator(profile);
 
     if (testName !== true) {
       errors.push(testName);
     }
     if (testEmail !== true) {
-      errors.push(testEmail); // Corrigido para adicionar erro ao array
+      errors.push(testEmail);
+    }
+
+    if (testProfile !== true) {
+      errors.push(testProfile);
     }
 
     if (errors.length > 0) {
@@ -96,12 +426,98 @@ class UserController {
       await userModel.create(user);
       res.status(201).send('Usuário criado com sucesso!');
     } catch (error) {
-      console.error('Error creating user:', error); // Adicionado para melhor depuração
+      console.error('Error creating user:', error);
       res.status(500).json({ error: error.message });
     }
   }
 
   update(req, res) {
+     /*
+       #swagger.tags = ['Usuário']
+       #swagger.summary = 'Atualizar usuário'
+       #swagger.description = 'Atualiza o usuário [id] no banco de dados com o objeto que veio no body'
+    
+       #swagger.parameters['Authorization'] = {
+         in: 'header',
+         description: 'Token JWT do usuário logado',
+         required: true,
+         type: 'string'
+       }
+
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                name: { type: 'string'},
+                email: { type: 'string'},
+                password: { type: 'string'},
+                profile: { type: 'integer'}
+              }
+            }
+          }
+        }
+      }
+        
+      #swagger.responses[200] = {
+        description: 'Atualizar usuário efetuado com sucesso',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Usuário atualizado com sucesso!' }
+              }
+            }
+          }
+        }
+      }
+    
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string', example: 'Erro ao acessar o banco de dados.' }
+              }
+            }
+          }
+        }
+      }
+  
+      #swagger.responses[401] = {
+        description: 'Token inválido, expirado ou sem o token',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Token inválido' }
+              }
+            }
+          }
+        }
+      }
+    
+      #swagger.responses[400] = {
+        description: 'Erro ao validar campos de entrada',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+  */
+
     const { id } = req.params;
     const reqBody = req.body;
 
@@ -146,6 +562,92 @@ class UserController {
   }
 
   async login(req, res) {
+    /*
+    #swagger.tags = ['Usuário']
+       #swagger.summary = 'Login de usuário'
+       #swagger.description = 'Inicia a seção do usuário na aplicação'
+    
+       #swagger.parameters['Authorization'] = {
+         in: 'header',
+         description: 'Token JWT do usuário logado',
+         required: true,
+         type: 'string'
+       }
+
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                email: { type: 'string'},
+                password: { type: 'string'}
+              }
+            }
+          }
+        }
+      }
+        
+      #swagger.responses[200] = {
+        description: 'Atualizar usuário efetuado com sucesso',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                token: { type: 'string' },
+                name: { type: 'string' },
+                profile: { type: 'integer' }
+              }
+            }
+          }
+        }
+      }
+    
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string', example: 'Erro ao acessar o banco de dados.' }
+              }
+            }
+          }
+        }
+      }
+   
+      #swagger.responses[400] = {
+        description: 'Credenciais inválidas',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+
+       #swagger.responses[404] = {
+        description: 'E-mail não cadastrado',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+  */
+
     let email = req.body.email;
     let password = req.body.password;
 

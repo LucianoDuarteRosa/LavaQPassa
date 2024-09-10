@@ -12,17 +12,191 @@ const payableModel = require("../models/accountsPayableModel");
 class SaleController {
 
   readList(req, res) {
+     /*
+      #swagger.tags = ['Venda']
+      #swagger.summary = 'Busca por venda'
+      #swagger.description = 'Retorna uma lista de vendas cadastradas'
+   
+      #swagger.parameters['Authorization'] = {
+        in: 'header',
+        description: 'Token JWT do usuário logado',
+        required: true,
+        type: 'string'
+      }
+   
+      #swagger.responses[200] = {
+        description: 'Consulta lista os vendas',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              additionalProperties: {
+                type: 'object',
+                properties: {
+                  IdSale: { type: 'integer' },
+                  CostPrice: { type: 'double' },
+                  SalePrice: { type: 'double' },
+                  IdClientSupplier: { type: 'integer' },
+                  ClientSupplierName: { type: 'string'},
+                  IdUser: { type: 'integer' },
+                  UserName: { type: 'string'},
+                  SaleDate: { type: 'date-time'},
+                  PaymentCondition: { type: 'string'},
+                  SaleStatus: { type: 'string'},
+                  StoreName: { type: 'string'}
+                }
+              }
+            }
+          }
+        }
+      }
+   
+      #swagger.responses[404] = {
+        description: 'Sem dados a retornar',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Nenhuma venda encontrada!' }
+              }
+            }
+          }
+        }
+      }
+
+        #swagger.responses[401] = {
+        description: 'Token inválido, expirado ou sem o token',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Token inválido' }
+              }
+            }
+          }
+        }
+      }
+   
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+    */
+    
     const retorno = saleModel.readList();
     return retorno
       .then((result) => result.length == 0
         ? res.status(404).send("Nenhuma venda encontrada!")
         : res.status(200).json(result)
       )
-      .catch((error) => res.status(400).json(error.message));
+      .catch((error) => res.status(500).json(error.message));
   }
 
-
   read(req, res) {
+    /*
+      #swagger.tags = ['Venda']
+      #swagger.summary = 'Busca por venda [id]'
+      #swagger.description = 'Retorna o venda com do id enviado como parametro'
+  
+      #swagger.parameters['Authorization'] = {
+        in: 'header',
+        description: 'Token JWT do usuário logado',
+        required: true,
+        type: 'string'
+      }
+  
+      #swagger.responses[200] = {
+        description: 'Retorna o grupo com o ID enviado como parâmetro',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                  IdSale: { type: 'integer' },
+                  CostPrice: { type: 'double' },
+                  SalePrice: { type: 'double' },
+                  IdClientSupplier: { type: 'integer' },
+                  ClientSupplierName: { type: 'string'},
+                  IdUser: { type: 'integer' },
+                  UserName: { type: 'string'},
+                  SaleDate: { type: 'date-time'},
+                  PaymentCondition: { type: 'string'},
+                  SaleStatus: { type: 'string'},
+                  StoreName: { type: 'string'}
+              }
+            }
+          }
+        }
+      }
+
+      #swagger.responses[404] = {
+        description: 'Sem dados a retornar',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Nenhum venda encontrado!' }
+              }
+            }
+          }
+        }
+      }
+
+      #swagger.responses[400] = {
+        description: 'Erro de validação dos campos de entrada',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string'}
+              }
+            }
+          }
+        }
+      }
+
+        #swagger.responses[401] = {
+        description: 'Token inválido, expirado ou sem o token',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Token inválido' }
+              }
+            }
+          }
+        }
+      }
+  
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+    */
+
     const { id } = req.params;
     const errors = [];
 
@@ -41,10 +215,91 @@ class SaleController {
           ? res.status(404).send("Venda não encontrada!")
           : res.status(200).json(result)
       )
-      .catch((error) => res.status(400).json(error.message));
+      .catch((error) => res.status(500).json(error.message));
   }
 
   search(req, res) {
+    /*
+      #swagger.tags = ['Venda']
+      #swagger.summary = 'Pesquisa venda [parametro]'
+      #swagger.description = 'Retorna as vendas localizados com o parametro enviado'
+    
+      #swagger.parameters['Authorization'] = {
+        in: 'header',
+        description: 'Token JWT do usuário logado',
+        required: true,
+        type: 'string'
+      }
+    
+      #swagger.responses[200] = {
+        description: 'Retorna as vendas localizados com o parametro enviado',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              additionalProperties: {
+                type: 'object',
+                properties: {
+                  IdSale: { type: 'integer' },
+                  CostPrice: { type: 'double' },
+                  SalePrice: { type: 'double' },
+                  IdClientSupplier: { type: 'integer' },
+                  ClientSupplierName: { type: 'string'},
+                  IdUser: { type: 'integer' },
+                  UserName: { type: 'string'},
+                  SaleDate: { type: 'date-time'},
+                  PaymentCondition: { type: 'string'},
+                  SaleStatus: { type: 'string'},
+                  StoreName: { type: 'string'}
+                }
+              }
+            }
+          }
+        } 
+      }
+      #swagger.responses[404] = {
+        description: 'Sem dados a retornar',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Nenhuma venda encontrado!' }
+              }
+            }
+          }
+        }
+      }
+
+        #swagger.responses[401] = {
+        description: 'Token inválido, expirado ou sem o token',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Token inválido' }
+              }
+            }
+          }
+        }
+      }
+    
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+    */
+
     const { id } = req.params;
 
     const retorno = saleModel.search(id);
@@ -54,10 +309,84 @@ class SaleController {
           ? res.status(404).send("Nenhuma venda encontrada!")
           : res.status(200).json(result)
       )
-      .catch((error) => res.status(400).json(error.message));
+      .catch((error) => res.status(500).json(error.message));
   }
 
   async create(req, res) {
+     /*
+       #swagger.tags = ['Venda']
+       #swagger.summary = 'Criar venda'
+       #swagger.description = 'Cria o venda no banco de dados com o objeto que veio no body'
+    
+       #swagger.parameters['Authorization'] = {
+         in: 'header',
+         description: 'Token JWT do usuário logado',
+         required: true,
+         type: 'string'
+       }
+
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                userId: { type: 'integer'},
+                idclient: { type: 'integer'},
+                saledate: { type: 'date-time'},
+                paymentcondition: { type: 'string'},
+                products: { type: 'string'},
+                idstore: { type: 'integer'}
+              }
+            }
+          }
+        }
+      }
+        
+      #swagger.responses[201] = {
+        description: 'Cadastro efetuado com sucesso',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Venda criado com sucesso!' }
+              }
+            }
+          }
+        }
+      }
+    
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string', example: 'Erro ao acessar o banco de dados.' }
+              }
+            }
+          }
+        }
+      }
+  
+      #swagger.responses[401] = {
+        description: 'Token inválido, expirado ou sem o token',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Token inválido' }
+              }
+            }
+          }
+        }
+      }
+  */
+
     const reqBody = req.body;
     const errors = [];
 
@@ -154,12 +483,99 @@ class SaleController {
 
       res.status(201).send("Venda criada com sucesso!");
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
-
   
   async update(req, res) {
+     /*
+       #swagger.tags = ['Venda']
+       #swagger.summary = 'Atualizar venda'
+       #swagger.description = 'Atualiza o venda [id] no banco de dados com o objeto que veio no body'
+    
+       #swagger.parameters['Authorization'] = {
+         in: 'header',
+         description: 'Token JWT do usuário logado',
+         required: true,
+         type: 'string'
+       }
+
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {                
+                userId: { type: 'integer'},
+                idclient: { type: 'integer'},
+                saledate: { type: 'date-time'},
+                paymentcondition: { type: 'string'},
+                products: { type: 'string'},
+                idstore: { type: 'integer'}
+              }
+            }
+          }
+        }
+      }
+        
+      #swagger.responses[200] = {
+        description: 'Atualizar efetuado com sucesso',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Venda atualizada com sucesso!' }
+              }
+            }
+          }
+        }
+      }
+    
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string', example: 'Erro ao acessar o banco de dados.' }
+              }
+            }
+          }
+        }
+      }
+  
+      #swagger.responses[401] = {
+        description: 'Token inválido, expirado ou sem o token',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Token inválido' }
+              }
+            }
+          }
+        }
+      }
+    
+      #swagger.responses[400] = {
+        description: 'Erro ao validar campos de entrada',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+  */
+
     const { id } = req.params;
     const reqBody = req.body;
     const errors = [];
@@ -256,7 +672,7 @@ class SaleController {
 
         res.status(201).send("Venda atualizada com sucesso!");
       } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(500).json({ error: error.message });
       }
     }
   }

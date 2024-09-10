@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start": "concurrently \"npm run server\" \"npm run dev\"",
-    "server": "cd ../BackEnd && node index.js"
+    "server": "cd ../BackEnd && npm run swagger"
   },
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",

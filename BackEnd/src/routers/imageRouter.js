@@ -1,3 +1,4 @@
+/*
 const Router = require("express").Router;
 const router = Router();
 const imageController = require("../controllers/imageController");
@@ -9,3 +10,4 @@ router.put("/image/:id", authMiddleware.authMiddleware, imageController.update);
 router.delete("/image/:id", authMiddleware.authMiddleware, imageController.delete);
 
 module.exports = router;
+*/
