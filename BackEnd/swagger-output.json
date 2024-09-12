@@ -947,6 +947,21 @@
               }
             }
           },
+          "400": {
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Token inválido, expirado ou sem o token",
             "content": {
@@ -1488,7 +1503,19 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "description": "Token inválido, expirado ou sem o token",
@@ -2073,7 +2100,19 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "description": "Token inválido, expirado ou sem o token",
@@ -2772,7 +2811,19 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "description": "Token inválido, expirado ou sem o token",
@@ -3552,7 +3603,19 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "description": "Token inválido, expirado ou sem o token",
@@ -4384,7 +4447,19 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "description": "Token inválido, expirado ou sem o token",
@@ -5026,7 +5101,19 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "description": "Token inválido, expirado ou sem o token",
@@ -5352,11 +5439,24 @@
     },
     "/payable": {
       "get": {
-        "description": "",
+        "tags": [
+          "Contas a Pagar"
+        ],
+        "summary": "Busca por Contas a Pagar",
+        "description": "Retorna uma lista de contas a pagar cadastrados",
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -5364,24 +5464,108 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+            "description": "Consulta lista as contas a pagar ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "IdAccountPayable": {
+                        "type": "integer"
+                      },
+                      "Amount": {
+                        "type": "double"
+                      },
+                      "IdClientSupplier": {
+                        "type": "integer"
+                      },
+                      "ClientSupplierName": {
+                        "type": "string"
+                      },
+                      "RegistrationDate": {
+                        "type": "date-time"
+                      },
+                      "DueDate": {
+                        "type": "date"
+                      },
+                      "Note": {
+                        "type": "string"
+                      },
+                      "IdStore": {
+                        "type": "integer"
+                      },
+                      "IdSale": {
+                        "type": "integer"
+                      },
+                      "Active": {
+                        "type": "boolean"
+                      },
+                      "Paid": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Sem dados a retornar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma contas a pagar encontrada!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Contas a Pagar"
+        ],
+        "summary": "Criar Contas a Pagar",
+        "description": "Cria o contas a pagar no banco de dados com o objeto que veio no body",
         "parameters": [
           {
             "name": "authorization",
@@ -5389,48 +5573,109 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Cadastro efetuado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Conta a pagar criada com sucesso!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao acessar o banco de dados."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "userId": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "amount": {
-                    "example": "any"
+                    "type": "double"
                   },
                   "idstore": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "idsale": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "idclient": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "duedate": {
-                    "example": "any"
+                    "type": "date"
                   },
                   "note": {
-                    "example": "any"
+                    "type": "string"
                   }
                 }
               }
@@ -5441,7 +5686,11 @@
     },
     "/payable/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Contas a Pagar"
+        ],
+        "summary": "Busca por Contas a Pagar [id]",
+        "description": "Retorna o contas a pagar com do id enviado como parametro",
         "parameters": [
           {
             "name": "id",
@@ -5457,28 +5706,133 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Retorna o contas a pagar com o ID enviado como parâmetro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "IdAccountPayable": {
+                      "type": "integer"
+                    },
+                    "Amount": {
+                      "type": "double"
+                    },
+                    "IdClientSupplier": {
+                      "type": "integer"
+                    },
+                    "ClientSupplierName": {
+                      "type": "string"
+                    },
+                    "RegistrationDate": {
+                      "type": "date-time"
+                    },
+                    "DueDate": {
+                      "type": "date"
+                    },
+                    "Note": {
+                      "type": "string"
+                    },
+                    "IdStore": {
+                      "type": "integer"
+                    },
+                    "IdSale": {
+                      "type": "integer"
+                    },
+                    "Active": {
+                      "type": "boolean"
+                    },
+                    "Paid": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro de validação dos campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Sem dados a retornar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma contas a pagar encontrada!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
       "put": {
-        "description": "",
+        "tags": [
+          "Contas a Pagar"
+        ],
+        "summary": "Atualizar Contas a Pagar",
+        "description": "Atualiza o contas a pagar [id] no banco de dados com o objeto que veio no body",
         "parameters": [
           {
             "name": "id",
@@ -5494,57 +5848,109 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Atualizar efetuado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Contas a pagar atualizado com sucesso!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao acessar o banco de dados."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "userId": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "amount": {
-                    "example": "any"
+                    "type": "double"
                   },
                   "idstore": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "idsale": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "idclient": {
-                    "example": "any"
-                  },
-                  "registrationdate": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "duedate": {
-                    "example": "any"
+                    "type": "date"
                   },
                   "note": {
-                    "example": "any"
-                  },
-                  "active": {
-                    "example": "any"
-                  },
-                  "paid": {
-                    "example": "any"
+                    "type": "string"
                   }
                 }
               }
@@ -5555,7 +5961,11 @@
     },
     "/payablesearch/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Contas a Pagar"
+        ],
+        "summary": "Pesquisa Contas a Pagar [parametro]",
+        "description": "Retorna os contas a pagar localizados com o parametro enviado",
         "parameters": [
           {
             "name": "id",
@@ -5571,34 +5981,12 @@
             "schema": {
               "type": "string"
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/receivable": {
-      "get": {
-        "description": "",
-        "parameters": [
           {
-            "name": "authorization",
+            "name": "Authorization",
             "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -5606,28 +5994,245 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+            "description": "Retorna os contas a pagar localizadas com o parametro enviado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "IdAccountPayable": {
+                        "type": "integer"
+                      },
+                      "Amount": {
+                        "type": "double"
+                      },
+                      "IdClientSupplier": {
+                        "type": "integer"
+                      },
+                      "ClientSupplierName": {
+                        "type": "string"
+                      },
+                      "RegistrationDate": {
+                        "type": "date-time"
+                      },
+                      "DueDate": {
+                        "type": "date"
+                      },
+                      "Note": {
+                        "type": "string"
+                      },
+                      "IdStore": {
+                        "type": "integer"
+                      },
+                      "IdSale": {
+                        "type": "integer"
+                      },
+                      "Active": {
+                        "type": "boolean"
+                      },
+                      "Paid": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Sem dados a retornar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma contas a pagar encontrada!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
-      },
-      "post": {
-        "description": "",
+      }
+    },
+    "/receivable": {
+      "get": {
+        "tags": [
+          "Contas a Receber"
+        ],
+        "summary": "Busca por Contas a Receber",
+        "description": "Retorna uma lista de contas a receber cadastrados",
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta lista as contas a receber ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "IdAccountReceivable": {
+                        "type": "integer"
+                      },
+                      "Amount": {
+                        "type": "double"
+                      },
+                      "IdClientSupplier": {
+                        "type": "integer"
+                      },
+                      "ClientSupplierName": {
+                        "type": "string"
+                      },
+                      "RegistrationDate": {
+                        "type": "date-time"
+                      },
+                      "DueDate": {
+                        "type": "date"
+                      },
+                      "Note": {
+                        "type": "string"
+                      },
+                      "IdStore": {
+                        "type": "integer"
+                      },
+                      "IdSale": {
+                        "type": "integer"
+                      },
+                      "Active": {
+                        "type": "boolean"
+                      },
+                      "Paid": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Sem dados a retornar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma cantas a receber encontrada!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Contas a Receber"
+        ],
+        "summary": "Criar Contas a Receber",
+        "description": "Cria o contas a receber no banco de dados com o objeto que veio no body",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -5635,44 +6240,96 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Cadastro efetuado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Conta a receber criada com sucesso!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao acessar o banco de dados."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "userId": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "amount": {
-                    "example": "any"
+                    "type": "double"
                   },
                   "idstore": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "idsale": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "idclient": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "duedate": {
-                    "example": "any"
+                    "type": "date"
                   },
                   "note": {
-                    "example": "any"
+                    "type": "string"
                   }
                 }
               }
@@ -5683,7 +6340,11 @@
     },
     "/receivable/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Contas a Receber"
+        ],
+        "summary": "Busca por Contas a Receber [id]",
+        "description": "Retorna o contas a receber com do id enviado como parametro",
         "parameters": [
           {
             "name": "id",
@@ -5699,28 +6360,133 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Retorna o contas a receber com o ID enviado como parâmetro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "IdAccountReceivable": {
+                      "type": "integer"
+                    },
+                    "Amount": {
+                      "type": "double"
+                    },
+                    "IdClientSupplier": {
+                      "type": "integer"
+                    },
+                    "ClientSupplierName": {
+                      "type": "string"
+                    },
+                    "RegistrationDate": {
+                      "type": "date-time"
+                    },
+                    "DueDate": {
+                      "type": "date"
+                    },
+                    "Note": {
+                      "type": "string"
+                    },
+                    "IdStore": {
+                      "type": "integer"
+                    },
+                    "IdSale": {
+                      "type": "integer"
+                    },
+                    "Active": {
+                      "type": "boolean"
+                    },
+                    "Paid": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro de validação dos campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Sem dados a retornar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma contas a receber encontrada!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
       "put": {
-        "description": "",
+        "tags": [
+          "Contas a Receber"
+        ],
+        "summary": "Atualizar Contas a Receber",
+        "description": "Atualiza o contas a receber [id] no banco de dados com o objeto que veio no body",
         "parameters": [
           {
             "name": "id",
@@ -5736,57 +6502,109 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Atualizar efetuado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Contas a receber atualizado com sucesso!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao acessar o banco de dados."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "userId": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "amount": {
-                    "example": "any"
+                    "type": "double"
                   },
                   "idstore": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "idsale": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "idclient": {
-                    "example": "any"
-                  },
-                  "registrationdate": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "duedate": {
-                    "example": "any"
+                    "type": "date"
                   },
                   "note": {
-                    "example": "any"
-                  },
-                  "active": {
-                    "example": "any"
-                  },
-                  "paid": {
-                    "example": "any"
+                    "type": "string"
                   }
                 }
               }
@@ -5797,7 +6615,11 @@
     },
     "/receivablesearch/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Contas a Receber"
+        ],
+        "summary": "Pesquisa Contas a Receber [parametro]",
+        "description": "Retorna os contas a receber localizados com o parametro enviado",
         "parameters": [
           {
             "name": "id",
@@ -5813,30 +6635,123 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+            "description": "Retorna os contas a receber localizadas com o parametro enviado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "IdAccountReceivable": {
+                        "type": "integer"
+                      },
+                      "Amount": {
+                        "type": "double"
+                      },
+                      "IdClientSupplier": {
+                        "type": "integer"
+                      },
+                      "ClientSupplierName": {
+                        "type": "string"
+                      },
+                      "RegistrationDate": {
+                        "type": "date-time"
+                      },
+                      "DueDate": {
+                        "type": "date"
+                      },
+                      "Note": {
+                        "type": "string"
+                      },
+                      "IdStore": {
+                        "type": "integer"
+                      },
+                      "IdSale": {
+                        "type": "integer"
+                      },
+                      "Active": {
+                        "type": "boolean"
+                      },
+                      "Paid": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Sem dados a retornar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma contas a receber encontrada!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/saleyear": {
       "get": {
-        "description": "",
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Dashboards vendas totais dos últimos 12 meses",
+        "description": "Retorna uma lista com as vendas totais dos últimos 12 meses",
         "parameters": [
           {
             "name": "authorization",
@@ -5844,30 +6759,97 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+            "description": "Consulta lista venda dos últimos 12 meses ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "saleMonth": {
+                        "type": "date",
+                        "example": "2023-09"
+                      },
+                      "totalSales": {
+                        "type": "double"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Sem dados a retornar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma venda encontrada!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/salegroup": {
       "get": {
-        "description": "",
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Dashboards venda total mensal por grupos",
+        "description": "Retorna uma lista venda total mensal por grupos",
         "parameters": [
           {
             "name": "authorization",
@@ -5875,27 +6857,99 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+            "description": "Consulta lista venda total mensal por grupos ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "value": {
+                        "type": "double"
+                      },
+                      "label": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Sem dados a retornar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma venda encontrada!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/salesubgroup": {
       "get": {
-        "description": "",
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Dashboards venda total mensal por subgrupos",
+        "description": "Retorna uma lista venda total mensal por subgrupos",
         "parameters": [
           {
             "name": "authorization",
@@ -5903,31 +6957,112 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Consulta lista venda total mensal por subgrupos ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "double"
+                      },
+                      "label": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Sem dados a retornar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma venda encontrada!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/accountspayable": {
       "get": {
-        "description": "",
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Dashboards Contas a Pagar",
+        "description": "Retorna uma lista de contas a pagar cadastrados no mês atual",
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -5935,23 +7070,86 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+            "description": "Consulta lista as contas a pagar ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "account": {
+                        "type": "double"
+                      },
+                      "paids": {
+                        "type": "double"
+                      },
+                      "billsDue": {
+                        "type": "double"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Sem dados a retornar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma contas a pagar encontrada para este mês!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/report": {
       "post": {
-        "description": "",
+        "tags": [
+          "Relatório Mensal"
+        ],
+        "summary": "Gera PDF relatório mensal",
+        "description": "Retorna um PDF contendo o relatório mensal do mês solicitado",
         "parameters": [
           {
             "name": "authorization",
@@ -5959,33 +7157,104 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT do usuário logado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "PDF gerado com sucesso",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Bad Request"
+            "description": "Erro ao validar campos de entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token inválido, expirado ou sem o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Venda detalhada não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhuma dado encontrado!"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "userId": {
-                    "example": "any"
-                  },
                   "month": {
-                    "example": "any"
+                    "type": "integer"
                   },
                   "year": {
-                    "example": "any"
+                    "type": "integer"
                   }
                 }
               }

@@ -385,6 +385,19 @@ class SaleController {
           }
         }
       }
+        #swagger.responses[400] = {
+        description: 'Erro ao validar campos de entrada',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
   */
 
     const reqBody = req.body;

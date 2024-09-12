@@ -18,6 +18,102 @@ class ReportController {
 
 
   async readList(req, res) {
+    /*
+    #swagger.tags = ['Relatório Mensal']
+    #swagger.summary = 'Gera PDF relatório mensal'
+    #swagger.description = 'Retorna um PDF contendo o relatório mensal do mês solicitado'
+ 
+    #swagger.parameters['Authorization'] = {
+      in: 'header',
+      description: 'Token JWT do usuário logado',
+      required: true,
+      type: 'string'
+    }
+
+    #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                month: { type: 'integer'},
+                year: { type: 'integer'}
+              }
+            }
+          }
+        }
+      }
+
+    #swagger.responses[200] = {
+      description: 'PDF gerado com sucesso',
+      content: {
+        "application/pdf": {
+          schema: {
+            type: 'string',
+            format: 'binary'
+          }
+        }
+      }
+    }
+
+    #swagger.responses[404] = {
+      description: 'Venda detalhada não encontrada',
+      content: {
+        "application/json": {
+          schema: {
+            type: 'object',
+            properties: {
+              message: { type: 'string', example: 'Nenhuma dado encontrado!' }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[401] = {
+      description: 'Token inválido, expirado ou sem o token',
+      content: {
+        "application/json": {
+          schema: {
+            type: 'object',
+            properties: {
+              message: { type: 'string', example: 'Token inválido' }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[500] = {
+      description: 'Erro interno do servidor',
+      content: {
+        "application/json": {
+          schema: {
+            type: 'object',
+            properties: {
+              error: { type: 'string' }
+            }
+          }
+        }
+      }
+    }
+
+     #swagger.responses[400] = {
+        description: 'Erro ao validar campos de entrada',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+*/
+
     const { month, year } = req.body;
     let errors = [];
 
