@@ -22,7 +22,8 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DialogMessage from '../../../utils/dialogMessage';
-import converter from '../../../utils/converter'
+import converter from '../../../utils/converter';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -62,7 +63,7 @@ function SearchAccountsReceivable() {
 
   const fetchReceivable = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/receivable", {
+      const response = await axios.get(`${baseURL}/receivable`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -117,7 +118,7 @@ function SearchAccountsReceivable() {
       fetchReceivable();
     } else {
       try {
-        const response = await axios.get(`http://localhost:3000/receivablesearch/${searchTerm}`, {
+        const response = await axios.get(`${baseURL}/receivablesearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

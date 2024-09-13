@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DialogMessage from '../../../utils/dialogMessage';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -42,7 +43,7 @@ function GroupSearch() {
   // Função para buscar todos os grupos
   const fetchGroup = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/group", {
+      const response = await axios.get(`${baseURL}/group`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -88,7 +89,7 @@ function GroupSearch() {
     } else {
       // Caso contrário, buscar grupo que correspondem ao termo de pesquisa
       try {
-        const response = await axios.get(`http://localhost:3000/groupsearch/${searchTerm}`, {
+        const response = await axios.get(`${baseURL}/groupsearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

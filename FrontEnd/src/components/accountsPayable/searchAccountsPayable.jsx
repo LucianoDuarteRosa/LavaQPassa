@@ -22,7 +22,8 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DialogMessage from '../../../utils/dialogMessage';
-import converter from '../../../utils/converter'
+import converter from '../../../utils/converter';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -62,7 +63,7 @@ function SearchAccountsPayable() {
 
   const fetchPayables = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/payable", {
+      const response = await axios.get(`${baseURL}/payable`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -117,7 +118,7 @@ function SearchAccountsPayable() {
       fetchPayables();
     } else {
       try {
-        const response = await axios.get(`http://localhost:3000/payablesearch/${searchTerm}`, {
+        const response = await axios.get(`${baseURL}/payablesearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

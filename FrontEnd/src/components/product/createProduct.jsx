@@ -15,7 +15,8 @@ import DialogMessage from '../../../utils/dialogMessage';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import '../../styles/index.css';
-import validator from '../../../utils/inputsValidator'
+import validator from '../../../utils/inputsValidator';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -58,7 +59,7 @@ function CreateProduct() {
     useEffect(() => {
         const fetchGroup = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/group', {
+                const response = await axios.get(`${baseURL}/group`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -73,7 +74,7 @@ function CreateProduct() {
         };
         const fetchSubGroup = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/subgroup', {
+                const response = await axios.get(`${baseURL}/subgroup`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -88,7 +89,7 @@ function CreateProduct() {
         };
         const fetchStores = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/store', {
+                const response = await axios.get(`${baseURL}/store`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -103,7 +104,7 @@ function CreateProduct() {
         };
         const fetchClients = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/client', {
+                const response = await axios.get(`${baseURL}/client`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -118,7 +119,7 @@ function CreateProduct() {
         };
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/product', {
+                const response = await axios.get(`${baseURL}/product`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -246,7 +247,7 @@ function CreateProduct() {
                 return;
             }
 
-            const response = await axios.post('http://localhost:3000/product', { ...formData }, {
+            const response = await axios.post(`${baseURL}/product`, { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }

@@ -15,7 +15,8 @@ import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import '../../styles/index.css'
+import '../../styles/index.css';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -39,7 +40,7 @@ function CreateUser() {
     useEffect(() => {
         const fetchGroup = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/group', {
+                const response = await axios.get(`${baseURL}/group`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -78,7 +79,7 @@ function CreateUser() {
                 return;
             }
             console.log(formData);
-            const response = await axios.post('http://localhost:3000/subgroup', { ...formData }, {
+            const response = await axios.post(`${baseURL}/subgroup`, { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

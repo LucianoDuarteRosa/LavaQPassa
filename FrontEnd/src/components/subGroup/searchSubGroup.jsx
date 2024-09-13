@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DialogMessage from '../../../utils/dialogMessage';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -42,7 +43,7 @@ function SubGroupSearch() {
   // Função para buscar todos os usuários
   const fetchSubGroups = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/subgroup", {
+      const response = await axios.get(`${baseURL}/subgroup`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -85,7 +86,7 @@ function SubGroupSearch() {
       fetchSubGroups();
     } else {
       try {
-        const response = await axios.get(`http://localhost:3000/subgroupsearch/${searchTerm}`, {
+        const response = await axios.get(`${baseURL}/subgroupsearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

@@ -18,6 +18,7 @@ import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -44,7 +45,7 @@ function UpdateUser() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/user/${id}`, {
+        const response = await axios.get(`${baseURL}/user/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -72,7 +73,7 @@ function UpdateUser() {
 
     const fetchProfiles = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/profile', {
+        const response = await axios.get(`${baseURL}/profile`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -120,7 +121,7 @@ function UpdateUser() {
         return;
       }
 
-      await axios.put(`http://localhost:3000/user/${id}`, { ...user }, {
+      await axios.put(`${baseURL}/user/${id}`, { ...user }, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

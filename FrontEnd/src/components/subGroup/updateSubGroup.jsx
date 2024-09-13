@@ -18,6 +18,7 @@ import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -43,7 +44,7 @@ function UpdateSubGroup() {
   useEffect(() => {
     const fetchSubGroup = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/subgroup/${id}`, {
+        const response = await axios.get(`${baseURL}/subgroup/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -70,7 +71,7 @@ function UpdateSubGroup() {
 
     const fetchGroup = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/group', {
+        const response = await axios.get(`${baseURL}/group`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -118,7 +119,7 @@ function UpdateSubGroup() {
         return;
       }
 
-      await axios.put(`http://localhost:3000/subgroup/${id}`, { ...subgroup }, {
+      await axios.put(`${baseURL}/subgroup/${id}`, { ...subgroup }, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

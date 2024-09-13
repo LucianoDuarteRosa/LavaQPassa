@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import '../../styles/index.css';
 import validator from '../../../utils/inputsValidator.js';
-
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -45,7 +45,7 @@ function CreateAccountsReceivable() {
     useEffect(() => {
         const fetchStores = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/store', {
+                const response = await axios.get(`${baseURL}/store`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -60,7 +60,7 @@ function CreateAccountsReceivable() {
         };
         const fetchClients = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/client', {
+                const response = await axios.get(`${baseURL}/client`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -134,7 +134,7 @@ function CreateAccountsReceivable() {
                 return;
             }
 
-            const response = await axios.post('http://localhost:3000/receivable', { ...formData }, {
+            const response = await axios.post(`${baseURL}/receivable`, { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }

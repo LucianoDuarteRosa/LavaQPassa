@@ -20,7 +20,8 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DialogMessage from '../../../utils/dialogMessage';
-import converter from '../../../utils/converter'
+import converter from '../../../utils/converter';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -56,7 +57,7 @@ function SearchSale() {
 
   const fetchSales = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/sale", {
+      const response = await axios.get(`${baseURL}/sale`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -103,7 +104,7 @@ function SearchSale() {
       fetchSales();
     } else {
       try {
-        const response = await axios.get(`http://localhost:3000/salesearch/${searchTerm}`, {
+        const response = await axios.get(`${baseURL}/salesearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

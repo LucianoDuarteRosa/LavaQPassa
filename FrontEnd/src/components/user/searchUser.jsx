@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DialogMessage from '../../../utils/dialogMessage';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -42,7 +43,7 @@ function UserSearch() {
   // Função para buscar todos os usuários
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/user", {
+      const response = await axios.get(`${baseURL}/user`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -88,7 +89,7 @@ function UserSearch() {
     } else {
       // Caso contrário, buscar usuários que correspondem ao termo de pesquisa
       try {
-        const response = await axios.get(`http://localhost:3000/usersearch/${searchTerm}`, {
+        const response = await axios.get(`${baseURL}/usersearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

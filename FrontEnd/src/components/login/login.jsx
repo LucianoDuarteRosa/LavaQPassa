@@ -1,4 +1,3 @@
-// src/pages/Login.js
 import { useState } from 'react';
 import { useAuth } from '../login/authContext';
 import { useNavigate } from 'react-router-dom';

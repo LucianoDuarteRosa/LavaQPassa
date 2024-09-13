@@ -18,6 +18,7 @@ import Select from '@mui/material/Select';
 import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import converter from '../../../utils/converter';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -61,7 +62,7 @@ function UpdateProduct() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/product/${id}`, {
+        const response = await axios.get(`${baseURL}/product/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -98,7 +99,7 @@ function UpdateProduct() {
 
     const fetchGroup = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/group', {
+        const response = await axios.get(`${baseURL}/group`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -113,7 +114,7 @@ function UpdateProduct() {
     };
     const fetchSubGroup = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/subgroup', {
+        const response = await axios.get(`${baseURL}/subgroup`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -128,7 +129,7 @@ function UpdateProduct() {
     };
     const fetchStores = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/store', {
+        const response = await axios.get(`${baseURL}/store`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -143,7 +144,7 @@ function UpdateProduct() {
     };
     const fetchClients = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/client', {
+        const response = await axios.get(`${baseURL}/client`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -247,7 +248,7 @@ function UpdateProduct() {
         return;
       }
 
-      await axios.put(`http://localhost:3000/product/${id}`, { ...formData }, {
+      await axios.put(`${baseURL}/product/${id}`, { ...formData }, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

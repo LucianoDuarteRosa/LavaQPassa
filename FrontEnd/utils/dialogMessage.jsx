@@ -32,7 +32,7 @@ const DialogMessage = ({ open, onClose, status, message }) => {
                 <Typography>{message}</Typography>
             </DialogContent>
             <DialogActions sx={{ padding: 2 }}>
-                <Button onClick={onClose} sx={{ color: '#007bff' }}>
+                <Button onClick={onClose} color='success'>
                     Fechar
                 </Button>
             </DialogActions>

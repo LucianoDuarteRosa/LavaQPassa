@@ -15,7 +15,8 @@ import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import '../../styles/index.css'
+import '../../styles/index.css';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -41,7 +42,7 @@ function CreateUser() {
     useEffect(() => {
         const fetchProfiles = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/profile', {
+                const response = await axios.get(`${baseURL}/profile`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -84,7 +85,7 @@ function CreateUser() {
                 return;
             }
 
-            const response = await axios.post('http://localhost:3000/user', { ...formData }, {
+            const response = await axios.post(`${baseURL}/user`, { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

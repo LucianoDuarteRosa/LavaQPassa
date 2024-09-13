@@ -16,6 +16,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import CircularProgress from '@mui/material/CircularProgress';
 import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -56,7 +57,7 @@ function UpdateClientSupplier() {
   useEffect(() => {
     const fetchClientSupplier = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/client/${id}`, {
+        const response = await axios.get(`${baseURL}/client/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -274,7 +275,7 @@ function UpdateClientSupplier() {
           return;
       }
 
-      await axios.put(`http://localhost:3000/client/${id}`, { ...formData }, {
+      await axios.put(`${baseURL}/client/${id}`, { ...formData }, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

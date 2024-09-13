@@ -13,7 +13,8 @@ import Button from '@mui/material/Button';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
-import '../../styles/index.css'
+import '../../styles/index.css';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -55,7 +56,7 @@ function CreateGroup() {
             }
 
             
-            const response = await axios.post('http://localhost:3000/group', { ...formData }, {
+            const response = await axios.post(`${baseURL}/group`, { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

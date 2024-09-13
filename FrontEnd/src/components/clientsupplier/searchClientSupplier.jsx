@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DialogMessage from '../../../utils/dialogMessage';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -42,7 +43,7 @@ function SearchClientSupplier() {
   // Função para buscar todos os cliente/fornecedor
   const fetchClientSupplier = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/client", {
+      const response = await axios.get(`${baseURL}/client`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -88,7 +89,7 @@ function SearchClientSupplier() {
     } else {
       // Caso contrário, buscar cliente/fornecedor que correspondem ao termo de pesquisa
       try {
-        const response = await axios.get(`http://localhost:3000/clientsearch/${searchTerm}`, {
+        const response = await axios.get(`${baseURL}/clientsearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

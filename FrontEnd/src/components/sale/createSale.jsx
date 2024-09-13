@@ -28,6 +28,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import '../../styles/index.css';
 import validator from '../../../utils/inputsValidator.js';
 import converter from "../../../utils/converter.js";
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -64,7 +65,7 @@ function CreateSale() {
     useEffect(() => {
         const fetchStores = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/store', {
+                const response = await axios.get(`${baseURL}/store`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -80,7 +81,7 @@ function CreateSale() {
 
         const fetchClients = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/client', {
+                const response = await axios.get(`${baseURL}/client`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -96,7 +97,7 @@ function CreateSale() {
 
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/productsale', {
+                const response = await axios.get(`${baseURL}/productsale`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -117,7 +118,7 @@ function CreateSale() {
 
         const fetchSales = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/sale', {
+                const response = await axios.get(`${baseURL}/sale`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -232,7 +233,7 @@ function CreateSale() {
                 return;
             }
 
-            const response = await axios.post('http://localhost:3000/sale', { ...formData, products: selectedProducts }, {
+            const response = await axios.post(`${baseURL}/sale`, { ...formData, products: selectedProducts }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }

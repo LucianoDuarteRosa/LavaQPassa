@@ -11,7 +11,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { CardActionArea } from '@mui/material';
-
+import { baseURL } from '../../config.js';
 
 const chartSettingSale = {
     height: 320,
@@ -56,7 +56,7 @@ function Dashboard() {
     useEffect(() => {
         const fetchPayables = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/accountspayable", {
+                const response = await axios.get(`${baseURL}/accountspayable`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -73,7 +73,7 @@ function Dashboard() {
 
         const fetchSalesYear = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/saleyear", {
+                const response = await axios.get(`${baseURL}/saleyear`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -90,7 +90,7 @@ function Dashboard() {
 
         const fetchSalesGroup = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/salegroup", {
+                const response = await axios.get(`${baseURL}/salegroup`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -107,7 +107,7 @@ function Dashboard() {
 
         const fetchSalesSubGroup = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/salesubgroup", {
+                const response = await axios.get(`${baseURL}/salesubgroup`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

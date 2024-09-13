@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DialogMessage from '../../../utils/dialogMessage';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -42,7 +43,7 @@ function SearchProduct() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/product", {
+      const response = await axios.get(`${baseURL}/product`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -95,7 +96,7 @@ function SearchProduct() {
     } else {
       // Caso contrário, buscar produtos que correspondem ao termo de pesquisa
       try {
-        const response = await axios.get(`http://localhost:3000/productsearch/${searchTerm}`, {
+        const response = await axios.get(`${baseURL}/productsearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

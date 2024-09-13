@@ -18,6 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import DialogMessage from '../../../utils/dialogMessage';
 import converter from '../../../utils/converter';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -53,7 +54,7 @@ function DetailsAccountsPayable() {
   useEffect(() => {
     const fetchAccountsPayable = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/payable/${id}`, {
+        const response = await axios.get(`${baseURL}/payable/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -87,7 +88,7 @@ function DetailsAccountsPayable() {
 
     const fetchStores = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/store', {
+        const response = await axios.get(`${baseURL}/store`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -103,7 +104,7 @@ function DetailsAccountsPayable() {
    
     const fetchClients = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/client', {
+        const response = await axios.get(`${baseURL}/client`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -126,7 +127,7 @@ function DetailsAccountsPayable() {
     if (formData.idsale) {
       const fetchDetailsSale = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/saledetail/${formData.idsale}`, {
+          const response = await axios.get(`${baseURL}/saledetail/${formData.idsale}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }

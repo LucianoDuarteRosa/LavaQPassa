@@ -1,6 +1,7 @@
 // src/context/AuthContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { baseURL } from '../../config.js';
 
 const AuthContext = createContext();
 
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:3000/login', { email, password });
+      const response = await axios.post(`${baseURL}/login`, { email, password });
       if (response.status === 200) {
         setUser(response.data);
         localStorage.setItem('user', JSON.stringify(response.data));

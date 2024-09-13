@@ -15,6 +15,7 @@ import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import ZipCode from "cep-promise";
 import '../../styles/index.css'
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -222,7 +223,7 @@ function CreateClientSupplier() {
                 return;
             }
 
-            const response = await axios.post('http://localhost:3000/client', { ...formData }, {
+            const response = await axios.post(`${baseURL}/client`, { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { CircularProgress } from '@mui/material';
+import { baseURL } from '../../config.js';
+
 
 function MonthPayment() {
     const [month, setMonth] = useState('');
@@ -32,7 +34,7 @@ function MonthPayment() {
 
         let date = { month: month, year: year };
         try {
-            const response = await axios.post(`http://localhost:3000/report`, { ...date }, {
+            const response = await axios.post(`${baseURL}/report`, { ...date }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },

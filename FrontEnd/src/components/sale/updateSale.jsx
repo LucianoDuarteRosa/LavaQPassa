@@ -17,6 +17,7 @@ import Select from '@mui/material/Select';
 import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import converter from '../../../utils/converter';
+import { baseURL } from '../../config.js';
 
 const theme = createTheme();
 
@@ -51,7 +52,7 @@ function UpdateSale() {
   useEffect(() => {
     const fetchAccountsPayable = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/sale/${id}`, {
+        const response = await axios.get(`${baseURL}/sale/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -83,7 +84,7 @@ function UpdateSale() {
 
     const fetchStores = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/store', {
+        const response = await axios.get(`${baseURL}/store`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -98,7 +99,7 @@ function UpdateSale() {
     };
     const fetchClients = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/client', {
+        const response = await axios.get(`${baseURL}/client`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -121,7 +122,7 @@ function UpdateSale() {
     if (formData.idsale) {
       const fetchDetailsSale = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/saledetail/${formData.idsale}`, {
+          const response = await axios.get(`${baseURL}/saledetail/${formData.idsale}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -175,7 +176,7 @@ function UpdateSale() {
       }
 
       const updateSale = {IdSale: formData.idsale, SaleStatus: formData.salestatus, PaymentCondition: formData.paymentcondition};
-      await axios.put(`http://localhost:3000/sale/${id}`, {...updateSale}, {
+      await axios.put(`${baseURL}/sale/${id}`, {...updateSale}, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
