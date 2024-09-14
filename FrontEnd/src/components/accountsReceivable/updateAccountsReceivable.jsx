@@ -222,6 +222,8 @@ function UpdateAccountsReceivable() {
     setDialogOpen(false);
   };
 
+  const isDisabled = formData.IdSale !== null;
+
   return (
     <ThemeProvider theme={theme}>
       <Container className="box-container-product">
@@ -244,6 +246,7 @@ function UpdateAccountsReceivable() {
                 label="Valor"
                 name="amount"
                 autoComplete="amount"
+                disabled={isDisabled} 
                 value={parseFloat(formData.amount).toFixed(2)}
                 onChange={handleChange}
                 InputLabelProps={{
@@ -276,6 +279,7 @@ function UpdateAccountsReceivable() {
                 required
                 label="Vencimento"
                 name="duedate"
+                disabled={isDisabled} 
                 autoComplete="duedate"
                 value={formData.duedate}
                 onChange={handleChange}
@@ -307,6 +311,7 @@ function UpdateAccountsReceivable() {
                 value={formData.idstore}
                 onChange={handleChange}
                 fullWidth
+                disabled={isDisabled} 
                 displayEmpty
                 renderValue={(selected) => {
                   if (!selected) {
@@ -332,6 +337,7 @@ function UpdateAccountsReceivable() {
                 value={formData.idclient}
                 onChange={handleChange}
                 fullWidth
+                disabled={isDisabled} 
                 displayEmpty
                 renderValue={(selected) => {
                   if (!selected) {
@@ -387,6 +393,7 @@ function UpdateAccountsReceivable() {
                   control={
                     <Checkbox
                       checked={Boolean(formData.active)}
+                      disabled={isDisabled} 
                       onChange={handleChange}
                       name="active"
                       sx={{

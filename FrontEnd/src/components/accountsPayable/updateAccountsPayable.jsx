@@ -221,6 +221,8 @@ function UpdateAccountsPayable() {
     setDialogOpen(false);
   };
 
+  const isDisabled = formData.idsale !== null;
+
   return (
     <ThemeProvider theme={theme}>
       <Container className="box-container-product">
@@ -243,6 +245,7 @@ function UpdateAccountsPayable() {
                 label="Valor"
                 name="amount"
                 autoComplete="amount"
+                disabled={isDisabled} 
                 value={parseFloat(formData.amount).toFixed(2)}
                 onChange={handleChange}
                 InputLabelProps={{
@@ -277,6 +280,7 @@ function UpdateAccountsPayable() {
                 name="duedate"
                 autoComplete="duedate"
                 value={formData.duedate}
+                disabled={isDisabled} 
                 onChange={handleChange}
                 InputLabelProps={{
                   sx: {
@@ -305,6 +309,7 @@ function UpdateAccountsPayable() {
                 name="idstore"
                 value={formData.idstore}
                 onChange={handleChange}
+                disabled={isDisabled} 
                 fullWidth
                 displayEmpty
                 renderValue={(selected) => {
@@ -330,6 +335,7 @@ function UpdateAccountsPayable() {
                 name="idclient"
                 value={formData.idclient}
                 onChange={handleChange}
+                disabled={isDisabled} 
                 fullWidth
                 displayEmpty
                 renderValue={(selected) => {
@@ -386,6 +392,7 @@ function UpdateAccountsPayable() {
                   control={
                     <Checkbox
                       checked={formData.active}
+                      disabled={isDisabled} 
                       onChange={handleChange}
                       name="active"
                       sx={{

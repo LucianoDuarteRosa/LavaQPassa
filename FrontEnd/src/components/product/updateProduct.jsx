@@ -40,6 +40,7 @@ function UpdateProduct() {
     idgroup: "",
     idsubgroup: "",
     idstore: "",
+    idsale:"",
     sold: "",
     active: "",
     iduser: "",
@@ -314,6 +315,7 @@ function UpdateProduct() {
     setDialogOpen(false);
   };
 
+
   return (
     <ThemeProvider theme={theme}>
       <Container className="box-container-product">
@@ -330,6 +332,7 @@ function UpdateProduct() {
               <TextField
                 fullWidth
                 margin="normal"
+                disabled={formData.sold}
                 required
                 label="Nome"
                 name="name"
@@ -436,6 +439,7 @@ function UpdateProduct() {
                   name="saleprice"
                   autoComplete="saleprice"
                   value={formData.saleprice}
+                  disabled={formData.sold}
                   onChange={handleChange}
                   InputLabelProps={{
                     sx: {
@@ -465,6 +469,7 @@ function UpdateProduct() {
                 name="idstore"
                 value={formData.idstore}
                 onChange={handleChange}
+                disabled={formData.sold}
                 fullWidth
                 displayEmpty
                 renderValue={(selected) => {
@@ -491,6 +496,7 @@ function UpdateProduct() {
                 value={formData.idclient}
                 onChange={handleChange}
                 fullWidth
+                disabled={formData.sold}
                 displayEmpty
                 renderValue={(selected) => {
                   if (!selected) {
@@ -515,6 +521,7 @@ function UpdateProduct() {
                   required
                   name="idgroup"
                   value={formData.idgroup}
+                  disabled={formData.sold}
                   onChange={(e) => {
                     handleChange(e);
                     setSelectedGroup(e.target.value);
@@ -543,6 +550,7 @@ function UpdateProduct() {
                   required
                   name="idsubgroup"
                   value={formData.idsubgroup}
+                  disabled={formData.sold}
                   onChange={handleChange}
                   fullWidth
                   displayEmpty
@@ -634,6 +642,7 @@ function UpdateProduct() {
                 control={
                   <Checkbox
                     checked={formData.active}
+                    disabled={formData.sold}
                     onChange={handleChange}
                     name="active"
                     sx={{
@@ -652,6 +661,7 @@ function UpdateProduct() {
               type="submit"
               variant="contained"
               fullWidth
+              disabled={formData.sold}
               className='primary-button'
             >
               Atualizar
