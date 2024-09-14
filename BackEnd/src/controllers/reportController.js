@@ -280,6 +280,91 @@ class ReportController {
       }
     }
   }
+
+  async readDocument(req, res) {
+    /*
+      #swagger.tags = ['Documentação']
+      #swagger.summary = 'Documentação da Aplicação'
+      #swagger.description = 'Retorna um PDF contendo documentação'
+  
+      #swagger.parameters['Authorization'] = {
+        in: 'header',
+        description: 'Token JWT do usuário logado',
+        required: true,
+        type: 'string'
+      }
+
+      #swagger.requestBody = {
+          required: true,
+          content: {
+            "application/json": {
+              }
+            }
+          }
+        }
+
+      #swagger.responses[200] = {
+        description: 'PDF gerado com sucesso',
+        content: {
+          "application/pdf": {
+            schema: {
+              type: 'string',
+              format: 'binary'
+            }
+          }
+        }
+      }
+
+      #swagger.responses[404] = {
+        description: 'Documentação não encontrada',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Nenhuma dado encontrado!' }
+              }
+            }
+          }
+        }
+      }
+
+      #swagger.responses[401] = {
+        description: 'Token inválido, expirado ou sem o token',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', example: 'Token inválido' }
+              }
+            }
+          }
+        }
+      }
+
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor',
+        content: {
+          "application/json": {
+            schema: {
+              type: 'object',
+              properties: {
+                error: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
+  */
+    try {
+      const filePath = path.join(__dirname, '..', '..', 'public', 'application.pdf');
+      res.setHeader('Content-Type', 'application/pdf');
+      res.status(200).sendFile(filePath);
+    } catch (error) {
+      res.status(500).send('Erro ao enviar o documento.');
+    }
+  }
 }
 
 module.exports = new ReportController();

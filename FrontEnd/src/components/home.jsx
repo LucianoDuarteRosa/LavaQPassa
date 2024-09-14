@@ -3,13 +3,9 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Collapse } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import PaidIcon from '@mui/icons-material/Paid';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
@@ -17,13 +13,19 @@ import SsidChartIcon from '@mui/icons-material/SsidChart';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import CreateProduct from '../components/product/createProduct';
+import ApiIcon from '@mui/icons-material/Api';
+import AppsIcon from '@mui/icons-material/Apps';
 import Sale from '../components/sale/createSale';
 import Client from '../components/clientsupplier/createClientSupplier';
 import Payable from '../components/accountsPayable/searchAccountsPayable';
 import Receivable from '../components/accountsReceivable/searchAccountsReceivable';
 import Dashboard from '../components/dashboard/dashboard';
 import MonthPayment from '../components/monthPayment/monthPayment';
+import Document from '../components/documentation/aplication';
 import "../styles/index.css"
 
 const drawerWidth = 240;
@@ -33,6 +35,12 @@ export default function PermanentDrawerLeft() {
 
   const handleDrawerItemClick = (item) => {
     setSelectedItem(item);
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerItemClickList = () => {
+    setOpen(!open);
   };
 
   return (
@@ -127,6 +135,35 @@ export default function PermanentDrawerLeft() {
               <ListItemText className='list-item' primary="Acerto Mensal" />
             </ListItemButton>
           </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleDrawerItemClickList}>
+              <ListItemIcon>
+                <LibraryBooksIcon fontSize="large" className='list-icon' />
+              </ListItemIcon>
+              <ListItemText className='list-item' primary="Documentação" />
+              {open ? <ExpandLess className='list-icon' /> : <ExpandMore className='list-icon' />}
+            </ListItemButton>
+          </ListItem>
+
+          {/* Sub-menu (API and Aplicação) */}
+          <Collapse in={open} timeout="auto" unmountOnExit >
+            <List disablePadding className='list-item'>
+              <ListItemButton sx={{ pl: 4 }} onClick={() => window.open('http://localhost:3000/docs/', '_blank')}>
+                <ListItemIcon>
+                  <ApiIcon fontSize="large" className='list-icon' />
+                </ListItemIcon>
+                <ListItemText primary="API" />
+              </ListItemButton>
+
+              <ListItemButton sx={{ pl: 4 }} onClick={() => handleDrawerItemClick('aplication')}>
+                <ListItemIcon>
+                  <AppsIcon fontSize="large" className='list-icon' />
+                </ListItemIcon>
+                <ListItemText primary="Aplicação" />
+              </ListItemButton>
+            </List>
+          </Collapse>
         </List>
 
       </Drawer>
@@ -179,6 +216,12 @@ export default function PermanentDrawerLeft() {
         {selectedItem === 'month' && (
           <Typography>
             <MonthPayment />
+          </Typography>
+        )}
+
+        {selectedItem === 'aplication' && (
+          <Typography>
+            <Document />
           </Typography>
         )}
       </Box>
