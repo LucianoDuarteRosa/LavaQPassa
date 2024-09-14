@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from '../login/authContext';
 import Avatar from '@mui/material/Avatar';
@@ -22,6 +22,8 @@ const theme = createTheme();
 function CreateClientSupplier() {
     const { logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const isHomePage = location.pathname === "/"
 
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
@@ -912,7 +914,7 @@ function CreateClientSupplier() {
                             />
                         )}
                     </Box>
-                    <Box className="box-manager-button" sx={{ width: '60%' }}>
+                    <Box className="box-manager-button" sx={{ width: '30%' }}>
                         <Button
                             type="submit"
                             variant="contained"
@@ -921,14 +923,16 @@ function CreateClientSupplier() {
                         >
                             Cadastrar
                         </Button>
-                        <Button
-                            variant="contained"
-                            fullWidth
-                            className='primary-button'
-                            onClick={handleVoltar}
-                        >
-                            Voltar
-                        </Button>
+                        {!isHomePage && (
+                            <Button
+                                variant="contained"
+                                fullWidth
+                                className='primary-button'
+                                onClick={handleVoltar}
+                            >
+                                Voltar
+                            </Button>
+                        )}
                     </Box>
                     <DialogMessage
                         open={dialogOpen}
