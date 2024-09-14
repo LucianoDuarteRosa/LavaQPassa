@@ -53,14 +53,22 @@ function UserSearch() {
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        setUsers([]);
+        setFilteredUsers([]);
+        const errorMessage = error.response?.data?.error || "Erro ao carregar usuários.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      setUsers([]);
-      setFilteredUsers([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar usuários.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-      setDialogOpen(true);
+
     }
   };
 
@@ -100,14 +108,21 @@ function UserSearch() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          setUsers([]);
+          setFilteredUsers([]);
+          const errorMessage = error.response?.data?.error || "Nenhum usuário encontrado.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        setUsers([]);
-        setFilteredUsers([]);
-        const errorMessage = error.response?.data?.error || "Nenhum usuário encontrado.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
       }
     }
   };

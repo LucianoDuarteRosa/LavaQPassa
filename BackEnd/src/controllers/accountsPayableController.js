@@ -538,13 +538,14 @@ class AccountsPayableController {
 
     const testAmount = validator.floatValidator(reqBody.amount);
     const testIdStore = validator.integerValidator(reqBody.idstore)
-    let testIdSale = true;
+    /*let testIdSale = true;
     const idSaleValue = String(reqBody.idsale).trim();
-    if (idSaleValue !== "") {
+    console.log(idSaleValue);
+    if (idSaleValue !== "" || idSaleValue !== null) {
       testIdSale = validator.integerValidator(idSaleValue);
     } else {
       reqBody.idsale = null;
-    }
+    }*/
     const testIdClientSupplier = validator.integerValidator(reqBody.idclient);
     const testRegistrationDate = validator.dateValidator(reqBody.registrationdate);
     const testDueDate = validator.dateValidator(reqBody.duedate);
@@ -556,9 +557,9 @@ class AccountsPayableController {
     if (testIdStore !== true) {
       errors.push(testIdStore);
     }
-    if (testIdSale !== true) {
+    /*if (testIdSale !== true) {
       errors.push(testIdSale);
-    }
+    }*/
     if (testIdClientSupplier !== true) {
       errors.push(testIdClientSupplier);
     }

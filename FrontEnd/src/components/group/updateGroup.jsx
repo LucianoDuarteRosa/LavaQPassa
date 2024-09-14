@@ -13,7 +13,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import CircularProgress from '@mui/material/CircularProgress';
 import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import { baseURL } from '../../config.js';
@@ -28,7 +27,6 @@ function UpdateGroup() {
     name: '',
     active: false,
   });
-  const [loading, setLoading] = useState(true);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
@@ -46,7 +44,7 @@ function UpdateGroup() {
           }
         });
         const groupData = response.data[0];
-        
+
         setGroup({
           name: groupData.GroupName,
           active: Boolean(groupData.Active),
@@ -54,14 +52,19 @@ function UpdateGroup() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          const errorMessage = error.response?.data?.error || "Erro ao carregar grupo.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        const errorMessage = error.response?.data?.error || "Erro ao carregar grupo.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -101,33 +104,26 @@ function UpdateGroup() {
       });
       setDialogStatus('success');
       setDialogMessage("Grupo atualizado com sucesso");
+      setDialogOpen(true);
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        const errorMessage = error.response?.data?.errors || "Erro ao atualizar grupo.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      const errorMessage = error.response?.data?.errors || "Erro ao atualizar grupo.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-    } finally {
-      setDialogOpen(true);
+
     }
   };
-
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   const handleVoltar = () => {
     navigate("/searchgroup");

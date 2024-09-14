@@ -52,14 +52,21 @@ function SearchProduct() {
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        setProducts([]);
+        setFilteredProducts([]);
+        const errorMessage = error.response?.data?.error || "Erro ao carregar produtos.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      setProducts([]);
-      setFilteredProducts([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar produtos.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-      setDialogOpen(true);
     }
   };
 
@@ -107,15 +114,21 @@ function SearchProduct() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          setProducts([]);
+          setFilteredProducts([]);
+          const errorMessage = error.response?.data?.error || "Nenhum produto encontrado.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        setProducts([]);
-        setFilteredProducts([]);
-
-        const errorMessage = error.response?.data?.error || "Nenhum produto encontrado.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
       }
     }
   };

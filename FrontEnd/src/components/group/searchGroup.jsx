@@ -53,14 +53,21 @@ function GroupSearch() {
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        setGroup([]);
+        setFilteredGroup([]);
+        const errorMessage = error.response?.data?.error || "Erro ao carregar group.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      setGroup([]);
-      setFilteredGroup([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar group.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-      setDialogOpen(true);
     }
   };
 
@@ -100,14 +107,21 @@ function GroupSearch() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          setGroup([]);
+          setFilteredGroup([]);
+          const errorMessage = error.response?.data?.error || "Nenhum grupo encontrado.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        setGroup([]);
-        setFilteredGroup([]);
-        const errorMessage = error.response?.data?.error || "Nenhum grupo encontrado.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
       }
     }
   };

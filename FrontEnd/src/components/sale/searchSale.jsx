@@ -67,14 +67,21 @@ function SearchSale() {
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        setSales([]);
+        setFilteredPayable([]);
+        const errorMessage = error.response?.data?.error || "Erro ao carregar vendas.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      setSales([]);
-      setFilteredPayable([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar vendas.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-      setDialogOpen(true);
     }
   };
 
@@ -84,7 +91,7 @@ function SearchSale() {
 
   useEffect(() => {
     applyFilters(sales);
-  }, [ startDate, endDate, sales]);
+  }, [startDate, endDate, sales]);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -114,14 +121,21 @@ function SearchSale() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          setSales([]);
+          setFilteredPayable([]);
+          const errorMessage = error.response?.data?.error || "Nenhuma venda encontrada.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        setSales([]);
-        setFilteredPayable([]);
-        const errorMessage = error.response?.data?.error || "Nenhuma venda encontrada.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
       }
     }
   };
@@ -249,7 +263,7 @@ function SearchSale() {
                   maxWidth: 220, display: 'inline-block', mx: 1
                 }}
               />
-            </Box>         
+            </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, mb: 2 }}>
               <Button
                 type="submit"
@@ -284,17 +298,17 @@ function SearchSale() {
                         <TableCell>{parseFloat(sales.SalePrice).toFixed('2')}</TableCell>
                         <TableCell>{sales.ClientSupplierName}</TableCell>
                         <TableCell>{sales.StoreName}</TableCell>
-                        <TableCell>{sales.PaymentCondition}</TableCell> 
-                        <TableCell>{sales.SaleStatus}</TableCell>  
-                        <TableCell>{sales.UserName}</TableCell>                          
-                        <TableCell sx={{display:'flex', justifyContent: "center", alignItems: 'center', gap: '5px'}}>
+                        <TableCell>{sales.PaymentCondition}</TableCell>
+                        <TableCell>{sales.SaleStatus}</TableCell>
+                        <TableCell>{sales.UserName}</TableCell>
+                        <TableCell sx={{ display: 'flex', justifyContent: "center", alignItems: 'center', gap: '5px' }}>
                           <Button
                             component={Link}
                             to={`/updatesale/${sales.IdSale}`}
                             variant="contained" color="success"
                           >
                             Editar
-                          </Button>                  
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}

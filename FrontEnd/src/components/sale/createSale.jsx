@@ -74,7 +74,13 @@ function CreateSale() {
             } catch (error) {
                 console.error("Error fetching store", error);
                 if (error.response && error.response.status === 401) {
-                    logout();
+                    const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                    setDialogStatus('error');
+                    setDialogMessage(errorMessage);
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        logout();
+                    }, 4000);
                 }
             }
         };
@@ -90,7 +96,13 @@ function CreateSale() {
             } catch (error) {
                 console.error("Error fetching client", error);
                 if (error.response && error.response.status === 401) {
-                    logout();
+                    const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                    setDialogStatus('error');
+                    setDialogMessage(errorMessage);
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        logout();
+                    }, 4000);
                 }
             }
         };
@@ -111,7 +123,13 @@ function CreateSale() {
             } catch (error) {
                 console.error("Error fetching product sale", error);
                 if (error.response && error.response.status === 401) {
-                    logout();
+                    const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                    setDialogStatus('error');
+                    setDialogMessage(errorMessage);
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        logout();
+                    }, 4000);
                 }
             }
         };
@@ -138,7 +156,13 @@ function CreateSale() {
                     saledate: converter.convertToDateTimeLocalFormat(converter.toMySQLDate())
                 });
                 if (error.response && error.response.status === 401) {
-                    logout();
+                    const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                    setDialogStatus('error');
+                    setDialogMessage(errorMessage);
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        logout();
+                    }, 4000);
                 }
             }
         };
@@ -197,8 +221,8 @@ function CreateSale() {
         event.preventDefault();
         try {
 
-            
-            if(selectedProducts.length === 0){
+
+            if (selectedProducts.length === 0) {
                 setDialogStatus('error');
                 setDialogMessage('Adicione produtos à venda.');
                 return;
@@ -249,16 +273,23 @@ function CreateSale() {
             setSelectedProducts([]);
             setDialogStatus('success');
             setDialogMessage(successMessage);
+            setDialogOpen(true);
         } catch (error) {
             console.log(error);
             if (error.response && error.response.status === 401) {
-                logout();
+                const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                setDialogStatus('error');
+                setDialogMessage(errorMessage);
+                setDialogOpen(true);
+                setTimeout(() => {
+                    logout();
+                }, 4000);
+            } else {
+                const errorMessage = error.response?.data?.errors || "Erro ao cadastrar venda.";
+                setDialogStatus('error');
+                setDialogMessage(errorMessage);
+                setDialogOpen(true);
             }
-            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar venda.";
-            setDialogStatus('error');
-            setDialogMessage(errorMessage);
-        } finally {
-            setDialogOpen(true);
         }
     };
 

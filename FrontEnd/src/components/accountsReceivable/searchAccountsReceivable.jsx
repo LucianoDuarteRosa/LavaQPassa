@@ -73,14 +73,21 @@ function SearchAccountsReceivable() {
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        setReceivable([]);
+        setFilteredPayable([]);
+        const errorMessage = error.response?.data?.error || "Erro ao carregar contas a receber.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      setReceivable([]);
-      setFilteredPayable([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar contas a receber.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-      setDialogOpen(true);
     }
   };
 
@@ -128,14 +135,21 @@ function SearchAccountsReceivable() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          setReceivable([]);
+          setFilteredPayable([]);
+          const errorMessage = error.response?.data?.error || "Nenhuma conta a receber encontrada.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        setReceivable([]);
-        setFilteredPayable([]);
-        const errorMessage = error.response?.data?.error || "Nenhuma conta a receber encontrada.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
       }
     }
   };
@@ -336,7 +350,7 @@ function SearchAccountsReceivable() {
                         <TableCell>{converter.convertToBrazilianDate(receivable.DueDate)}</TableCell>
                         <TableCell>{receivable.Amount.toFixed('2')}</TableCell>
                         <TableCell>{receivable.ClientSupplierName}</TableCell>
-                        <TableCell> {receivable.IdSale ? `N° ${receivable.IdSale}` : ''}</TableCell>
+                        <TableCell> {receivable.IdSale != null ? `N° ${receivable.IdSale}` : ''}</TableCell>
                         <TableCell>{receivable.StoreName}</TableCell>
                         <TableCell>{receivable.Note}</TableCell>
                         <TableCell>
@@ -367,7 +381,7 @@ function SearchAccountsReceivable() {
                             }}
                           />
                         </TableCell>
-                        <TableCell sx={{display:'flex', justifyContent: "center", alignItems: 'center', gap: '5px'}}>
+                        <TableCell sx={{ display: 'flex', justifyContent: "center", alignItems: 'center', gap: '5px' }}>
                           <Button
                             component={Link}
                             to={`/updateaccountsreceivable/${receivable.IdAccountReceivable}`}

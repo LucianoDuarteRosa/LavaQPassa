@@ -53,20 +53,28 @@ function SubGroupSearch() {
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        setSubGroups([]);
+        setFilteredSubGroups([]);
+        const errorMessage = error.response?.data?.error || "Erro ao carregar sub-grupos.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      setSubGroups([]);
-      setFilteredSubGroups([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar sub-grupos.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-      setDialogOpen(true);
+
     }
   };
 
   useEffect(() => {
     fetchSubGroups();
-  }, [token]); 
+  }, [token]);
 
   useEffect(() => {
     setFilteredSubGroups(subGroup.filter(subGroup => subGroup.Active || !showActiveOnly));
@@ -97,14 +105,22 @@ function SubGroupSearch() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          setSubGroups([]);
+          setFilteredSubGroups([]);
+          const errorMessage = error.response?.data?.error || "Nenhum sub-grupo encontrado.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        setSubGroups([]);
-        setFilteredSubGroups([]);
-        const errorMessage = error.response?.data?.error || "Nenhum sub-grupo encontrado.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
+
       }
     }
   };

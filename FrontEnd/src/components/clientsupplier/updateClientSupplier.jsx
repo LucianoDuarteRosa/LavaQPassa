@@ -13,7 +13,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import CircularProgress from '@mui/material/CircularProgress';
 import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import { baseURL } from '../../config.js';
@@ -45,7 +44,6 @@ function UpdateClientSupplier() {
     pixkey: "",
     active: true
   });
-  const [loading, setLoading] = useState(true);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
@@ -89,14 +87,19 @@ function UpdateClientSupplier() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          const errorMessage = error.response?.data?.error || "Erro ao carregar cliente/fornecedor.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        const errorMessage = error.response?.data?.error || "Erro ao carregar cliente/fornecedor.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -166,113 +169,113 @@ function UpdateClientSupplier() {
       const testEmail = validator.emailValidator(formData.email);
 
       if (formData.complement == !null) {
-          const testComplement = validator.allValidator(formData.complement, 1, 100)
-          if (testComplement !== true) {
-              errors.push('Complemento permite o campo maxímo de 100 caracteres.');
-          }
+        const testComplement = validator.allValidator(formData.complement, 1, 100)
+        if (testComplement !== true) {
+          errors.push('Complemento permite o campo maxímo de 100 caracteres.');
+        }
       }
       if (formData.isclient === true) {
-          if (formData.cpf.length === 11) {
-              const testCpf = validator.cpfValidator(formData.cpf)
-              if (testCpf !== true) {
-                  errors.push('Formato do CPF inválido.');
-              }
-          } else {
-              errors.push('Digite 11 números para o CPF.');
+        if (formData.cpf.length === 11) {
+          const testCpf = validator.cpfValidator(formData.cpf)
+          if (testCpf !== true) {
+            errors.push('Formato do CPF inválido.');
           }
+        } else {
+          errors.push('Digite 11 números para o CPF.');
+        }
       }
       if (formData.issupplier === true) {
-          if (formData.cnpj.length === 14) {
-              const testCnpj = validator.cnpjValidator(formData.cnpj)
-              if (testCnpj !== true) {
-                  errors.push(testCnpj);
-              }
-          } else {
-              errors.push('Digite 14 números para o CNPJ.');
+        if (formData.cnpj.length === 14) {
+          const testCnpj = validator.cnpjValidator(formData.cnpj)
+          if (testCnpj !== true) {
+            errors.push(testCnpj);
           }
+        } else {
+          errors.push('Digite 14 números para o CNPJ.');
+        }
       }
 
       if (formData.isclientsupplier === true) {
-          if (formData.cpfcnpj.length === 11) {
-              const testCpf = validator.cpfValidator(formData.cpfcnpj)
-              if (testCpf !== true) {
-                  errors.push('Formato do CPF inválido.');
-              }else{
-                  formData.cpf = formData.cpfcnpj;
-                  formData.isclient = true;
-                  formData.issupplier= true;
-              }
+        if (formData.cpfcnpj.length === 11) {
+          const testCpf = validator.cpfValidator(formData.cpfcnpj)
+          if (testCpf !== true) {
+            errors.push('Formato do CPF inválido.');
+          } else {
+            formData.cpf = formData.cpfcnpj;
+            formData.isclient = true;
+            formData.issupplier = true;
           }
-          if (formData.cpfcnpj.length === 14) {
-              const testCnpj = validator.cnpjValidator(formData.cpfcnpj)
-              if (testCnpj !== true) {
-                  errors.push(testCnpj);
-              }else{
-                  formData.cnpj = formData.cpfcnpj;
-                  formData.isclient = true;
-                  formData.issupplier= true;
-              }
-          } 
-          if(formData.cpfcnpj.length !== 14 && formData.cpfcnpj.length !== 11 ){
-              errors.push('Digite 14 números para o CNPJ e 11 números para CPF.');
+        }
+        if (formData.cpfcnpj.length === 14) {
+          const testCnpj = validator.cnpjValidator(formData.cpfcnpj)
+          if (testCnpj !== true) {
+            errors.push(testCnpj);
+          } else {
+            formData.cnpj = formData.cpfcnpj;
+            formData.isclient = true;
+            formData.issupplier = true;
           }
+        }
+        if (formData.cpfcnpj.length !== 14 && formData.cpfcnpj.length !== 11) {
+          errors.push('Digite 14 números para o CNPJ e 11 números para CPF.');
+        }
       }
-      
+
       if (formData.typekey === 'Telefone') {
-          const testTypeKey = validator.phoneValidator(formData.pixkey)
-          if (testTypeKey !== true) {
-              errors.push('Formato errado para o telefone da Chave PIX');
-          }
+        const testTypeKey = validator.phoneValidator(formData.pixkey)
+        if (testTypeKey !== true) {
+          errors.push('Formato errado para o telefone da Chave PIX');
+        }
       }
       if (formData.typekey === 'Email') {
-          const testTypeKey = validator.emailValidator(formData.pixkey)
-          if (testTypeKey !== true) {
-              errors.push('Formato errado para o e-mail da Chave PIX');
-          }
+        const testTypeKey = validator.emailValidator(formData.pixkey)
+        if (testTypeKey !== true) {
+          errors.push('Formato errado para o e-mail da Chave PIX');
+        }
       }
       if (formData.typekey === 'CPF/CNPJ') {
-          if (formData.typekey.length === 11) {
-              const testTypeKey = validator.cpfValidator(formData.pixkey)
-              if (testTypeKey !== true) {
-                  errors.push('Formato errado para o CPF da Chave PIX');
-              }
+        if (formData.typekey.length === 11) {
+          const testTypeKey = validator.cpfValidator(formData.pixkey)
+          if (testTypeKey !== true) {
+            errors.push('Formato errado para o CPF da Chave PIX');
           }
-          if (formData.typekey.length === 14) {
-              const testTypeKey = validator.cnpjValidator(formData.pixkey)
-              if (testTypeKey !== true) {
-                  errors.push('Formato errado para o CNPJ da Chave PIX');
-              }
+        }
+        if (formData.typekey.length === 14) {
+          const testTypeKey = validator.cnpjValidator(formData.pixkey)
+          if (testTypeKey !== true) {
+            errors.push('Formato errado para o CNPJ da Chave PIX');
           }
+        }
       }
 
       if (testName !== true) {
-          errors.push('Digite no mínimo 2 caracteres para o nome.');
+        errors.push('Digite no mínimo 2 caracteres para o nome.');
       }
       if (testZipCode !== true) {
-          errors.push('Digite no mínimo 8 números para o CEP.');
+        errors.push('Digite no mínimo 8 números para o CEP.');
       }
       if (testAddress !== true) {
-          errors.push('Digite no mínimo 2 caracteres para o endereço.');
+        errors.push('Digite no mínimo 2 caracteres para o endereço.');
       }
       if (testNeighborhood !== true) {
-          errors.push('Digite no mínimo 2 caracteres para o bairro.');
+        errors.push('Digite no mínimo 2 caracteres para o bairro.');
       }
       if (testCity !== true) {
-          errors.push('Digite no mínimo 2 caracteres para o cidade.');
+        errors.push('Digite no mínimo 2 caracteres para o cidade.');
       }
       if (testState !== true) {
-          errors.push('Digite 2 caracteres para o estado(Ex: MG, RJ...).');
+        errors.push('Digite 2 caracteres para o estado(Ex: MG, RJ...).');
       }
       if (testPhone !== true) {
-          errors.push('Digite no mínimo 11 números para o telefone(Ex: 32 12345 1234');
+        errors.push('Digite no mínimo 11 números para o telefone(Ex: 32 12345 1234');
       }
       if (testEmail !== true) {
-          errors.push('Digite um formato válido para o e-mail(Ex: exemplo@exemplo.com).');
+        errors.push('Digite um formato válido para o e-mail(Ex: exemplo@exemplo.com).');
       }
       if (errors.length > 0) {
-          setDialogStatus('error');
-          setDialogMessage(errors.join('\n'));
-          return;
+        setDialogStatus('error');
+        setDialogMessage(errors.join('\n'));
+        return;
       }
 
       await axios.put(`${baseURL}/client/${id}`, { ...formData }, {
@@ -282,33 +285,25 @@ function UpdateClientSupplier() {
       });
       setDialogStatus('success');
       setDialogMessage("Cliente/Fornecedor atualizado com sucesso");
+      setDialogOpen(true);
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        const errorMessage = error.response?.data?.errors || "Erro ao atualizar cliente/fornecedor.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      const errorMessage = error.response?.data?.errors || "Erro ao atualizar cliente/fornecedor.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-    } finally {
-      setDialogOpen(true);
     }
   };
-
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   const handleVoltar = () => {
     navigate("/searchclient");

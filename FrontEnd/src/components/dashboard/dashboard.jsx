@@ -65,7 +65,13 @@ function Dashboard() {
             } catch (error) {
                 console.error(error);
                 if (error.response && error.response.status === 401) {
-                    logout();
+                    const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                    setDialogStatus('error');
+                    setDialogMessage(errorMessage);
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        logout();
+                    }, 4000);
                 }
                 setPayables([]);
             }
@@ -82,7 +88,13 @@ function Dashboard() {
             } catch (error) {
                 console.error(error);
                 if (error.response && error.response.status === 401) {
-                    logout();
+                    const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                    setDialogStatus('error');
+                    setDialogMessage(errorMessage);
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        logout();
+                    }, 4000);
                 }
                 setSalesYear([]);
             }
@@ -99,7 +111,13 @@ function Dashboard() {
             } catch (error) {
                 console.error(error);
                 if (error.response && error.response.status === 401) {
-                    logout();
+                    const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                    setDialogStatus('error');
+                    setDialogMessage(errorMessage);
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        logout();
+                    }, 4000);
                 }
                 setSalesGroup([]);
             }
@@ -116,7 +134,13 @@ function Dashboard() {
             } catch (error) {
                 console.error(error);
                 if (error.response && error.response.status === 401) {
-                    logout();
+                    const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                    setDialogStatus('error');
+                    setDialogMessage(errorMessage);
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        logout();
+                    }, 4000);
                 }
                 setSalesSubGroup([]);
             }
@@ -138,13 +162,13 @@ function Dashboard() {
                 <Typography>
                     <Typography className='dashboard-title-barchart'>Vendas dos últimos 12 mêses</Typography>
                     <BarChart
-                        dataset={saleYears}  
+                        dataset={saleYears}
                         xAxis={chartSettingSale.xAxis}
                         series={[{ dataKey: 'totalSales', valueFormatter, color: '#388e3c' }]}
                         margin={{
                             top: 20,
                             right: 20,
-                            left: 60, 
+                            left: 60,
                             bottom: 20,
                         }}
                         {...chartSettingSale}
@@ -157,7 +181,7 @@ function Dashboard() {
                             {
                                 data: saleGroup,
                                 highlightScope: { faded: 'global', highlighted: 'item' },
-                                faded: { innerRadius: 20, additionalRadius: -20, color: 'green' },         
+                                faded: { innerRadius: 20, additionalRadius: -20, color: 'green' },
                             },
                         ]}
                         height={430}
@@ -166,7 +190,7 @@ function Dashboard() {
                     <BarChart
                         dataset={saleSubGroup}
                         yAxis={[{ scaleType: 'band', dataKey: 'label' }]}
-                        series={[{ dataKey: 'value', valueFormatter,color: '#02b2af'  }]}
+                        series={[{ dataKey: 'value', valueFormatter, color: '#02b2af' }]}
                         layout="horizontal"
                         grid={{ vertical: true }}
                         {...chartSetting}

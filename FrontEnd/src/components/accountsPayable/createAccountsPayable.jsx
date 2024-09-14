@@ -55,7 +55,13 @@ function CreateAccountsPayable() {
             } catch (error) {
                 console.error("Error fetching store", error);
                 if (error.response && error.response.status === 401) {
-                    logout();
+                    const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                    setDialogStatus('error');
+                    setDialogMessage(errorMessage);
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        logout();
+                    }, 4000);
                 }
             }
         };
@@ -70,7 +76,13 @@ function CreateAccountsPayable() {
             } catch (error) {
                 console.error("Error fetching client", error);
                 if (error.response && error.response.status === 401) {
-                    logout();
+                    const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                    setDialogStatus('error');
+                    setDialogMessage(errorMessage);
+                    setDialogOpen(true);
+                    setTimeout(() => {
+                        logout();
+                    }, 4000);
                 }
             }
         };
@@ -106,9 +118,9 @@ function CreateAccountsPayable() {
             if (formData.duedate < today) {
                 errors.push("A data de vencimento não pode ser anterior à data atual.");
             }
-            
+
             if (idSaleValue !== "") {
-              testIdSale = validator.integerValidator(idSaleValue);
+                testIdSale = validator.integerValidator(idSaleValue);
             }
 
             if (testNote !== true) {
@@ -134,7 +146,7 @@ function CreateAccountsPayable() {
                 setDialogMessage(errors.join('\n'));
                 return;
             }
-            
+
             const response = await axios.post(`${baseURL}/payable`, { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -150,16 +162,23 @@ function CreateAccountsPayable() {
             });
             setDialogStatus('success');
             setDialogMessage(successMessage);
+            setDialogOpen(true);
         } catch (error) {
             console.log(error);
             if (error.response && error.response.status === 401) {
-                logout();
+                const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                setDialogStatus('error');
+                setDialogMessage(errorMessage);
+                setDialogOpen(true);
+                setTimeout(() => {
+                    logout();
+                }, 4000);
+            } else {
+                const errorMessage = error.response?.data?.errors || "Erro ao cadastrar conta a pagar.";
+                setDialogStatus('error');
+                setDialogMessage(errorMessage);
+                setDialogOpen(true);
             }
-            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar conta a pagar.";
-            setDialogStatus('error');
-            setDialogMessage(errorMessage);
-        } finally {
-            setDialogOpen(true);
         }
     };
 
@@ -299,7 +318,7 @@ function CreateAccountsPayable() {
                                         {client.ClientSupplierName}
                                     </MenuItem>
                                 ))}
-                            </Select>                       
+                            </Select>
                             <TextField
                                 className="textfield-product"
                                 margin="normal"

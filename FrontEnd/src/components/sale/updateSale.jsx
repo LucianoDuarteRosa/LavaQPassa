@@ -73,12 +73,19 @@ function UpdateSale() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          const errorMessage = error.response?.data?.error || "Erro ao carregar venda.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        const errorMessage = error.response?.data?.error || "Erro ao carregar venda.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
       }
     }
 
@@ -93,7 +100,13 @@ function UpdateSale() {
       } catch (error) {
         console.error("Error fetching store", error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
         }
       }
     };
@@ -108,7 +121,13 @@ function UpdateSale() {
       } catch (error) {
         console.error("Error fetching client", error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
         }
       }
     };
@@ -131,7 +150,13 @@ function UpdateSale() {
         } catch (error) {
           console.error("Error fetching sale details", error);
           if (error.response && error.response.status === 401) {
-            logout();
+            const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+            setDialogStatus('error');
+            setDialogMessage(errorMessage);
+            setDialogOpen(true);
+            setTimeout(() => {
+              logout();
+            }, 4000);
           }
         }
       };
@@ -158,7 +183,7 @@ function UpdateSale() {
           testStatus = false;
           errors.push("Condição de pagamento inexistente.");
         }
-      }else{
+      } else {
         errors.push("Selecione um status para a venda.")
       }
 
@@ -168,31 +193,38 @@ function UpdateSale() {
       if (testStatus !== true) {
         errors.push(testStatus);
       }
-      
+
       if (errors.length > 0) {
         setDialogStatus('error');
         setDialogMessage(errors.join('\n'));
         return;
       }
 
-      const updateSale = {IdSale: formData.idsale, SaleStatus: formData.salestatus, PaymentCondition: formData.paymentcondition};
-      await axios.put(`${baseURL}/sale/${id}`, {...updateSale}, {
+      const updateSale = { IdSale: formData.idsale, SaleStatus: formData.salestatus, PaymentCondition: formData.paymentcondition };
+      await axios.put(`${baseURL}/sale/${id}`, { ...updateSale }, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
       setDialogStatus('success');
       setDialogMessage("Venda atualizada com sucesso");
+      setDialogOpen(true);
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        const errorMessage = error.response?.data?.errors || "Erro ao atualizar venda.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      const errorMessage = error.response?.data?.errors || "Erro ao atualizar venda.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-    } finally {
-      setDialogOpen(true);
     }
   };
 
@@ -338,7 +370,7 @@ function UpdateSale() {
                 </Select>
               </Box>
               <Box sx={{ display: "flex", gap: '10px' }}>
-              <TextField
+                <TextField
                   className="textfield-product"
                   margin="normal"
                   disabled

@@ -68,19 +68,27 @@ function SearchAccountsPayable() {
           'Authorization': `Bearer ${token}`
         }
       });
+      console.log(response.data);
       setPayables(response.data);
       applyFilters(response.data);
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        setPayables([]);
+        setFilteredPayable([]);
+        const errorMessage = error.response?.data?.error || "Erro ao carregar contas a pagar.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      setPayables([]);
-      setFilteredPayable([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar contas a pagar.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-      setDialogOpen(true);
     }
   };
 
@@ -128,14 +136,21 @@ function SearchAccountsPayable() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          setPayables([]);
+          setFilteredPayable([]);
+          const errorMessage = error.response?.data?.error || "Nenhuma conta a pagarencontrada.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        setPayables([]);
-        setFilteredPayable([]);
-        const errorMessage = error.response?.data?.error || "Nenhuma conta a pagarencontrada.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
       }
     }
   };
@@ -336,7 +351,7 @@ function SearchAccountsPayable() {
                         <TableCell>{converter.convertToBrazilianDate(payables.DueDate)}</TableCell>
                         <TableCell>{payables.Amount.toFixed('2')}</TableCell>
                         <TableCell>{payables.ClientSupplierName}</TableCell>
-                        <TableCell> {payables.IdSale ? `N° ${payables.IdSale}` : ''}</TableCell>
+                        <TableCell> {payables.IdSale != null ? `N° ${payables.IdSale}` : ''}</TableCell>
                         <TableCell>{payables.StoreName}</TableCell>
                         <TableCell>{payables.Note}</TableCell>
                         <TableCell>
@@ -367,7 +382,7 @@ function SearchAccountsPayable() {
                             }}
                           />
                         </TableCell>
-                        <TableCell sx={{display:'flex', justifyContent: "center", alignItems: 'center', gap: '5px'}}>
+                        <TableCell sx={{ display: 'flex', justifyContent: "center", alignItems: 'center', gap: '5px' }}>
                           <Button
                             component={Link}
                             to={`/updateaccountspayable/${payables.IdAccountPayable}`}

@@ -13,7 +13,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import CircularProgress from '@mui/material/CircularProgress';
 import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import MenuItem from '@mui/material/MenuItem';
@@ -32,7 +31,6 @@ function UpdateUser() {
     active: false,
     profile: ''
   });
-  const [loading, setLoading] = useState(true);
   const [profiles, setProfiles] = useState([]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -60,14 +58,19 @@ function UpdateUser() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          const errorMessage = error.response?.data?.error || "Erro ao carregar usuário";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        const errorMessage = error.response?.data?.error || "Erro ao carregar usuário";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -81,7 +84,13 @@ function UpdateUser() {
         setProfiles(response.data);
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
         }
         console.error("Error fetching profiles", error);
       }
@@ -128,33 +137,25 @@ function UpdateUser() {
       });
       setDialogStatus('success');
       setDialogMessage("Usuário atualizado com sucesso");
+      setDialogOpen(true);
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        const errorMessage = error.response?.data?.errors || "Erro ao atualizar usuário.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      const errorMessage = error.response?.data?.errors || "Erro ao atualizar usuário.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-    } finally {
-      setDialogOpen(true);
     }
   };
-
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   const handleVoltar = () => {
     navigate("/searchuser");

@@ -31,7 +31,6 @@ function UpdateSubGroup() {
     active: false,
     idgroup: '',
   });
-  const [loading, setLoading] = useState(true);
   const [groups, setGroup] = useState([]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -58,14 +57,19 @@ function UpdateSubGroup() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          const errorMessage = error.response?.data?.error || "Erro ao carregar sub-grupo";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        const errorMessage = error.response?.data?.error || "Erro ao carregar sub-grupo";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -79,7 +83,13 @@ function UpdateSubGroup() {
         setGroup(response.data);
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
         }
         console.error("Error fetching groups", error);
       }
@@ -126,33 +136,25 @@ function UpdateSubGroup() {
       });
       setDialogStatus('success');
       setDialogMessage("Sub-Grupo atualizado com sucesso.");
+      setDialogOpen(true);
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        const errorMessage = error.response?.data?.errors || "Erro ao atualizar sub-grupo.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      const errorMessage = error.response?.data?.errors || "Erro ao atualizar sub-grupo.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-    } finally {
-      setDialogOpen(true);
     }
   };
-
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   const handleVoltar = () => {
     navigate("/searchsubgroup");

@@ -71,7 +71,7 @@ function UpdateProduct() {
         setFormData({
           idproduct: formData.IdProduct,
           name: formData.ProductName,
-          costprice: parseFloat(formData.CostPrice).toFixed(2) ,
+          costprice: parseFloat(formData.CostPrice).toFixed(2),
           saleprice: parseFloat(formData.SalePrice).toFixed(2),
           idclient: formData.IdClientSupplier,
           idgsubgroup: formData.IdSubGroup,
@@ -88,12 +88,19 @@ function UpdateProduct() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          const errorMessage = error.response?.data?.error || "Erro ao carregar produto.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        const errorMessage = error.response?.data?.error || "Erro ao carregar produto.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
       }
     }
 
@@ -108,7 +115,13 @@ function UpdateProduct() {
       } catch (error) {
         console.error("Error fetching group", error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
         }
       }
     };
@@ -123,7 +136,13 @@ function UpdateProduct() {
       } catch (error) {
         console.error("Error fetching sub-group", error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
         }
       }
     };
@@ -138,7 +157,13 @@ function UpdateProduct() {
       } catch (error) {
         console.error("Error fetching store", error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
         }
       }
     };
@@ -153,7 +178,13 @@ function UpdateProduct() {
       } catch (error) {
         console.error("Error fetching client", error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
         }
       }
     };
@@ -167,23 +198,23 @@ function UpdateProduct() {
 
   useEffect(() => {
     const calculatePercentage = () => {
-        const saleprice = parseFloat(formData.saleprice);
-        const costprice = saleprice * 0.4;
-        const percentage = 60;
+      const saleprice = parseFloat(formData.saleprice);
+      const costprice = saleprice * 0.4;
+      const percentage = 60;
 
-        if (!isNaN(saleprice)) {
-            formData.costprice = costprice.toFixed(2);
-            setCostPrice(costprice.toFixed(2));
-            setPercentage(percentage.toFixed(2) + '%');
-        } else {
-            setPercentage(''); 
-            setCostPrice('');
-                     
-        }
+      if (!isNaN(saleprice)) {
+        formData.costprice = costprice.toFixed(2);
+        setCostPrice(costprice.toFixed(2));
+        setPercentage(percentage.toFixed(2) + '%');
+      } else {
+        setPercentage('');
+        setCostPrice('');
+
+      }
     };
 
     calculatePercentage();
-}, [formData.costprice, formData.saleprice]);
+  }, [formData.costprice, formData.saleprice]);
 
   useEffect(() => {
     if (selectedGroup) {
@@ -255,16 +286,23 @@ function UpdateProduct() {
       });
       setDialogStatus('success');
       setDialogMessage("Usuário atualizado com sucesso");
+      setDialogOpen(true);
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        const errorMessage = error.response?.data?.errors || "Erro ao atualizar usuário.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      const errorMessage = error.response?.data?.errors || "Erro ao atualizar usuário.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-    } finally {
-      setDialogOpen(true);
     }
   };
 

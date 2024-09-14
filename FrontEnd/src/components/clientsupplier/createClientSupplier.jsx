@@ -145,27 +145,27 @@ function CreateClientSupplier() {
                     const testCpf = validator.cpfValidator(formData.cpfcnpj)
                     if (testCpf !== true) {
                         errors.push('Formato do CPF inválido.');
-                    }else{
+                    } else {
                         formData.cpf = formData.cpfcnpj;
                         formData.isclient = true;
-                        formData.issupplier= true;
+                        formData.issupplier = true;
                     }
                 }
                 if (formData.cpfcnpj.length === 14) {
                     const testCnpj = validator.cnpjValidator(formData.cpfcnpj)
                     if (testCnpj !== true) {
                         errors.push(testCnpj);
-                    }else{
+                    } else {
                         formData.cnpj = formData.cpfcnpj;
                         formData.isclient = true;
-                        formData.issupplier= true;
+                        formData.issupplier = true;
                     }
-                } 
-                if(formData.cpfcnpj.length !== 14 && formData.cpfcnpj.length !== 11 ){
+                }
+                if (formData.cpfcnpj.length !== 14 && formData.cpfcnpj.length !== 11) {
                     errors.push('Digite 14 números para o CNPJ e 11 números para CPF.');
                 }
             }
-            
+
             if (formData.typekey === 'Telefone') {
                 const testTypeKey = validator.phoneValidator(formData.pixkey)
                 if (testTypeKey !== true) {
@@ -252,16 +252,23 @@ function CreateClientSupplier() {
             });
             setDialogStatus('success');
             setDialogMessage(successMessage);
+            setDialogOpen(true);
         } catch (error) {
             console.log(error);
             if (error.response && error.response.status === 401) {
-                logout();
+                const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                setDialogStatus('error');
+                setDialogMessage(errorMessage);
+                setDialogOpen(true);
+                setTimeout(() => {
+                    logout();
+                }, 4000);
+            } else {
+                const errorMessage = error.response?.data?.errors || "Erro ao cadastrar cliente/fornecedor.";
+                setDialogStatus('error');
+                setDialogMessage(errorMessage);
+                setDialogOpen(true);
             }
-            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar cliente/fornecedor.";
-            setDialogStatus('error');
-            setDialogMessage(errorMessage);
-        } finally {
-            setDialogOpen(true);
         }
     };
 
@@ -326,7 +333,7 @@ function CreateClientSupplier() {
                             label="Tipo"
                             required
                             name="type"
-                            value={formData.isclient ? "client" : formData.issupplier ? "supplier" : formData.isclientsupplier ? "clientsupplier" :""}
+                            value={formData.isclient ? "client" : formData.issupplier ? "supplier" : formData.isclientsupplier ? "clientsupplier" : ""}
                             onChange={handleSelectChange}
                             SelectProps={{
                                 native: true,
@@ -464,7 +471,7 @@ function CreateClientSupplier() {
                             />
                         )}
 
-                        {!formData.isclient && !formData.issupplier && !formData.isclientsupplier &&(
+                        {!formData.isclient && !formData.issupplier && !formData.isclientsupplier && (
                             <TextField
                                 className="textfield-client"
                                 fullWidth

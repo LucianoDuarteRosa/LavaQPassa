@@ -75,7 +75,7 @@ CREATE TABLE ClientSupplier (
     Email VARCHAR(100) NOT NULL,
     IsClient BOOLEAN,
     IsSupplier BOOLEAN,
-	TypeKey ENUM('CPF/CNPJ', 'Email', 'Telefone', 'Chave Aleatória', 'Chave Pix'),
+	TypeKey ENUM('CPF/CNPJ', 'Email', 'Telefone', 'Chave Aleatória'),
     PixKey VARCHAR(255),
     Active BOOLEAN DEFAULT TRUE
 );
@@ -150,7 +150,7 @@ CREATE INDEX idx_product_id_sale_detail ON SaleDetail (IdProduct);
 CREATE TABLE AccountsPayable (
     IdAccountPayable INT PRIMARY KEY AUTO_INCREMENT,
     Amount DOUBLE NOT NULL,
-    IdSale INT DEFAULT 1,
+    IdSale INT,
     IdClientSupplier INT NOT NULL,
     IdStore INT NOT NULL,
     RegistrationDate DATETIME NOT NULL,
@@ -336,10 +336,10 @@ INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleD
 
 -- Mês de Junho 2024
 INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
-(115.00, 1450.00, 1, 2, 1, '2024-06-10 11:00:00', 'Crediário', 'Finalizada'),
-(90.00, 1200.00, 2, 1, 2, '2024-06-22 13:00:00', 'Cartão Crédito', 'Finalizada');
+(115.00, 1450.50, 1, 2, 1, '2024-06-10 11:00:00', 'Crediário', 'Finalizada'),
+(90.00, 1200.60, 2, 1, 2, '2024-06-22 13:00:00', 'Cartão Crédito', 'Finalizada');
 
 -- Mês de Julho 2024
 INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
-(130.00, 1600.00, 3, 2, 1, '2024-07-05 12:00:00', 'Cheque', 'Finalizada'),
-(100.00, 1300.00, 4, 1, 2, '2024-07-18 15:00:00', 'Cartão Débito', 'Finalizada');
+(130.00, 1600.30, 3, 2, 1, '2024-07-05 12:00:00', 'Cheque', 'Finalizada'),
+(100.00, 1300.50, 4, 1, 2, '2024-07-18 15:00:00', 'Cartão Débito', 'Finalizada');

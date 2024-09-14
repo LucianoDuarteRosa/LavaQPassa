@@ -55,7 +55,7 @@ function CreateGroup() {
                 return;
             }
 
-            
+
             const response = await axios.post(`${baseURL}/group`, { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -67,16 +67,23 @@ function CreateGroup() {
             });
             setDialogStatus('success');
             setDialogMessage(successMessage);
+            setDialogOpen(true);
         } catch (error) {
             console.log(error);
             if (error.response && error.response.status === 401) {
-                logout();
+                const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+                setDialogStatus('error');
+                setDialogMessage(errorMessage);
+                setDialogOpen(true);
+                setTimeout(() => {
+                    logout();
+                }, 4000);
+            } else {
+                const errorMessage = error.response?.data?.errors || "Erro ao cadastrar grupo.";
+                setDialogStatus('error');
+                setDialogMessage(errorMessage);
+                setDialogOpen(true);
             }
-            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar grupo.";
-            setDialogStatus('error');
-            setDialogMessage(errorMessage);
-        } finally {
-            setDialogOpen(true);
         }
     };
 

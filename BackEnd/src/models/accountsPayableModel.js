@@ -23,28 +23,28 @@ class AccountsPayableModel {
 
   readList() {
     const sql = `SELECT 
-        AccountsPayable.IdAccountPayable, 
-        AccountsPayable.Amount, 
-        AccountsPayable.IdClientSupplier,
-        ClientSupplier.ClientSupplierName,
-        AccountsPayable.RegistrationDate, 
-        AccountsPayable.DueDate, 
-        AccountsPayable.Note, 
-        AccountsPayable.Paid,
-        AccountsPayable.Active, 
-        AccountsPayable.IdSale, 
-        AccountsPayable.IdStore, 
-        Sale.SalePrice,
-        Sale.SaleDate,
-        Sale.IdUser,
-        User.UserName,
-        Store.StoreName
+          AccountsPayable.IdAccountPayable, 
+          AccountsPayable.Amount, 
+          AccountsPayable.IdClientSupplier,
+          ClientSupplier.ClientSupplierName,
+          AccountsPayable.RegistrationDate, 
+          AccountsPayable.DueDate, 
+          AccountsPayable.Note, 
+          AccountsPayable.Paid,
+          AccountsPayable.Active, 
+          AccountsPayable.IdSale, 
+          AccountsPayable.IdStore, 
+          Sale.SalePrice,
+          Sale.SaleDate,
+          Sale.IdUser,
+          User.UserName,
+          Store.StoreName
       FROM AccountsPayable
-      JOIN Sale ON AccountsPayable.IdSale = Sale.IdSale
-      JOIN Store ON AccountsPayable.IdStore = Store.IdStore
-      JOIN User ON Sale.IdUser = User.IdUser
-      JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier 
-      ORDER BY AccountsPayable.DueDate`;
+      LEFT JOIN Sale ON AccountsPayable.IdSale = Sale.IdSale
+      LEFT JOIN Store ON AccountsPayable.IdStore = Store.IdStore
+      LEFT JOIN User ON Sale.IdUser = User.IdUser
+      LEFT JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier 
+      ORDER BY AccountsPayable.DueDate;`;
     return this.executeSQL(sql);
   }
 
@@ -67,9 +67,9 @@ class AccountsPayableModel {
         Sale.IdUser,
         User.UserName
       FROM AccountsPayable
-      JOIN Sale ON AccountsPayable.IdSale = Sale.IdSale
-      JOIN User ON Sale.IdUser = User.IdUser
-      JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier
+      LEFT JOIN Sale ON AccountsPayable.IdSale = Sale.IdSale
+      LEFT JOIN User ON Sale.IdUser = User.IdUser
+      LEFT JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier
       WHERE AccountsPayable.IdAccountPayable = ?`;
     return this.executeSQL(sql, id);
   }
@@ -92,9 +92,9 @@ class AccountsPayableModel {
         Sale.IdUser,
         User.UserName
       FROM AccountsPayable
-      JOIN Sale ON AccountsPayable.IdSale = Sale.IdSale
-      JOIN User ON Sale.IdUser = User.IdUser
-      JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier
+      LEFT JOIN Sale ON AccountsPayable.IdSale = Sale.IdSale
+      LEFT JOIN User ON Sale.IdUser = User.IdUser
+      LEFT JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier
       WHERE AccountsPayable.IdSale = ?`;
     return this.executeSQL(sql, id);
   }
@@ -118,9 +118,9 @@ class AccountsPayableModel {
         Sale.IdUser,
         User.UserName
       FROM AccountsPayable
-      JOIN Sale ON AccountsPayable.IdSale = Sale.IdSale
-      JOIN User ON Sale.IdUser = User.IdUser
-      JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier
+      LEFT JOIN Sale ON AccountsPayable.IdSale = Sale.IdSale
+      LEFT JOIN User ON Sale.IdUser = User.IdUser
+      LEFT JOIN ClientSupplier ON AccountsPayable.IdClientSupplier = ClientSupplier.IdClientSupplier
       WHERE AccountsPayable.IdAccountPayable = ? 
         OR ClientSupplier.ClientSupplierName LIKE ? 
         OR User.UserName LIKE ? 

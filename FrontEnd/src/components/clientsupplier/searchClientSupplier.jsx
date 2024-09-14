@@ -53,14 +53,21 @@ function SearchClientSupplier() {
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
-        logout();
+        const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+        setTimeout(() => {
+          logout();
+        }, 4000);
+      } else {
+        setClientSupplier([]);
+        setFilteredClientSupplier([]);
+        const errorMessage = error.response?.data?.error || "Erro ao carregar cliente/fornecedor.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
       }
-      setClientSupplier([]);
-      setFilteredClientSupplier([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar cliente/fornecedor.";
-      setDialogStatus('error');
-      setDialogMessage(errorMessage);
-      setDialogOpen(true);
     }
   };
 
@@ -100,14 +107,21 @@ function SearchClientSupplier() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
-          logout();
+          const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
+          setTimeout(() => {
+            logout();
+          }, 4000);
+        } else {
+          setClientSupplier([]);
+          setFilteredClientSupplier([]);
+          const errorMessage = error.response?.data?.error || "Nenhum cliente/fornecedor encontrado.";
+          setDialogStatus('error');
+          setDialogMessage(errorMessage);
+          setDialogOpen(true);
         }
-        setClientSupplier([]);
-        setFilteredClientSupplier([]);
-        const errorMessage = error.response?.data?.error || "Nenhum cliente/fornecedor encontrado.";
-        setDialogStatus('error');
-        setDialogMessage(errorMessage);
-        setDialogOpen(true);
       }
     }
   };
@@ -195,7 +209,7 @@ function SearchClientSupplier() {
                 Buscar
               </Button>
             </Box>
-            <TableContainer component={Paper} sx={{ mt: 2, width: "100%", overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px",maxHeight: 350}}>
+            <TableContainer component={Paper} sx={{ mt: 2, width: "100%", overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px", maxHeight: 350 }}>
               <Table>
                 <TableHead>
                   <TableRow>
