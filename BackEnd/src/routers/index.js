@@ -5,7 +5,6 @@ const subGroupRouters = require("./subGroupRouter.js");
 const storeRouters = require("./storeRouter.js");
 const clientSupplierRouters = require("./clientSupplierRouter.js");
 const productRouters = require("./productRouter.js");
-//const imageRouters = require("./imageRouter.js");
 const saleRouters = require("./saleRouter.js");
 const saleDetailRouters = require("./saleDetailRouter.js");
 const accountsPayableRouters = require("./accountsPayableRouter.js");

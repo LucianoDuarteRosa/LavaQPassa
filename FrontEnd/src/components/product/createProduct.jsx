@@ -52,12 +52,7 @@ function CreateProduct() {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
-    //const [imagePreviewUrl, setImagePreviewUrl] = useState("");
-
-    /*const InputStyled = styled('input')({
-        display: 'none',
-    });*/
-
+ 
     useEffect(() => {
         const fetchGroup = async () => {
             try {
@@ -177,7 +172,6 @@ function CreateProduct() {
     }, [token, logout]);
 
     useEffect(() => {
-        // Filtra os subgrupos com base no grupo selecionado
         if (selectedGroup) {
             setFilteredSubGroups(subGroups.filter(subGroup => subGroup.IdGroup === selectedGroup));
         } else {
@@ -221,22 +215,6 @@ function CreateProduct() {
             }));
         }
     };
-    /*
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            if (['image/jpeg', 'image/png'].includes(file.type)) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    setImagePreviewUrl(reader.result);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert('Por favor, selecione um arquivo de imagem (.jpg, .jpeg, .png).');
-                setImagePreviewUrl("");
-            }
-        }
-    };*/
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -609,41 +587,6 @@ function CreateProduct() {
                                 ))}
                             </Select>
                         </Box>
-                        {/*   <Box sx={{ textAlign: 'center', mt: 2 }} className="box-manager-product-img">
-                            <Typography variant="h6">Carregar Imagem</Typography>
-                            <label htmlFor="upload-button">
-                                <Box
-                                    className="box-manager-product-load"
-                                >
-                                    {imagePreviewUrl ? (
-                                        <img
-                                            src={imagePreviewUrl}
-                                            alt="Preview"
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                        />
-                                    ) : (
-                                        <Typography variant="body2" color="textSecondary">
-                                            Nenhuma imagem selecionada
-                                        </Typography>
-                                    )}
-                                </Box>
-                                <InputStyled
-                                    id="upload-button"
-                                    type="file"
-                                    name="image"
-                                    accept=".jpg, .jpeg, .png"
-                                    onChange={handleImageChange}
-                                />
-                                <Button
-                                    className="primary-button"
-                                    variant="contained"
-                                    component="span"
-                                    sx={{ mt: 2, width: 'auto' }}
-                                >
-                                    Selecionar Imagem
-                                </Button>
-                            </label>
-                        </Box> */}
                     </Box>
                     <Box className="box-manager-button" sx={{ width: '60%' }}>
                         <Button
