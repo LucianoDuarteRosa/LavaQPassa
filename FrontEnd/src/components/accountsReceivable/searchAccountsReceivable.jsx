@@ -294,7 +294,7 @@ function SearchAccountsReceivable() {
                   }}
                 />
               }
-              label="Mostrar contas ativas"
+              label="Mostrar somente contas ativas"
               sx={{ display: 'inline-block', verticalAlign: 'middle' }}
             />
             <FormControlLabel

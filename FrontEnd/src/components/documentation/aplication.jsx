@@ -58,7 +58,7 @@ function MonthPayment() {
             <Box sx={{ flexGrow: 1 }} >
                 <Box className="box-month-payment-pdf">
                     <Box className="box-month-payment-pdf-report">
-                        <Typography variant="h5" className='dashboard-title-barchart'>Relatório:</Typography>
+                        <Typography variant="h5" className='dashboard-title-barchart'>Documentação:</Typography>
                         <iframe
                             src={pdfData}
                             title="PDF Preview"
@@ -68,7 +68,7 @@ function MonthPayment() {
                             <Button
                                 variant="contained"
                                 href={downloadUrl}
-                                download={`relatorio.pdf`}
+                                download={`DocumentacaoAplicacao.pdf`}
                                 className='primary-button' sx={{ width: '15%', marginRight: '20px' }}
                             >
                                 Baixar PDF

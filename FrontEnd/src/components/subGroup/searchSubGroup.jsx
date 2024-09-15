@@ -195,7 +195,7 @@ function SubGroupSearch() {
                   }}
                 />
               }
-              label="Mostrar apenas usuários ativos"
+              label="Mostrar apenas subgrupos ativos"
               sx={{ display: 'inline-block', verticalAlign: 'middle' }}
             />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, mb: 2 }}>

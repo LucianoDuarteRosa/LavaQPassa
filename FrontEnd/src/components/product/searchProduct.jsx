@@ -203,7 +203,7 @@ function SearchProduct() {
                   }}
                 />
               }
-              label="Mostrar produtos ativos"
+              label="Mostrar somente produtos ativos"
               sx={{ display: 'inline-block', verticalAlign: 'middle' }}
             />
             <FormControlLabel
@@ -241,13 +241,13 @@ function SearchProduct() {
                   <TableHead>
                     <TableRow>
                       <TableCell sx={{ minWidth: 50 }}>Id</TableCell>
-                      <TableCell sx={{ minWidth: 150 }}>Nome</TableCell>
+                      <TableCell sx={{ minWidth: 130 }}>Nome</TableCell>
                       <TableCell sx={{ minWidth: 50 }}>Custo</TableCell>
                       <TableCell sx={{ minWidth: 50 }}>Venda</TableCell>
                       <TableCell sx={{ minWidth: 150 }}>Fornecedor</TableCell>
-                      <TableCell sx={{ minWidth: 100 }}>Loja</TableCell>
-                      <TableCell sx={{ minWidth: 50 }}>Grupo</TableCell>
-                      <TableCell sx={{ minWidth: 50 }}>SubGrupo</TableCell>
+                      <TableCell sx={{ minWidth: 80 }}>Loja</TableCell>
+                      <TableCell sx={{ minWidth: 40 }}>Grupo</TableCell>
+                      <TableCell sx={{ minWidth: 40 }}>SubGrupo</TableCell>
                       <TableCell>Vendido</TableCell>
                       <TableCell>Ativo</TableCell>
                       <TableCell>Ações</TableCell>

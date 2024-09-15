@@ -295,7 +295,7 @@ function SearchAccountsPayable() {
                   }}
                 />
               }
-              label="Mostrar contas ativas"
+              label="Mostrar somente contas ativas"
               sx={{ display: 'inline-block', verticalAlign: 'middle' }}
             />
             <FormControlLabel

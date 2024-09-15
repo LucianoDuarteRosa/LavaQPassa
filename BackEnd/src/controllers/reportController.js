@@ -294,15 +294,6 @@ class ReportController {
         type: 'string'
       }
 
-      #swagger.requestBody = {
-          required: true,
-          content: {
-            "application/json": {
-              }
-            }
-          }
-        }
-
       #swagger.responses[200] = {
         description: 'PDF gerado com sucesso',
         content: {
@@ -310,20 +301,6 @@ class ReportController {
             schema: {
               type: 'string',
               format: 'binary'
-            }
-          }
-        }
-      }
-
-      #swagger.responses[404] = {
-        description: 'Documentação não encontrada',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                message: { type: 'string', example: 'Nenhuma dado encontrado!' }
-              }
             }
           }
         }
