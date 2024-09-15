@@ -19,6 +19,8 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import CreateProduct from '../components/product/createProduct';
 import ApiIcon from '@mui/icons-material/Api';
 import AppsIcon from '@mui/icons-material/Apps';
+import StorageIcon from '@mui/icons-material/Storage';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
 import Sale from '../components/sale/createSale';
 import Client from '../components/clientsupplier/createClientSupplier';
 import Payable from '../components/accountsPayable/searchAccountsPayable';
@@ -26,6 +28,7 @@ import Receivable from '../components/accountsReceivable/searchAccountsReceivabl
 import Dashboard from '../components/dashboard/dashboard';
 import MonthPayment from '../components/monthPayment/monthPayment';
 import Document from '../components/documentation/aplication';
+import Backup from '../components/backup/backup';
 import "../styles/index.css"
 
 const drawerWidth = 240;
@@ -115,17 +118,9 @@ export default function PermanentDrawerLeft() {
             </ListItemButton>
           </ListItem>
 
+
           <Divider />
 
-          {/* 
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => handleDrawerItemClick('report')}>
-              <ListItemIcon>
-                <LibraryBooksIcon fontSize="large" className='list-icon' />
-              </ListItemIcon>
-              <ListItemText className='list-item' primary="Relatório" />
-            </ListItemButton>
-          </ListItem> */}
 
           <ListItem disablePadding>
             <ListItemButton onClick={() => handleDrawerItemClick('month')}>
@@ -133,6 +128,28 @@ export default function PermanentDrawerLeft() {
                 <ChecklistIcon fontSize="large" className='list-icon' />
               </ListItemIcon>
               <ListItemText className='list-item' primary="Acerto Mensal" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => handleDrawerItemClick('report')}>
+              <ListItemIcon>
+                <NewspaperIcon fontSize="large" className='list-icon' />
+              </ListItemIcon>
+              <ListItemText className='list-item' primary="Relatórios" />
+            </ListItemButton>
+          </ListItem>
+
+
+          <Divider />
+
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => handleDrawerItemClick('backup')}>
+              <ListItemIcon>
+                <StorageIcon fontSize="large" className='list-icon' />
+              </ListItemIcon>
+              <ListItemText className='list-item' primary="Backup" />
             </ListItemButton>
           </ListItem>
 
@@ -146,7 +163,6 @@ export default function PermanentDrawerLeft() {
             </ListItemButton>
           </ListItem>
 
-          {/* Sub-menu (API and Aplicação) */}
           <Collapse in={open} timeout="auto" unmountOnExit >
             <List disablePadding className='list-item'>
               <ListItemButton sx={{ pl: 4 }} onClick={() => window.open('http://localhost:3000/docs/', '_blank')}>
@@ -207,11 +223,11 @@ export default function PermanentDrawerLeft() {
           </Typography>
         )}
 
-        {/* {selectedItem === 'report' && (
+        {selectedItem === 'report' && (
           <Typography>
             Esta é a página de Relatório.
           </Typography>
-        )} */}
+        )}
 
         {selectedItem === 'month' && (
           <Typography>
@@ -222,6 +238,13 @@ export default function PermanentDrawerLeft() {
         {selectedItem === 'aplication' && (
           <Typography>
             <Document />
+          </Typography>
+        )}
+
+
+        {selectedItem === 'backup' && (
+          <Typography>
+            <Backup />
           </Typography>
         )}
       </Box>

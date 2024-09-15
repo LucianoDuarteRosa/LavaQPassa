@@ -11,6 +11,7 @@ const accountsPayableRouters = require("./accountsPayableRouter.js");
 const accountsReceivableRouters = require("./accountsReceivableRouter.js");
 const dashboardRouters = require("./dashboardRouter.js");
 const reportRouters = require("./reportRouter.js");
+const backupRouters = require("./backup.js")
 
 module.exports = function (app, express) {
   app.use(express.json());
@@ -22,7 +23,7 @@ module.exports = function (app, express) {
   app.use(storeRouters);
   app.use(clientSupplierRouters);
   app.use(productRouters);
-  //app.use(imageRouters);
+  app.use(backupRouters);
   app.use(saleRouters);
   app.use(saleDetailRouters);
   app.use(accountsPayableRouters);
