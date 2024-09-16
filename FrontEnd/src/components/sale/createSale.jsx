@@ -530,7 +530,7 @@ function CreateSale() {
                             </Box>
                         </Box>
                     </Box>
-                    <Box className="box-manager-button" sx={{ width: '60%' }}>
+                    <Box className="box-manager-button" sx={{ width: '50%' }}>
                         <Button
                             type="submit"
                             variant="contained"

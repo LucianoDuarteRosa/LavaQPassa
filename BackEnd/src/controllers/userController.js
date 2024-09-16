@@ -9,7 +9,6 @@ const validator = require('../../utils/inputsValidator');
 
 class UserController {
 
-
   readList(req, res) {
     /*
       #swagger.tags = ['Usuário']
