@@ -1,5 +1,6 @@
 class InputValidator {
 
+    // Valida strings de acordo com o tamanho mínimo e máximo, permitindo caracteres alfabéticos e acentos.
     stringValidator(string, min, max) {
         try {
             const regex = new RegExp(`^[a-zA-ZÀ-ÿ\\s']{${min},${max}}$`);
@@ -13,6 +14,7 @@ class InputValidator {
         }
     }
 
+    // Valida se o número inteiro está entre 1 e o valor máximo permitido.
     integerMaxValidator(number, max) {
         try {
             const parsedNumber = parseInt(number, 10);
@@ -26,6 +28,7 @@ class InputValidator {
         }
     }
 
+    // Valida se o número é um inteiro maior que zero.
     integerValidator(number) {
         try {
             const parsedNumber = parseInt(number, 10);
@@ -39,6 +42,7 @@ class InputValidator {
         }
     }
 
+    // Valida se o número float está dentro de um intervalo (0 até um valor máximo).
     floatMaxValidator(number, max) {
         try {
             const parsedNumber = parseFloat(number);
@@ -52,6 +56,7 @@ class InputValidator {
         }
     }
 
+    // Valida se o número float é maior que zero.
     floatValidator(number) {
         try {
             const parsedNumber = parseFloat(number);
@@ -65,6 +70,7 @@ class InputValidator {
         }
     }
 
+    // Valida o CPF (Cadastro de Pessoa Física) usando o algoritmo de verificação de dígitos.
     cpfValidator(cpf) {
         try {
             cpf = cpf.replace(/[^\d]/g, ''); // Remove todos os caracteres que não são dígitos
@@ -111,6 +117,7 @@ class InputValidator {
         }
     }
 
+    // Valida o CNPJ (Cadastro Nacional da Pessoa Jurídica) utilizando o algoritmo de verificação de dígitos.
     cnpjValidator(cnpj) {
         try {
             cnpj = cnpj.replace(/[^\d]/g, ''); // Remove todos os caracteres que não são dígitos
@@ -166,6 +173,7 @@ class InputValidator {
         }
     }
 
+    // Valida se o CEP (Código de Endereçamento Postal) tem 8 dígitos numéricos.
     zipCodeValidator(zipCode) {
         try {
             zipCode = zipCode.replace(/[^\d]/g, '');
@@ -180,6 +188,7 @@ class InputValidator {
         }
     }
 
+    // Valida o formato de email usando uma expressão regular.
     emailValidator(email) {
         try {
             if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -192,6 +201,7 @@ class InputValidator {
         }
     }
 
+    // Valida se o número de telefone contém entre 10 e 11 dígitos.
     phoneValidator(phone) {
         try {
             phone = phone.replace(/[^\d]/g, '');
@@ -206,6 +216,7 @@ class InputValidator {
         }
     }
 
+    // Valida se a data está no formato 'YYYY-MM-DD' e é uma data válida.
     dateValidator(date) {
         try {
             if (/^\d{4}-\d{2}-\d{2}$/.test(date) && !isNaN(Date.parse(date))) {
@@ -218,6 +229,7 @@ class InputValidator {
         }
     }
 
+    // Valida valores alfanuméricos de um tamanho mínimo e máximo.
     allValidator(value, min, max) {
         try {
             const trimmedValue = value.replace(/\s+/g, '');
@@ -232,6 +244,7 @@ class InputValidator {
         }
     }
 
+    // Valida se a senha contém caracteres especiais, letras maiúsculas, minúsculas e números, com um comprimento mínimo.
     passwordValidator(password, minLength = 8) {
         try {
             if (password.length >= minLength && /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password) && /[^A-Za-z0-9]/.test(password)) {
@@ -244,6 +257,7 @@ class InputValidator {
         }
     }
 
+    // Verifica se dois valores (por exemplo, senha e confirmação de senha) são idênticos.
     booleanValidator(value) {
         try {
             if (typeof value === 'boolean') {

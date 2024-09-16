@@ -28,9 +28,11 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function SearchAccountsPayable() {
+  // Hook para obter a função de logout e para navegação
   const { logout } = useAuth();
   const navigate = useNavigate();
 
+  // Estados para armazenar dados e controlar o comportamento do componente
   const [searchTerm, setSearchTerm] = useState("");
   const [payables, setPayables] = useState([]);
   const [filteredPayable, setFilteredPayable] = useState([]);
@@ -42,15 +44,18 @@ function SearchAccountsPayable() {
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
+  // Obtém o token do usuário do localStorage
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
+  // Função para aplicar filtros aos dados de contas a pagar
   const applyFilters = (payablesData) => {
     const filtered = payablesData.filter(payable => {
       const dueDate = payable.DueDate.split('T')[0]; // Mantém apenas a parte da data
       const start = startDate;
       const end = endDate;
 
+      // Verifica se os dados atendem aos filtros aplicados
       const matchesActive = showActiveOnly ? payable.Active : true;
       const matchesPaid = showPaidOnly ? !payable.Paid : true;
       const matchesDate = dueDate >= start && dueDate <= end;
@@ -61,6 +66,7 @@ function SearchAccountsPayable() {
     setFilteredPayable(filtered);
   };
 
+  // Função para buscar as contas a pagar da API
   const fetchPayables = async () => {
     try {
       const response = await axios.get(`${baseURL}/payable`, {
@@ -91,27 +97,32 @@ function SearchAccountsPayable() {
       }
     }
   };
-
+  // Efeito para buscar contas a pagar quando o componente é montado ou o token muda
   useEffect(() => {
     fetchPayables();
   }, [token]);
 
+  // Efeito para aplicar filtros quando os dados ou os critérios de filtro mudam
   useEffect(() => {
     applyFilters(payables);
   }, [showActiveOnly, showPaidOnly, startDate, endDate, payables]);
 
+  // Manipulador para atualizar o termo de busca
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
+  // Manipulador para atualizar o filtro de contas ativas
   const handleCheckboxChange = (event) => {
     setShowActiveOnly(event.target.checked);
   };
 
+  // Manipulador para atualizar o filtro de contas pagas
   const handleCheckboxPaidChange = (event) => {
     setShowPaidOnly(event.target.checked);
   };
 
+  // Manipulador para atualizar as datas de início e término
   const handleDateChange = (event) => {
     if (event.target.name === 'startDate') {
       setStartDate(event.target.value);
@@ -120,6 +131,7 @@ function SearchAccountsPayable() {
     }
   };
 
+  // Manipulador para enviar o formulário de busca
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (searchTerm.trim() === "") {
@@ -155,10 +167,12 @@ function SearchAccountsPayable() {
     }
   };
 
+  // Manipulador para voltar para a página de gerenciamento
   const handleVoltar = () => {
     navigate("/manager");
   };
 
+  // Manipulador para fechar o diálogo
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };

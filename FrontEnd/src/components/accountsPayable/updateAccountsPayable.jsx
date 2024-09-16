@@ -23,13 +23,16 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function UpdateAccountsPayable() {
+  // Hook para obter a função de logout e para navegação
   const { logout } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // Obtém o token do usuário do localStorage
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
+  // Estados para armazenar os dados do formulário, clientes e lojas
   const [formData, setFormData] = useState({
     amount: "",
     idclient: "",
@@ -41,13 +44,16 @@ function UpdateAccountsPayable() {
     active: ""
   });
 
+  // Estados para armazenar dados e controlar o comportamento do componente
   const [clients, setClients] = useState([]);
   const [stores, setStores] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
+  // Efeito para buscar os dados da conta a pagar, clientes e lojas quando o componente é montado ou o token muda
   useEffect(() => {
+    // Função para buscar os dados da conta a pagar
     const fetchAccountsPayable = async () => {
       try {
         const response = await axios.get(`${baseURL}/payable/${id}`, {
@@ -55,6 +61,7 @@ function UpdateAccountsPayable() {
             'Authorization': `Bearer ${token}`
           }
         });
+        // Atualiza os dados do formulário com os dados da conta a pagar
         const formData = response.data[0];
         setFormData({
           idaccountpayable: formData.IdAccountPayable,
@@ -87,6 +94,7 @@ function UpdateAccountsPayable() {
       }
     }
 
+    // Função para buscar as lojas
     const fetchStores = async () => {
       try {
         const response = await axios.get(`${baseURL}/store`, {
@@ -108,6 +116,8 @@ function UpdateAccountsPayable() {
         }
       }
     };
+
+    // Função para buscar os clientes
     const fetchClients = async () => {
       try {
         const response = await axios.get(`${baseURL}/client`, {
@@ -135,6 +145,7 @@ function UpdateAccountsPayable() {
     fetchStores();
   }, [token, logout, id]);
 
+  // Manipulador para atualizar os dados do formulário conforme os campos são alterados
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData(prevFormData => ({
@@ -142,9 +153,11 @@ function UpdateAccountsPayable() {
     }));
   };
 
+  // Manipulador para enviar o formulário de atualização da conta a pagar
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      // Valida os dados do formulário
       const errors = [];
       const testAmount = validator.floatValidator(formData.amount);
       const testIdClientSupplier = validator.integerValidator(formData.idclient);
@@ -186,6 +199,7 @@ function UpdateAccountsPayable() {
         return;
       }
 
+      // Atualiza a conta a pagar na API
       await axios.put(`${baseURL}/payable/${id}`, { ...formData }, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -213,14 +227,17 @@ function UpdateAccountsPayable() {
     }
   };
 
+  // Manipulador para voltar à página de busca de contas a pagar
   const handleVoltar = () => {
     navigate("/searchaccountspayable");
   };
 
+  // Manipulador para fechar o diálogo
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };
 
+  // Verifica se o formulário deve ser desativado com base em dados
   const isDisabled = formData.idsale !== null;
 
   return (
@@ -245,7 +262,7 @@ function UpdateAccountsPayable() {
                 label="Valor"
                 name="amount"
                 autoComplete="amount"
-                disabled={isDisabled} 
+                disabled={isDisabled}
                 value={parseFloat(formData.amount).toFixed(2)}
                 onChange={handleChange}
                 InputLabelProps={{
@@ -280,7 +297,7 @@ function UpdateAccountsPayable() {
                 name="duedate"
                 autoComplete="duedate"
                 value={formData.duedate}
-                disabled={isDisabled} 
+                disabled={isDisabled}
                 onChange={handleChange}
                 InputLabelProps={{
                   sx: {
@@ -309,7 +326,7 @@ function UpdateAccountsPayable() {
                 name="idstore"
                 value={formData.idstore}
                 onChange={handleChange}
-                disabled={isDisabled} 
+                disabled={isDisabled}
                 fullWidth
                 displayEmpty
                 renderValue={(selected) => {
@@ -335,7 +352,7 @@ function UpdateAccountsPayable() {
                 name="idclient"
                 value={formData.idclient}
                 onChange={handleChange}
-                disabled={isDisabled} 
+                disabled={isDisabled}
                 fullWidth
                 displayEmpty
                 renderValue={(selected) => {
@@ -392,7 +409,7 @@ function UpdateAccountsPayable() {
                   control={
                     <Checkbox
                       checked={formData.active}
-                      disabled={isDisabled} 
+                      disabled={isDisabled}
                       onChange={handleChange}
                       name="active"
                       sx={{

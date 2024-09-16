@@ -18,18 +18,20 @@ import '../../styles/index.css';
 import validator from '../../../utils/inputsValidator.js';
 import { baseURL } from '../../config.js';
 
-
 const theme = createTheme();
 
 function CreateAccountsPayable() {
+    // Hooks para navegação e autenticação
     const { logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const isHomePage = location.pathname === "/"
 
+    // Recupera o token de autenticação salvo no localStorage
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
 
+    // Estado inicial do formulário
     const [formData, setFormData] = useState({
         amount: "",
         idclient: "",
@@ -39,15 +41,18 @@ function CreateAccountsPayable() {
         note: ""
     });
 
+    // Estados para armazenar os dados de clientes e lojas, além do status de diálogos
     const [clients, setClients] = useState([]);
     const [stores, setStores] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
 
+    // useEffect é utilizado para buscar os dados de clientes e lojas assim que o componente é montado
     useEffect(() => {
         const fetchStores = async () => {
             try {
+                // Faz uma requisição para obter as lojas cadastradas
                 const response = await axios.get(`${baseURL}/store`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -56,6 +61,7 @@ function CreateAccountsPayable() {
                 setStores(response.data);
             } catch (error) {
                 console.error("Error fetching store", error);
+                // Caso o erro seja de autenticação, exibe uma mensagem e faz o logout
                 if (error.response && error.response.status === 401) {
                     const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
                     setDialogStatus('error');
@@ -69,6 +75,7 @@ function CreateAccountsPayable() {
         };
         const fetchClients = async () => {
             try {
+                // Faz uma requisição para obter os clientes cadastrados
                 const response = await axios.get(`${baseURL}/client`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -77,6 +84,7 @@ function CreateAccountsPayable() {
                 setClients(response.data);
             } catch (error) {
                 console.error("Error fetching client", error);
+                // Caso o erro seja de autenticação, exibe uma mensagem e faz o logout
                 if (error.response && error.response.status === 401) {
                     const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
                     setDialogStatus('error');
@@ -88,11 +96,12 @@ function CreateAccountsPayable() {
                 }
             }
         };
-
+        // Chama as funções para buscar dados de clientes e lojas
         fetchClients();
         fetchStores();
     }, [token, logout]);
 
+    // Atualiza o estado do formulário sempre que um campo for alterado
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData(prevFormData => ({
@@ -101,9 +110,11 @@ function CreateAccountsPayable() {
         }));
     };
 
+    // Função para validar e enviar os dados do formulário
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            // Valida o valor do campos de entrada
             const errors = [];
             const testAmount = validator.floatValidator(formData.amount);
             const testIdClientSupplier = validator.integerValidator(formData.idclient);
@@ -149,11 +160,13 @@ function CreateAccountsPayable() {
                 return;
             }
 
+            // Faz a requisição para cadastrar uma nova conta a pagar
             const response = await axios.post(`${baseURL}/payable`, { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
             });
+            // Se a requisição for bem-sucedida, exibe uma mensagem de sucesso
             const successMessage = response.data || "Conta a pagar cadastrada com sucesso!";
             setFormData({
                 amount: "",
@@ -167,6 +180,7 @@ function CreateAccountsPayable() {
             setDialogOpen(true);
         } catch (error) {
             console.log(error);
+            // Se a sessão expirar, faz o logout e exibe uma mensagem
             if (error.response && error.response.status === 401) {
                 const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
                 setDialogStatus('error');
@@ -176,6 +190,7 @@ function CreateAccountsPayable() {
                     logout();
                 }, 4000);
             } else {
+                // Exibe uma mensagem de erro genérica caso a requisição falhe
                 const errorMessage = error.response?.data?.errors || "Erro ao cadastrar conta a pagar.";
                 setDialogStatus('error');
                 setDialogMessage(errorMessage);
@@ -184,10 +199,12 @@ function CreateAccountsPayable() {
         }
     };
 
+    // Função para voltar para a tela de gerenciamento
     const handleVoltar = () => {
         navigate("/manager");
     };
 
+     // Fecha o diálogo de mensagem
     const handleCloseDialog = () => {
         setDialogOpen(false);
     };

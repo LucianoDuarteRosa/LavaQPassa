@@ -584,7 +584,6 @@ class AccountsPayableController {
       .catch((error) => res.status(500).json(error.message));
 
   }
-
 }
 
 module.exports = new AccountsPayableController();

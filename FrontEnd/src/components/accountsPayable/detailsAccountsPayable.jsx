@@ -23,13 +23,17 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function DetailsAccountsPayable() {
+  // Hook responsável por obter a função de logout da autenticação, extrair o ID dos parâmetros da URL,
+  // e utilizar a navegação para redirecionar o usuário.
   const { logout } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // Recupera o token do usuário armazenado no localStorage para autenticar as requisições.
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
+  // Estado inicial para armazenar os dados do formulário da conta a pagar.
   const [formData, setFormData] = useState({
     amount: "",
     idclient: "",
@@ -44,6 +48,7 @@ function DetailsAccountsPayable() {
     idsale: ""
   });
 
+  // Estados para armazenar detalhes da venda, clientes, lojas, e diálogos de feedback.
   const [saleDetail, setSaleDetail] = useState([]);
   const [clients, setClients] = useState([]);
   const [stores, setStores] = useState([]);
@@ -51,7 +56,9 @@ function DetailsAccountsPayable() {
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
+  // Hook `useEffect` utilizado para carregar os dados da conta a pagar, clientes e lojas da API quando o componente é montado.
   useEffect(() => {
+    // Função responsável por buscar os detalhes da conta a pagar a partir do ID na URL.
     const fetchAccountsPayable = async () => {
       try {
         const response = await axios.get(`${baseURL}/payable/${id}`, {
@@ -59,6 +66,7 @@ function DetailsAccountsPayable() {
             'Authorization': `Bearer ${token}`
           }
         });
+        // Atualiza os dados do formulário com as informações recebidas da API.
         const formData = response.data[0];
         setFormData({
           idaccountpayable: formData.IdAccountPayable,
@@ -93,6 +101,7 @@ function DetailsAccountsPayable() {
       }
     }
 
+    // Função responsável por buscar a lista de lojas da API.
     const fetchStores = async () => {
       try {
         const response = await axios.get(`${baseURL}/store`, {
@@ -115,6 +124,7 @@ function DetailsAccountsPayable() {
       }
     };
 
+    // Função responsável por buscar a lista de clientes da API.
     const fetchClients = async () => {
       try {
         const response = await axios.get(`${baseURL}/client`, {
@@ -142,10 +152,12 @@ function DetailsAccountsPayable() {
     fetchStores();
   }, [token, logout, id]);
 
+  // Hook `useEffect` para buscar os detalhes da venda quando o ID da venda está presente.
   useEffect(() => {
     if (formData.idsale) {
       const fetchDetailsSale = async () => {
         try {
+          // Busca os detalhes da venda associada à conta a pagar.
           const response = await axios.get(`${baseURL}/saledetail/${formData.idsale}`, {
             headers: {
               'Authorization': `Bearer ${token}`
@@ -169,6 +181,7 @@ function DetailsAccountsPayable() {
     }
   });
 
+  // Função para atualizar os valores do formulário ao editar campos.
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData(prevFormData => ({
@@ -176,10 +189,12 @@ function DetailsAccountsPayable() {
     }));
   };
 
+  // Função para navegar de volta para a tela de busca de contas a pagar.
   const handleVoltar = () => {
     navigate("/searchaccountspayable");
   };
 
+  // Função para fechar o diálogo de mensagens.
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };

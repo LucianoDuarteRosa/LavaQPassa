@@ -1,0 +1,7 @@
+Passo a passo para fazer o restore do BD
+
+//cmd
+mysql -u root -p
+CREATE DATABASE lavaQPassaBrecho;
+mysql -u root -p lavaQPassaBrecho < "C:/Users/Luciano/Desktop/RioPombaValley/RPV/ProjetoFullStack/BackEnd/backup/backups/backup-1726432910879.sql"
+
