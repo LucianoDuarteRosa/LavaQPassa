@@ -253,17 +253,9 @@ orleans.codegen.cs
 #bower_components/
 
 # RIA/Silverlight projects
-Generated_Code/
-
-# Backup & report files from converting an old project file
-# to a newer Visual Studio version. Backup files are not needed,
-# because we have git ;-)
-_UpgradeReport_Files/
-Backup*/
+Generated_Code/rt_Files/
 UpgradeLog*.XML
 UpgradeLog*.htm
-ServiceFabricBackup/
-*.rptproj.bak
 
 # SQL Server files
 *.mdf
@@ -371,8 +363,7 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-# Backup folder for Package Reference Convert tool in Visual Studio 2017
-MigrationBackup/
+
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
