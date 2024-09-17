@@ -27,6 +27,7 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function GroupSearch() {
+  // Hooks para navegação e autenticação, filtros e dialog
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,21 +38,26 @@ function GroupSearch() {
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
+  // Obtém o token do usuário do localStorage
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
   // Função para buscar todos os grupos
   const fetchGroup = async () => {
     try {
+      // Faz uma requisição GET para obter todos os grupos
       const response = await axios.get(`${baseURL}/group`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+      // Atualiza o estado com todos os grupos
       setGroup(response.data);
+      // Filtra os grupos com base no estado do checkbox
       setFilteredGroup(response.data.filter(group => group.Active || !showActiveOnly));
     } catch (error) {
       console.error(error);
+      // Se o erro for uma resposta 401 (não autorizado), mostra mensagem e redireciona para login
       if (error.response && error.response.status === 401) {
         const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
         setDialogStatus('error');
@@ -61,6 +67,7 @@ function GroupSearch() {
           logout();
         }, 4000);
       } else {
+        // Limpa os estados de grupos e grupos filtrados e define a mensagem de erro
         setGroup([]);
         setFilteredGroup([]);
         const errorMessage = error.response?.data?.error || "Erro ao carregar group.";
@@ -71,23 +78,28 @@ function GroupSearch() {
     }
   };
 
+  // Hook useEffect para buscar os grupos quando o componente é montado ou o token mudar
   useEffect(() => {
     fetchGroup();
   }, [token]); // Dependência para atualizar quando token mudar
 
+  // Hook useEffect para filtrar os grupos quando o estado de showActiveOnly ou os grupos mudarem
   useEffect(() => {
     // Filtra os grupo de acordo com o estado do checkbox
     setFilteredGroup(groups.filter(group => group.Active || !showActiveOnly));
   }, [showActiveOnly, groups]); // Dependências para atualizar quando showActiveOnly ou grupo mudar
 
+  // Função para lidar com mudanças no campo de pesquisa
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
+  // Função para lidar com mudanças no checkbox de ativação
   const handleCheckboxChange = (event) => {
     setShowActiveOnly(event.target.checked);
   };
 
+  // Função para lidar com o envio do formulário de pesquisa
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (searchTerm.trim() === "") {
@@ -126,10 +138,12 @@ function GroupSearch() {
     }
   };
 
+  // Função para navegar de volta à página de gerenciamento
   const handleVoltar = () => {
     navigate("/manager"); // Navegar de volta para a página
   };
 
+  // Função para fechar o diálogo
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };

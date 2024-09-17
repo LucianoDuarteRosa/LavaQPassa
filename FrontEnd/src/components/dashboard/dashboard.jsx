@@ -13,6 +13,7 @@ import CardContent from '@mui/material/CardContent';
 import { CardActionArea } from '@mui/material';
 import { baseURL } from '../../config.js';
 
+// Configuração para o gráfico de vendas por mês
 const chartSettingSale = {
     height: 320,
     xAxis: [
@@ -21,39 +22,45 @@ const chartSettingSale = {
             scaleType: 'band',
             dataKey: 'saleMonth',
             valueFormatter: (month, context) => {
+                // Formata a data exibida no eixo X
                 const [year, monthNumber] = month.split('-');
                 return context.location === 'tick'
-                    ? `${monthNumber}/${year}`
-                    : `${monthNumber}/${year}`;
+                    ? `${monthNumber}/${year}` // Formata o mês e o ano para tick
+                    : `${monthNumber}/${year}`; // Formata o mês e o ano para outros locais
             },
         },
     ],
-    grid: { horizontal: true },
+    grid: { horizontal: true },// Adiciona linhas horizontais na grade do gráfico
 };
 
+// Configuração padrão para o gráfico de vendas por subgrupo
 const chartSetting = {
     xAxis: [
         {
-            label: 'Vendas por subgrupo',
+            label: 'Vendas por subgrupo', // Rótulo do eixo X
         },
     ],
     width: 550,
     height: 430,
 };
 
+// Função para formatar valores monetários
 const valueFormatter = (value) => `R$ ${value.toFixed(2).replace('.', ',')}`;
 
+// Componente principal do Dashboard
 function Dashboard() {
-    const userToken = JSON.parse(localStorage.getItem('user')) || {};
-    const token = userToken.token || "";
-    const { logout } = useAuth();
+    const userToken = JSON.parse(localStorage.getItem('user')) || {}; // Obtém o token do usuário do localStorage
+    const token = userToken.token || ""; // Extraí o token do objeto do usuário
+    const { logout } = useAuth(); // Componente principal do Dashboard
 
+    //Estado para armazenar os dados de cada entidade
     const [payables, setPayables] = useState([]);
     const [saleYears, setSalesYear] = useState([]);
     const [saleGroup, setSalesGroup] = useState([]);
     const [saleSubGroup, setSalesSubGroup] = useState([]);
 
     useEffect(() => {
+        // Função para buscar contas a pagar
         const fetchPayables = async () => {
             try {
                 const response = await axios.get(`${baseURL}/accountspayable`, {
@@ -77,6 +84,7 @@ function Dashboard() {
             }
         };
 
+        // Função para buscar os anos de vendas
         const fetchSalesYear = async () => {
             try {
                 const response = await axios.get(`${baseURL}/saleyear`, {
@@ -100,6 +108,7 @@ function Dashboard() {
             }
         };
 
+        // Função para buscar os grupos de vendas
         const fetchSalesGroup = async () => {
             try {
                 const response = await axios.get(`${baseURL}/salegroup`, {
@@ -123,6 +132,7 @@ function Dashboard() {
             }
         };
 
+        // Função para buscar os subgrupos de vendas
         const fetchSalesSubGroup = async () => {
             try {
                 const response = await axios.get(`${baseURL}/salesubgroup`, {

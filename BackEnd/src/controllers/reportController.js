@@ -247,7 +247,8 @@ class ReportController {
           });
           const qrCodeImage = await qrCodePix.base64();
 
-          doc.fontSize(20).font('Times-Bold').text(`QRCode Pix`, 100, mapY + 195);
+          doc.fontSize(20).font('Times-Bold').text(`QRCode Pix`, 100, mapY + 135);
+          doc.fontSize(16).font('Times-Bold').text(`Valor: R$ ${valueCostProduct.toFixed(2)}`, 100, mapY + 170);
           doc.image(qrCodeImage, 250, mapY + 120, { fit: [150, 150] });
 
           doc.fontSize(10).font('Times-Roman').text(`Página ${currentPage}`, 500, 700);

@@ -23,13 +23,18 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function UpdateAccountsReceivable() {
+  // Hook para gerenciar o logout do usuário
   const { logout } = useAuth();
+  // Hook para acessar parâmetros da URL, como o ID do recebível
   const { id } = useParams();
+  // Hook para navegação entre páginas
   const navigate = useNavigate();
 
+  // Recupera o token do usuário armazenado no localStorage
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
+  // Estado para armazenar os dados do formulário
   const [formData, setFormData] = useState({
     amount: "",
     idclient: "",
@@ -41,13 +46,16 @@ function UpdateAccountsReceivable() {
     active: ""
   });
 
+  // Estados para armazenar listas de clientes e lojas, e o estado do diálogo
   const [clients, setClients] = useState([]);
   const [stores, setStores] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
+  // Effect para carregar os dados iniciais quando o componente é montado
   useEffect(() => {
+    // Função para buscar os dados do recebível
     const fetchAccountsReceivable = async () => {
       try {
         const response = await axios.get(`${baseURL}/receivable/${id}`, {
@@ -55,6 +63,7 @@ function UpdateAccountsReceivable() {
             'Authorization': `Bearer ${token}`
           }
         });
+        // Atualiza o estado com os dados do recebível
         const formData = response.data[0];
         setFormData({
           idaccountreceivable: formData.IdAccountReceivable,
@@ -87,6 +96,7 @@ function UpdateAccountsReceivable() {
       }
     }
 
+    // Função para buscar a lista de lojas
     const fetchStores = async () => {
       try {
         const response = await axios.get(`${baseURL}/store`, {
@@ -108,6 +118,8 @@ function UpdateAccountsReceivable() {
         }
       }
     };
+
+    // Função para buscar a lista de clientes
     const fetchClients = async () => {
       try {
         const response = await axios.get(`${baseURL}/client`, {
@@ -130,11 +142,13 @@ function UpdateAccountsReceivable() {
       }
     };
 
+    // Chama as funções de busca para carregar os dados necessários
     fetchAccountsReceivable();
     fetchClients();
     fetchStores();
   }, [token, logout, id]);
 
+  // Função para atualizar os dados do formulário quando um campo muda
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData(prevFormData => ({
@@ -142,9 +156,11 @@ function UpdateAccountsReceivable() {
     }));
   };
 
+  // Função para lidar com o envio do formulário
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      // Valida os campos do formulário
       const errors = [];
       const testAmount = validator.floatValidator(formData.amount);
       const testIdClientSupplier = validator.integerValidator(formData.idclient);
@@ -187,11 +203,13 @@ function UpdateAccountsReceivable() {
         return;
       }
 
+      // Envia os dados atualizados para o servidor
       await axios.put(`${baseURL}/receivable/${id}`, { ...formData }, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+      // Define a mensagem de sucesso e abre o diálogo
       setDialogStatus('success');
       setDialogMessage("Conta a receber atualizada com sucesso");
       setDialogOpen(true);
@@ -205,23 +223,26 @@ function UpdateAccountsReceivable() {
         setTimeout(() => {
           logout();
         }, 4000);
-      }else{
+      } else {
         const errorMessage = error.response?.data?.errors || "Erro ao atualizar conta a receber.";
         setDialogStatus('error');
         setDialogMessage(errorMessage);
         setDialogOpen(true);
       }
-    } 
+    }
   };
 
+  // Função para navegar de volta para a página de busca de contas a receber
   const handleVoltar = () => {
     navigate("/searchaccountsreceivable");
   };
 
+  // Função para fechar o diálogo de feedback
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };
 
+  // Estado para habilitar ou desabilitar o formulário com base no ID da venda
   const isDisabled = formData.IdSale !== null;
 
   return (
@@ -246,7 +267,7 @@ function UpdateAccountsReceivable() {
                 label="Valor"
                 name="amount"
                 autoComplete="amount"
-                disabled={isDisabled} 
+                disabled={isDisabled}
                 value={parseFloat(formData.amount).toFixed(2)}
                 onChange={handleChange}
                 InputLabelProps={{
@@ -279,7 +300,7 @@ function UpdateAccountsReceivable() {
                 required
                 label="Vencimento"
                 name="duedate"
-                disabled={isDisabled} 
+                disabled={isDisabled}
                 autoComplete="duedate"
                 value={formData.duedate}
                 onChange={handleChange}
@@ -311,7 +332,7 @@ function UpdateAccountsReceivable() {
                 value={formData.idstore}
                 onChange={handleChange}
                 fullWidth
-                disabled={isDisabled} 
+                disabled={isDisabled}
                 displayEmpty
                 renderValue={(selected) => {
                   if (!selected) {
@@ -337,7 +358,7 @@ function UpdateAccountsReceivable() {
                 value={formData.idclient}
                 onChange={handleChange}
                 fullWidth
-                disabled={isDisabled} 
+                disabled={isDisabled}
                 displayEmpty
                 renderValue={(selected) => {
                   if (!selected) {
@@ -393,7 +414,7 @@ function UpdateAccountsReceivable() {
                   control={
                     <Checkbox
                       checked={Boolean(formData.active)}
-                      disabled={isDisabled} 
+                      disabled={isDisabled}
                       onChange={handleChange}
                       name="active"
                       sx={{

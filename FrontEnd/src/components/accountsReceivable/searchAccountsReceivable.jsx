@@ -28,9 +28,12 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function SearchAccountsReceivable() {
+  // Hook para obter a função de logout
   const { logout } = useAuth();
+  // Hook para navegação
   const navigate = useNavigate();
 
+  // Estados para armazenar os dados da pesquisa e os filtros
   const [searchTerm, setSearchTerm] = useState("");
   const [receivable, setReceivable] = useState([]);
   const [filteredPayable, setFilteredPayable] = useState([]);
@@ -42,15 +45,18 @@ function SearchAccountsReceivable() {
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
+  // Recupera o token do usuário armazenado no localStorage
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
+  // Função para aplicar filtros nos dados de contas a receber
   const applyFilters = (payablesData) => {
     const filtered = payablesData.filter(payable => {
       const dueDate = payable.DueDate.split('T')[0]; // Mantém apenas a parte da data
       const start = startDate;
       const end = endDate;
 
+      // Verifica se os dados atendem aos filtros selecionados
       const matchesActive = showActiveOnly ? payable.Active : true;
       const matchesPaid = showPaidOnly ? !payable.Paid : true;
       const matchesDate = dueDate >= start && dueDate <= end;
@@ -61,6 +67,7 @@ function SearchAccountsReceivable() {
     setFilteredPayable(filtered);
   };
 
+  // Função para buscar contas a receber do backend
   const fetchReceivable = async () => {
     try {
       const response = await axios.get(`${baseURL}/receivable`, {
@@ -91,26 +98,32 @@ function SearchAccountsReceivable() {
     }
   };
 
+  // Busca contas a receber quando o componente é montado
   useEffect(() => {
     fetchReceivable();
   }, [token]);
 
+  // Aplica filtros sempre que algum filtro ou dados mudam
   useEffect(() => {
     applyFilters(receivable);
   }, [showActiveOnly, showPaidOnly, startDate, endDate, receivable]);
 
+  // Função para atualizar o termo de pesquisa
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
+  // Função para atualizar o estado de filtro para mostrar apenas ativos
   const handleCheckboxChange = (event) => {
     setShowActiveOnly(event.target.checked);
   };
 
+  // Função para atualizar o estado de filtro para mostrar apenas pagos
   const handleCheckboxPaidChange = (event) => {
     setShowPaidOnly(event.target.checked);
   };
 
+  // Função para atualizar as datas de início e fim dos filtros
   const handleDateChange = (event) => {
     if (event.target.name === 'startDate') {
       setStartDate(event.target.value);
@@ -119,6 +132,7 @@ function SearchAccountsReceivable() {
     }
   };
 
+  // Função para buscar contas a receber com base no termo de pesquisa
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (searchTerm.trim() === "") {
@@ -154,10 +168,12 @@ function SearchAccountsReceivable() {
     }
   };
 
+  // Função para redirecionar para a página de gerenciamento
   const handleVoltar = () => {
     navigate("/manager");
   };
 
+  // Função para fechar o diálogo de mensagem
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };

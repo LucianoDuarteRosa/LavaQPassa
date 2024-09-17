@@ -8,17 +8,21 @@ import Button from '@mui/material/Button';
 import { useAuth } from '../login/authContext';
 import { baseURL } from '../../config.js';
 
-
-function MonthPayment() {
+function Documentation() {
+    // Obtém a função de logout do hook useAuth
     const { logout } = useAuth();
+    // Estado para armazenar a URL do PDF
     const [pdfData, setPdfData] = useState(null);
+    // Estado para armazenar a URL de download do PDF
     const [downloadUrl, setDownloadUrl] = useState('');
 
+    // Obtém o token do usuário do localStorage
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
-    console.log(token)
 
+    // useEffect para buscar o documento PDF quando o componente for montado
     useEffect(() => {
+        // Função assíncrona para buscar o documento PDF
         const fetchDocument = async () => {
             try {
                 console.log(token)
@@ -44,6 +48,7 @@ function MonthPayment() {
         fetchDocument();
     }, [token, logout]);
 
+    // useEffect para limpar a URL do objeto Blob quando o componente for desmontado
     React.useEffect(() => {
         return () => {
             if (pdfData) {
@@ -72,7 +77,7 @@ function MonthPayment() {
                                 className='primary-button' sx={{ width: '15%', marginRight: '20px' }}
                             >
                                 Baixar PDF
-                            </Button>                       
+                            </Button>
                         </Box>
                     </Box>
                 </Box>
@@ -81,4 +86,4 @@ function MonthPayment() {
     );
 }
 
-export default MonthPayment;
+export default Documentation;

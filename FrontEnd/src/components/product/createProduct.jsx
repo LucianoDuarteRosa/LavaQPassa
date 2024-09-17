@@ -21,14 +21,17 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function CreateProduct() {
+    // Obtém as funções de autenticação e navegação
     const { logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const isHomePage = location.pathname === "/"
 
+    // Recupera o token do usuário do localStorage
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
 
+    // Estados para armazenar os dados do formulário, listas de opções e mensagens de diálogo
     const [formData, setFormData] = useState({
         idProduct: "",
         name: "",
@@ -40,6 +43,7 @@ function CreateProduct() {
         idstore: ""
     });
 
+    // Lista de entidades e armazenar variaveis de calculos
     const [products, setProducts] = useState([]);
     const [groups, setGroup] = useState([]);
     const [clients, setClients] = useState([]);
@@ -52,8 +56,10 @@ function CreateProduct() {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
- 
+
+    // Efeito colateral para buscar dados ao montar o componente
     useEffect(() => {
+        // Função para buscar grupos
         const fetchGroup = async () => {
             try {
                 const response = await axios.get(`${baseURL}/group`, {
@@ -75,6 +81,8 @@ function CreateProduct() {
                 }
             }
         };
+
+        // Função para buscar subgrupos
         const fetchSubGroup = async () => {
             try {
                 const response = await axios.get(`${baseURL}/subgroup`, {
@@ -96,6 +104,8 @@ function CreateProduct() {
                 }
             }
         };
+
+        // Função para buscar lojas
         const fetchStores = async () => {
             try {
                 const response = await axios.get(`${baseURL}/store`, {
@@ -117,6 +127,8 @@ function CreateProduct() {
                 }
             }
         };
+
+        // Função para buscar clientes
         const fetchClients = async () => {
             try {
                 const response = await axios.get(`${baseURL}/client`, {
@@ -138,6 +150,8 @@ function CreateProduct() {
                 }
             }
         };
+
+        // Função para buscar produtos e definir o próximo ID do produto
         const fetchProducts = async () => {
             try {
                 const response = await axios.get(`${baseURL}/product`, {
@@ -164,6 +178,7 @@ function CreateProduct() {
             }
         };
 
+        // Chama as funções de busca de dados
         fetchProducts();
         fetchClients();
         fetchStores();
@@ -171,6 +186,7 @@ function CreateProduct() {
         fetchGroup();
     }, [token, logout]);
 
+    // Efeito colateral para filtrar subgrupos com base no grupo selecionado
     useEffect(() => {
         if (selectedGroup) {
             setFilteredSubGroups(subGroups.filter(subGroup => subGroup.IdGroup === selectedGroup));
@@ -179,6 +195,7 @@ function CreateProduct() {
         }
     }, [selectedGroup, subGroups]);
 
+    // Efeito colateral para calcular o percentual com base no preço de venda e custo
     useEffect(() => {
         const calculatePercentage = () => {
             const saleprice = parseFloat(formData.saleprice);
@@ -199,6 +216,7 @@ function CreateProduct() {
         calculatePercentage();
     }, [formData.costprice, formData.saleprice]);
 
+    // Função para lidar com mudanças nos campos do formulário
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData(prevFormData => ({
@@ -216,10 +234,11 @@ function CreateProduct() {
         }
     };
 
+    // Função para lidar com o envio do formulário
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-
+            // Valida os dados do formulário
             const errors = [];
 
             const testProductName = validator.allValidator(formData.name, 2, 50);
@@ -296,10 +315,12 @@ function CreateProduct() {
         }
     };
 
+    // Função para navegar de volta à página anterior
     const handleVoltar = () => {
         navigate("/manager");
     };
 
+    // Função para fechar o diálogo
     const handleCloseDialog = () => {
         setDialogOpen(false);
     };

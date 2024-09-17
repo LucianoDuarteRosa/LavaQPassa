@@ -20,6 +20,7 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function UpdateClientSupplier() {
+  // Hook para obter a função de logout e redirecionar
   const { logout } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -45,13 +46,16 @@ function UpdateClientSupplier() {
     active: true
   });
 
+  // Estados para controle do diálogo de feedback
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
+  // Recupera o token do usuário armazenado no localStorage
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
+  // Função para buscar os dados do cliente/fornecedor
   useEffect(() => {
     const fetchClientSupplier = async () => {
       try {
@@ -106,11 +110,13 @@ function UpdateClientSupplier() {
     fetchClientSupplier();
   }, [id, token]);
 
+  // Função para lidar com mudanças nos campos de entrada do formulário
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
 
+  // Função para lidar com mudanças no seletor de tipo (cliente, fornecedor ou ambos)
   const handleSelectChange = (event) => {
     const { name, value } = event.target;
     setFormData({
@@ -124,6 +130,7 @@ function UpdateClientSupplier() {
     });
   };
 
+  // Função para lidar com mudanças no campo de CEP
   const handleZipCodeChange = async (event) => {
     const { value } = event.target;
 
@@ -153,12 +160,13 @@ function UpdateClientSupplier() {
     }
   };
 
+  // Função para lidar com o envio do formulário
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
 
       const errors = [];
-
+      // Valida os campos do formulário
       const testName = validator.allValidator(formData.name, 2, 80);
       const testZipCode = validator.zipCodeValidator(formData.zipcode);
       const testAddress = validator.allValidator(formData.address, 2, 100);
@@ -305,10 +313,12 @@ function UpdateClientSupplier() {
     }
   };
 
+  // Função para navegar de volta para a página anterior
   const handleVoltar = () => {
     navigate("/searchclient");
   };
 
+  // Função para fechar o diálogo
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };

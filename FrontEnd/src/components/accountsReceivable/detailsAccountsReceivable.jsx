@@ -23,13 +23,18 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function DetailsAccountsReceivable() {
+  // Hook para obter a função de logout
   const { logout } = useAuth();
+  // Hook para obter o ID da URL
   const { id } = useParams();
+  // Hook para navegação
   const navigate = useNavigate();
 
+  // Recupera o token do usuário armazenado no localStorage
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
+  // Estado para armazenar os dados do formulário e detalhes de venda
   const [formData, setFormData] = useState({
     amount: "",
     idclient: "",
@@ -44,6 +49,7 @@ function DetailsAccountsReceivable() {
     saledate: ""
   });
 
+  // Estados para armazenar os dados da pesquisa e os filtros
   const [saleDetail, setSaleDetail] = useState([]);
   const [clients, setClients] = useState([]);
   const [stores, setStores] = useState([]);
@@ -51,6 +57,7 @@ function DetailsAccountsReceivable() {
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
+  // Função para buscar detalhes da conta a receber
   useEffect(() => {
     const fetchAccountsReceivable = async () => {
       try {
@@ -59,6 +66,7 @@ function DetailsAccountsReceivable() {
             'Authorization': `Bearer ${token}`
           }
         });
+        // Atualiza o estado com os dados da conta a receber
         const formData = response.data[0];
         setFormData({
           idaccountreceivable: formData.IdAccountReceivable,
@@ -77,6 +85,7 @@ function DetailsAccountsReceivable() {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
+          // Mensagem e redirecionamento para login se a sessão expirar
           const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
           setDialogStatus('error');
           setDialogMessage(errorMessage);
@@ -93,6 +102,7 @@ function DetailsAccountsReceivable() {
       }
     }
 
+    // Função para buscar lojas
     const fetchStores = async () => {
       try {
         const response = await axios.get(`${baseURL}/store`, {
@@ -115,6 +125,7 @@ function DetailsAccountsReceivable() {
       }
     };
 
+    // Função para buscar clientes
     const fetchClients = async () => {
       try {
         const response = await axios.get(`${baseURL}/client`, {
@@ -137,11 +148,13 @@ function DetailsAccountsReceivable() {
       }
     };
 
+    // Chama as funções para buscar dados
     fetchAccountsReceivable();
     fetchClients();
     fetchStores();
   }, [token, logout, id]);
 
+  // Atualiza os detalhes da venda quando o ID da venda muda
   useEffect(() => {
     if (formData.idsale) {
       const fetchDetailsSale = async () => {
@@ -169,6 +182,7 @@ function DetailsAccountsReceivable() {
     }
   });
 
+  // Função para atualizar os dados do formulário
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData(prevFormData => ({
@@ -176,10 +190,12 @@ function DetailsAccountsReceivable() {
     }));
   };
 
+  // Função para redirecionar para a página de pesquisa de contas a receber
   const handleVoltar = () => {
     navigate("/searchaccountsreceivable");
   };
 
+  // Função para fechar o diálogo de mensagem
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };

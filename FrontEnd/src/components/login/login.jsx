@@ -8,19 +8,29 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import DialogMessage from '../../../utils/dialogMessage';
 
 const Login = () => {
+  // Estado para armazenar o email inserido pelo usuário
   const [email, setEmail] = useState('');
+  // Estado para armazenar a senha inserida pelo usuário
   const [password, setPassword] = useState('');
+  // Obtém a função de login do hook useAuth
   const { login } = useAuth();
+  // Obtém a função de navegação do hook useNavigate
   const navigate = useNavigate();
+
+  // Estado para controlar a exibição do diálogo
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
+
+  // Função para lidar com o envio do formulário de login
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Tenta fazer login com o email e a senha fornecidos
       await login(email, password);
       navigate('/');
     } catch (error) {
+      // Se ocorrer um erro, define a mensagem de erro e abre o diálogo
       const errorMessage = error.response?.data?.error || "Credênciais inválidas. Verifique e tente novamente.";
       setDialogStatus('error');
       setDialogMessage(errorMessage);
@@ -28,6 +38,7 @@ const Login = () => {
     }
   };
 
+  // Função para fechar o diálogo
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };

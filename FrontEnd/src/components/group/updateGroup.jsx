@@ -20,24 +20,33 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function UpdateGroup() {
+  // Obtém a função de logout do hook useAuth
   const { logout } = useAuth();
+  // Obtém o parâmetro id da URL usando useParams
   const { id } = useParams();
+  // Obtém a função de navegação do hook useNavigate
   const navigate = useNavigate();
+
+  // Estado para armazenar os dados do grupo
   const [group, setGroup] = useState({
     name: '',
     active: false,
   });
 
+  // Estado para controlar a exibição do diálogo
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
+  // Obtém o token do usuário do localStorage
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
+  // Hook useEffect para buscar os dados do grupo quando o componente é montado
   useEffect(() => {
     const fetchGroup = async () => {
       try {
+        // Faz uma requisição GET para obter os dados do grupo
         const response = await axios.get(`${baseURL}/group/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -71,11 +80,13 @@ function UpdateGroup() {
     fetchGroup();
   }, [id, token]);
 
+  // Função para lidar com mudanças nos campos do formulário
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setGroup({ ...group, [name]: type === 'checkbox' ? checked : value });
   };
 
+  // Função para lidar com o envio do formulário
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -102,11 +113,13 @@ function UpdateGroup() {
           'Authorization': `Bearer ${token}`
         }
       });
+      // Define o status e mensagem do diálogo para sucesso
       setDialogStatus('success');
       setDialogMessage("Grupo atualizado com sucesso");
       setDialogOpen(true);
     } catch (error) {
       console.log(error);
+      // Se o erro for uma resposta 401 (não autorizado), mostra mensagem e redireciona para login
       if (error.response && error.response.status === 401) {
         const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
         setDialogStatus('error');
@@ -116,6 +129,7 @@ function UpdateGroup() {
           logout();
         }, 4000);
       } else {
+        // Define a mensagem de erro do diálogo com base na resposta da API ou uma mensagem padrão
         const errorMessage = error.response?.data?.errors || "Erro ao atualizar grupo.";
         setDialogStatus('error');
         setDialogMessage(errorMessage);
@@ -125,10 +139,12 @@ function UpdateGroup() {
     }
   };
 
+  // Função para navegar de volta à página de busca de grupo
   const handleVoltar = () => {
     navigate("/searchgroup");
   };
 
+  // Função para fechar o diálogo
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };

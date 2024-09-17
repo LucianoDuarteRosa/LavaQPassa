@@ -11,18 +11,22 @@ import { baseURL } from '../../config.js';
 
 
 function MonthPayment() {
+    // Estados para armazenar os dados do mês, ano, PDF e URL de download
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
     const [pdfData, setPdfData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [downloadUrl, setDownloadUrl] = useState('');
 
+    // Recupera o token do usuário do localStorage
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
 
+    // Função para lidar com o envio do formulário
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // Valida o mês e o ano
         if (month < 1 || month > 12) {
             alert('O mês deve estar entre 1 e 12.');
             return;
@@ -31,7 +35,7 @@ function MonthPayment() {
             alert('O ano deve ser um valor positivo.');
             return;
         }
-
+        // Prepara os dados para envio
         let date = { month: month, year: year };
         try {
             const response = await axios.post(`${baseURL}/report`, { ...date }, {
@@ -60,6 +64,7 @@ function MonthPayment() {
         }
     };
 
+    // Efeito colateral para revogar a URL do Blob quando o componente for desmontado
     React.useEffect(() => {
         return () => {
             if (pdfData) {

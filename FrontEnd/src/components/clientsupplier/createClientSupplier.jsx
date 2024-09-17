@@ -20,14 +20,17 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function CreateClientSupplier() {
+    // Hook para obter a função de logout e redirecionar
     const { logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const isHomePage = location.pathname === "/"
 
+    // Recupera o token do usuário armazenado no localStorage
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
 
+    // Estado para armazenar os dados do formulário
     const [formData, setFormData] = useState({
         name: "",
         cpf: "",
@@ -50,15 +53,18 @@ function CreateClientSupplier() {
         active: true
     });
 
+    // Estados para controle do diálogo de feedback
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
 
+    // Função para atualizar o estado do formulário com base em mudanças nos campos de entrada
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     };
 
+    // Função para atualizar os campos relacionados ao tipo de cliente ou fornecedor
     const handleSelectChange = (event) => {
         const { name, value } = event.target;
         setFormData({
@@ -72,6 +78,7 @@ function CreateClientSupplier() {
         });
     };
 
+    // Função para buscar e preencher o endereço com base no CEP fornecido
     const handleZipCodeChange = async (event) => {
         const { value } = event.target;
 
@@ -101,11 +108,12 @@ function CreateClientSupplier() {
         }
     };
 
+    // Função para validar e enviar os dados do formulário para o servidor
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
             const errors = [];
-
+            // Validações dos campos do formulário
             const testName = validator.allValidator(formData.name, 2, 80);
             const testZipCode = validator.zipCodeValidator(formData.zipcode);
             const testAddress = validator.allValidator(formData.address, 2, 100);
@@ -274,10 +282,12 @@ function CreateClientSupplier() {
         }
     };
 
+    // Função para abrir o diálogo
     const handleVoltar = () => {
         navigate("/manager");
     };
 
+    // Função para redirecionar para a página inicial
     const handleCloseDialog = () => {
         setDialogOpen(false);
     };

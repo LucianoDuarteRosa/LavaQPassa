@@ -27,6 +27,7 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function SearchClientSupplier() {
+  // Hook para obter a função de logout e redirecionar
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,6 +38,7 @@ function SearchClientSupplier() {
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
+  // Recupera o token do usuário armazenado no localStorage
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
@@ -71,23 +73,28 @@ function SearchClientSupplier() {
     }
   };
 
+  // Efeito para buscar dados quando o componente é montado ou quando o token muda
   useEffect(() => {
     fetchClientSupplier();
   }, [token]);
 
+  // Efeito para filtrar os clientes/fornecedores quando o estado do checkbox ou a lista completa muda
   useEffect(() => {
     // Filtra os cliente/fornecedor de acordo com o estado do checkbox
     setFilteredClientSupplier(clientSupplier.filter(clientSupplier => clientSupplier.Active || !showActiveOnly));
   }, [showActiveOnly, clientSupplier]); // Dependências para atualizar quando showActiveOnly
 
+  // Função para atualizar o estado do termo de pesquisa conforme o usuário digita
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
+  // Função para atualizar o estado do checkbox que controla se exibe apenas clientes/fornecedores ativos
   const handleCheckboxChange = (event) => {
     setShowActiveOnly(event.target.checked);
   };
 
+  // Função para buscar clientes/fornecedores com base no termo de pesquisa
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (searchTerm.trim() === "") {
@@ -126,10 +133,12 @@ function SearchClientSupplier() {
     }
   };
 
+  // Função para navegar de volta para a página anterior
   const handleVoltar = () => {
-    navigate("/manager"); // Navegar de volta para a página
+    navigate("/manager");
   };
 
+  // Função para fechar o diálogo de feedback
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };

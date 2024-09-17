@@ -19,48 +19,56 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function CreateGroup() {
+    // Obtém a função de logout do hook useAuth
     const { logout } = useAuth();
+    // Obtém a função de navegação do hook useNavigate
     const navigate = useNavigate();
 
+    // Obtém o token do usuário do localStorage
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
 
+    // Estado para armazenar os dados do formulário
     const [formData, setFormData] = useState({
         name: "",
     });
 
+    // Estado para controlar a exibição do diálogo
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
 
+    // Função para lidar com mudanças nos campos do formulário
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     };
 
+    // Função para lidar com o envio do formulário
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            // Array para armazenar erros de validação
             const errors = [];
-
+            // Valida o campo name usando um validador
             const testName = validator.allValidator(formData.name, 2, 15);
 
             if (testName !== true) {
                 errors.push(testName);
             }
-
             if (errors.length > 0) {
                 setDialogStatus('error');
                 setDialogMessage(errors);
                 return;
             }
 
-
+            // Envia os dados do formulário para a API
             const response = await axios.post(`${baseURL}/group`, { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            // Mensagem de sucesso, ou uma mensagem padrão se não houver resposta
             const successMessage = response.data || "Grupo cadastrado com sucesso!";
             setFormData({
                 name: ""
@@ -70,6 +78,7 @@ function CreateGroup() {
             setDialogOpen(true);
         } catch (error) {
             console.log(error);
+            // Se o erro for uma resposta 401 (não autorizado), mostra mensagem e redireciona para login
             if (error.response && error.response.status === 401) {
                 const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
                 setDialogStatus('error');
@@ -79,6 +88,7 @@ function CreateGroup() {
                     logout();
                 }, 4000);
             } else {
+                // Define a mensagem de erro do diálogo com base na resposta da API ou uma mensagem padrão
                 const errorMessage = error.response?.data?.errors || "Erro ao cadastrar grupo.";
                 setDialogStatus('error');
                 setDialogMessage(errorMessage);
@@ -87,10 +97,12 @@ function CreateGroup() {
         }
     };
 
+    // Função para navegar de volta à página de gerenciamento
     const handleVoltar = () => {
         navigate("/manager");
     };
 
+    // Função para fechar o diálogo
     const handleCloseDialog = () => {
         setDialogOpen(false);
     };

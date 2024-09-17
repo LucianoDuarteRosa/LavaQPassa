@@ -21,14 +21,17 @@ import { baseURL } from '../../config.js';
 const theme = createTheme();
 
 function CreateAccountsReceivable() {
+    // Hook para obter a função de logout e redirecionar
     const { logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const isHomePage = location.pathname === "/"
 
+    // Recupera o token do usuário armazenado no localStorage
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
 
+    // Estado para armazenar os dados do formulário
     const [formData, setFormData] = useState({
         amount: "",
         idclient: "",
@@ -38,23 +41,28 @@ function CreateAccountsReceivable() {
         note: ""
     });
 
+    // Estados para armazenar os dados de clientes e lojas
     const [clients, setClients] = useState([]);
     const [stores, setStores] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
 
+    // Efeito para buscar clientes e lojas ao montar o componente
     useEffect(() => {
         const fetchStores = async () => {
             try {
+                // Requisição para obter as lojas
                 const response = await axios.get(`${baseURL}/store`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
+                // Atualiza o estado com as lojas
                 setStores(response.data);
             } catch (error) {
                 console.error("Error fetching store", error);
+                // Mensagem e redirecionamento para login se a sessão expirar
                 if (error.response && error.response.status === 401) {
                     const errorMessage = "Sessão expirada. Você será redirecionado para a tela de login.";
                     setDialogStatus('error');
@@ -66,6 +74,7 @@ function CreateAccountsReceivable() {
                 }
             }
         };
+
         const fetchClients = async () => {
             try {
                 const response = await axios.get(`${baseURL}/client`, {
@@ -92,6 +101,7 @@ function CreateAccountsReceivable() {
         fetchStores();
     }, [token, logout]);
 
+    // Função para lidar com mudanças nos campos do formulário
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData(prevFormData => ({
@@ -100,9 +110,11 @@ function CreateAccountsReceivable() {
         }));
     };
 
+    // Função para lidar com o envio do formulário
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            // Valida os dados do formulário
             const errors = [];
             const testAmount = validator.floatValidator(formData.amount);
             const testIdClientSupplier = validator.integerValidator(formData.idclient);
@@ -184,10 +196,12 @@ function CreateAccountsReceivable() {
         }
     };
 
+    // Função para redirecionar para a página de gerenciamento
     const handleVoltar = () => {
         navigate("/manager");
     };
 
+    // Função para fechar o diálogo de mensagem
     const handleCloseDialog = () => {
         setDialogOpen(false);
     };
