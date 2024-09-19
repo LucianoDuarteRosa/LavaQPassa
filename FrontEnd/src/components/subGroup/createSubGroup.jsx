@@ -82,6 +82,7 @@ function CreateUser() {
             if (errors.length > 0) {
                 setDialogStatus('error');
                 setDialogMessage(errors);
+                setDialogOpen(true);
                 return;
             }
             console.log(formData);

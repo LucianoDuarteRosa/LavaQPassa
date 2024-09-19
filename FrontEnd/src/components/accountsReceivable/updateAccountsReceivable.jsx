@@ -200,6 +200,7 @@ function UpdateAccountsReceivable() {
       if (errors.length > 0) {
         setDialogStatus('error');
         setDialogMessage(errors.join('\n'));
+        setDialogOpen(true);
         return;
       }
 
