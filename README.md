@@ -56,6 +56,7 @@ Na pasta "BackEnd/" existe um arquivo chamado ".env.exemple". Dentro dele tem do
 PORT=3000  <--- porta que deseja usar
 JWT_SECRET=your_key_ssl <--- coloque um chave única para geração e validação do token
 ```
+Após a feito o passo anterior, altere o nome do arquivo para ".env"
 
 ### 4. Instalar dependências:
 
