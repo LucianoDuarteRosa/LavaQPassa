@@ -12,6 +12,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { CardActionArea } from '@mui/material';
 import { baseURL } from '../../config.js';
+import DialogMessage from '../../../utils/dialogMessage';
 
 // Configuração para o gráfico de vendas por mês
 const chartSettingSale = {
@@ -58,6 +59,11 @@ function Dashboard() {
     const [saleYears, setSalesYear] = useState([]);
     const [saleGroup, setSalesGroup] = useState([]);
     const [saleSubGroup, setSalesSubGroup] = useState([]);
+
+    // Estados para controle do diálogo de feedback
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogStatus, setDialogStatus] = useState('');
+    const [dialogMessage, setDialogMessage] = useState('');
 
     useEffect(() => {
         // Função para buscar contas a pagar
@@ -162,6 +168,11 @@ function Dashboard() {
         fetchSalesGroup();
     }, []);
 
+    // Função para redirecionar para a página inicial
+    const handleCloseDialog = () => {
+        setDialogOpen(false);
+    };
+
     return (
         <Box className='sidebar'>
             <CssBaseline />
@@ -248,8 +259,12 @@ function Dashboard() {
                         </Card>
                     </Typography>
                 </Typography>
-
-
+                <DialogMessage
+                    open={dialogOpen}
+                    onClose={handleCloseDialog}
+                    status={dialogStatus}
+                    message={dialogMessage}
+                />
             </Box>
         </Box>
     );

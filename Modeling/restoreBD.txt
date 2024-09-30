@@ -4,5 +4,5 @@ Passo a passo para fazer o restore do BD
 mysql -u root -p
 CREATE DATABASE lavaQPassaBrecho;
 depois use o 'exit' para sair do mysql
-mysql -u root -p lavaQPassaBrecho < "C:/Users/Luciano/Desktop/RioPombaValley/RPV/ProjetoFullStack/BackEnd/backup/backups/backup-1726432910879.sql"
+mysql -u root -p lavaQPassaBrecho < "C:/Users/Luciano/Desktop/RioPombaValley/RPV/ProjetoFullStack/BackEnd/backup/--nome-arquivo--"
 
