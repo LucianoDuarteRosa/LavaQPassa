@@ -7209,10 +7209,10 @@
     "/report": {
       "post": {
         "tags": [
-          "Relatório Mensal"
+          "Relatório"
         ],
-        "summary": "Gera PDF relatório mensal",
-        "description": "Retorna um PDF contendo o relatório mensal do mês solicitado",
+        "summary": "Gera PDF estoque por cliente",
+        "description": "Retorna um PDF contendo o relatório de produtos por cliente",
         "parameters": [
           {
             "name": "authorization",
@@ -7275,7 +7275,7 @@
             }
           },
           "404": {
-            "description": "Venda detalhada não encontrada",
+            "description": "Cliente não tem dados para exibir",
             "content": {
               "application/json": {
                 "schema": {
@@ -7283,7 +7283,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Nenhuma dado encontrado!"
+                      "example": "Nenhuma informação encontrada!"
                     }
                   }
                 }
@@ -7313,10 +7313,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "month": {
-                    "type": "integer"
-                  },
-                  "year": {
+                  "idClientSupplier": {
                     "type": "integer"
                   }
                 }

@@ -25,14 +25,14 @@ function MonthPayment() {
     // Função para lidar com o envio do formulário
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        console.log(year)
         // Valida o mês e o ano
         if (month < 1 || month > 12) {
             alert('O mês deve estar entre 1 e 12.');
             return;
         }
         if (year <= 0) {
-            alert('O ano deve ser um valor positivo.');
+            alert('O ano deve ter um valor válido.');
             return;
         }
         // Prepara os dados para envio
@@ -93,11 +93,12 @@ function MonthPayment() {
                             <Typography variant="h5" className='dashboard-title-barchart'>Gerar Relatório em PDF</Typography>
                             <TextField
                                 margin="normal"
+                                type="number"
+                                className="textfield-product"
                                 required
                                 label="Mês"
                                 value={month}
                                 onChange={(e) => setMonth(e.target.value)}
-                                inputProps={{ min: 1, max: 12 }}
                                 InputLabelProps={{
                                     sx: {
                                         color: '#0303037e',
@@ -123,6 +124,8 @@ function MonthPayment() {
                             <TextField
                                 margin="normal"
                                 required
+                                type="number"
+                                className="textfield-product"
                                 label="Ano"
                                 value={year}
                                 onChange={(e) => setYear(e.target.value)}

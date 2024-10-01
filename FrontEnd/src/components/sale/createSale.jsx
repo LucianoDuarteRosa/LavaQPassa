@@ -144,7 +144,7 @@ function CreateSale() {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-
+                
                 let position = response.data.length - 1;
                 position = response.data[position].IdSale + 1
 
@@ -278,6 +278,9 @@ function CreateSale() {
             setDialogStatus('success');
             setDialogMessage(successMessage);
             setDialogOpen(true);
+            setSales({
+                idsale: sale.idsale + 1,
+            });
         } catch (error) {
             console.log(error);
             if (error.response && error.response.status === 401) {

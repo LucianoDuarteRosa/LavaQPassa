@@ -37,7 +37,8 @@ class SaleModel {
       FROM Sale
       JOIN ClientSupplier ON Sale.IdClientSupplier = ClientSupplier.IdClientSupplier 
       JOIN User ON Sale.IdUser = User.IdUser
-      JOIN Store ON Sale.IdStore = Store.IdStore`;
+      JOIN Store ON Sale.IdStore = Store.IdStore
+      ORDER BY Sale.IdSale`;
     return this.executeSQL(sql);
   }
 

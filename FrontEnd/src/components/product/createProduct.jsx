@@ -296,6 +296,9 @@ function CreateProduct() {
             setDialogStatus('success');
             setDialogMessage(successMessage);
             setDialogOpen(true);
+            setProducts({
+                idProduct: products.idProduct + 1
+            });
         } catch (error) {
             console.log(error);
             if (error.response && error.response.status === 401) {
