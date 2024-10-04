@@ -29,6 +29,7 @@ import Dashboard from '../components/dashboard/dashboard';
 import MonthPayment from '../components/monthPayment/monthPayment';
 import Document from '../components/documentation/aplication';
 import Backup from '../components/backup/backup';
+import Report from '../components/report/report';
 import "../styles/index.css"
 
 const drawerWidth = 240;
@@ -225,7 +226,7 @@ export default function PermanentDrawerLeft() {
 
         {selectedItem === 'report' && (
           <Typography>
-            Esta é a página de Relatório.
+            <Report />
           </Typography>
         )}
 

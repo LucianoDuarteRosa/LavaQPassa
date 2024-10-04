@@ -5,15 +5,15 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import { CircularProgress } from '@mui/material';
 import { baseURL } from '../../config.js';
 
 
-function MonthPayment() {
+function Report() {
     // Estados para armazenar os dados do mês, ano, PDF e URL de download
-    const [month, setMonth] = useState('');
-    const [year, setYear] = useState('');
+    const [report, setReport] = useState('');
     const [pdfData, setPdfData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [downloadUrl, setDownloadUrl] = useState('');
@@ -22,23 +22,16 @@ function MonthPayment() {
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
 
+    const handleChange = (event) => {
+        const { value } = event.target;
+        setReport(value);
+    }
+
     // Função para lidar com o envio do formulário
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(year)
-        // Valida o mês e o ano
-        if (month < 1 || month > 12) {
-            alert('O mês deve estar entre 1 e 12.');
-            return;
-        }
-        if (year <= 0) {
-            alert('O ano deve ter um valor válido.');
-            return;
-        }
-        // Prepara os dados para envio
-        let date = { month: month, year: year };
         try {
-            const response = await axios.post(`${baseURL}/report`, { ...date }, {
+            const response = await axios.post(`${baseURL}/${report}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -90,67 +83,21 @@ function MonthPayment() {
                                 marginTop: '20px',
                             }}
                         >
-                            <Typography variant="h5" className='dashboard-title-barchart'>Gerar Relatório de Acerto Mensal</Typography>
-                            <TextField
-                                margin="normal"
-                                type="number"
-                                className="textfield-product"
+                            <Typography variant="h5" className='dashboard-title-barchart'>Gerar Relatórios</Typography>
+                            <Select
                                 required
-                                label="Mês"
-                                value={month}
-                                onChange={(e) => setMonth(e.target.value)}
-                                InputLabelProps={{
-                                    sx: {
-                                        color: '#0303037e',
-                                        '&.Mui-focused': {
-                                            color: '#030303',
-                                        },
-                                    },
-                                }}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        '& fieldset': {
-                                            borderColor: '#0303037e',
-                                        },
-                                        '&:hover fieldset': {
-                                            borderColor: '#0303037e',
-                                        },
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#030303af',
-                                        },
-                                    },
-                                }}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                type="number"
-                                className="textfield-product"
-                                label="Ano"
-                                value={year}
-                                onChange={(e) => setYear(e.target.value)}
-                                InputLabelProps={{
-                                    sx: {
-                                        color: '#0303037e',
-                                        '&.Mui-focused': {
-                                            color: '#030303',
-                                        },
-                                    },
-                                }}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        '& fieldset': {
-                                            borderColor: '#0303037e',
-                                        },
-                                        '&:hover fieldset': {
-                                            borderColor: '#0303037e',
-                                        },
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#030303af',
-                                        },
-                                    },
-                                }}
-                            />
+                                name="report"
+                                value={report || ''}
+                                onChange={handleChange}
+                                fullWidth
+                                displayEmpty
+                                color="success"
+                                sx={{ mt: '10px' }}
+                            >
+                                <MenuItem value="">Escolha um relatório</MenuItem>
+                                <MenuItem value="productclient">Produtos por Cliente</MenuItem>
+                            </Select>
+
                             <Button variant="contained" color="primary" type="submit" disabled={loading}
                                 className='primary-button' sx={{ width: '30%' }}>
                                 {loading ? <CircularProgress size={24} /> : 'Gerar PDF'}
@@ -192,4 +139,4 @@ function MonthPayment() {
     );
 }
 
-export default MonthPayment;
+export default Report;
