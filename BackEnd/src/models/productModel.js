@@ -45,7 +45,7 @@ class ProductModel {
     JOIN User ON Product.IdUser = User.IdUser
     JOIN ClientSupplier ON Product.IdClientSupplier = ClientSupplier.IdClientSupplier
     JOIN SubGroup ON Product.IdSubGroup = SubGroup.IdSubGroup
-    JOIN \`ProductGroup\` ON SubGroup.IdGroup = \`ProductGroup\`.IdGroup
+    JOIN ProductGroup ON SubGroup.IdGroup = ProductGroup.IdGroup
     ORDER BY  Product.IdProduct`;
     return this.executeSQL(sql);
   }
@@ -57,7 +57,7 @@ class ProductModel {
         Product.CostPrice, 
         Product.SalePrice, 
         Product.IdClientSupplier,
-        ClientSupplier.ClientSupplierName,
+        ClientSupplier.ClientSupplierName,      
         ProductGroup.IdGroup,
         ProductGroup.GroupName,
         Product.IdSubGroup, 
@@ -104,11 +104,47 @@ class ProductModel {
       JOIN User ON Product.IdUser = User.IdUser
       JOIN ClientSupplier ON Product.IdClientSupplier = ClientSupplier.IdClientSupplier
       JOIN SubGroup ON Product.IdSubGroup = SubGroup.IdSubGroup
-      JOIN \`ProductGroup\` ON SubGroup.IdGroup = \`ProductGroup\`.IdGroup 
+      JOIN ProductGroup ON SubGroup.IdGroup = ProductGroup.IdGroup 
       WHERE Product.IdProduct = ?`;
     return this.executeSQL(sql, id);
   }
-  
+
+  readProductClient(id) {
+    const sql = `SELECT 
+        Product.IdProduct, 
+        Product.ProductName, 
+        Product.CostPrice, 
+        Product.SalePrice, 
+        Product.IdClientSupplier,
+        ClientSupplier.ClientSupplierName,
+        ClientSupplier.Phone,
+        ClientSupplier.Address,
+        ClientSupplier.Number,
+        ClientSupplier.Neighborhood,
+        ClientSupplier.City,
+        ClientSupplier.State,
+        ProductGroup.IdGroup,
+        ProductGroup.GroupName,
+        Product.IdSubGroup, 
+        SubGroup.SubGroupName,
+        Product.IdStore,
+        Store.StoreName,
+        Product.IdUser, 
+        User.UserName,
+        Product.RegistrationDate, 
+        Product.Sold, 
+        Product.Active 
+      FROM Product
+      JOIN Store ON Product.IdStore = Store.IdStore
+      JOIN User ON Product.IdUser = User.IdUser
+      JOIN ClientSupplier ON Product.IdClientSupplier = ClientSupplier.IdClientSupplier
+      JOIN SubGroup ON Product.IdSubGroup = SubGroup.IdSubGroup
+      JOIN \`ProductGroup\` ON SubGroup.IdGroup = \`ProductGroup\`.IdGroup 
+      WHERE Product.IdClientSupplier = ?
+      ORDER BY Product.IdProduct;`;
+    return this.executeSQL(sql, id);
+  }
+
 
   search(parametro) {
     const sql = `
