@@ -1,4 +1,5 @@
 const accountsPayableModel = require("../models/accountsPayableModel");
+const cashFlowModel = require("../models/cashFlowModel");
 const validator = require('../../utils/inputsValidator');
 const converter = require("../../utils/converter");
 
@@ -442,7 +443,7 @@ class AccountsPayableController {
       .catch((error) => res.status(500).json(error.message));
   }
 
-  update(req, res) {
+  async update(req, res) {
      /*
        #swagger.tags = ['Contas a Pagar']
        #swagger.summary = 'Atualizar Contas a Pagar'
@@ -574,9 +575,28 @@ class AccountsPayableController {
       return res.status(400).json({ errors });
     }
 
-    const payable = { Amount: reqBody.amount, IdSale: reqBody.idsale, IdClientSupplier: reqBody.idclient, IdStore: reqBody.idstore, RegistrationDate: registrationdate, DueDate: reqBody.duedate, Note: reqBody.note, Active: reqBody.active, Paid: reqBody.paid }
+    const paid = await accountsPayableModel.readPaid(id);
 
+    const payable = { Amount: reqBody.amount, IdSale: reqBody.idsale, IdClientSupplier: reqBody.idclient, IdStore: reqBody.idstore, RegistrationDate: registrationdate, DueDate: reqBody.duedate, Note: reqBody.note, Active: reqBody.active, Paid: reqBody.paid }
     const retorno = accountsPayableModel.update(payable, id);
+
+
+    if(paid[0].Paid != reqBody.paid){
+      if(reqBody.paid === true){
+        let accumulated = await cashFlowModel.readBalance();
+        let sun = accumulated[0].Accumulated - reqBody.amount;
+        const cashFlow = {Origin: 'Contas a Pagar', Description: `Id: ${id}. Selecionado como pago.`, Amount : reqBody.amount, Accumulated: sun}
+        const result = await cashFlowModel.create(cashFlow);
+      }
+  
+      if(reqBody.paid === false){
+        let accumulated = await cashFlowModel.readBalance();
+        let sun = accumulated[0].Accumulated + reqBody.amount;
+        const cashFlow = {Origin: 'Contas a Pagar', Description: `Id: ${id}. Desmarcado como pago.`, Amount : reqBody.amount, Accumulated: sun}
+        const result = await cashFlowModel.create(cashFlow);
+      }
+    };
+
     return retorno
       .then((result) =>
         res.status(200).send("Conta a pagar atualizada com sucesso!")

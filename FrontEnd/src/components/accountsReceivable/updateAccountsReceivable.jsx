@@ -440,7 +440,7 @@ function UpdateAccountsReceivable() {
                       }}
                     />
                   }
-                  label="Recebido"
+                  label="Pago"
                 />
               </Box>
             </Box>

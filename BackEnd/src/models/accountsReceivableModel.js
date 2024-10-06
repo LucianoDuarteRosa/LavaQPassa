@@ -74,6 +74,14 @@ class AccountsReceivableModel {
     return this.executeSQL(sql, id);
   }
 
+  readPaid(id) {
+    const sql = `SELECT
+        AccountsReceivable.Paid
+      FROM AccountsReceivable
+      WHERE AccountsReceivable.IdAccountReceivable = ?`;
+    return this.executeSQL(sql, id);
+  }
+
   search(parametro) {
     const sql = `
       SELECT 

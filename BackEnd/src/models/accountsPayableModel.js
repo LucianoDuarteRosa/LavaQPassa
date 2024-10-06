@@ -99,6 +99,13 @@ class AccountsPayableModel {
     return this.executeSQL(sql, id);
   }
 
+  readPaid(id) {
+    const sql = `SELECT
+        AccountsPayable.Paid
+      FROM AccountsPayable
+      WHERE AccountsPayable.IdAccountPayable = ?`;
+    return this.executeSQL(sql, id);
+  }
 
   search(parametro) {
     const sql = `

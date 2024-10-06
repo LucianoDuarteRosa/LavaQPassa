@@ -6,94 +6,93 @@ const saleDetailModel = require("../models/saleDetailModel");
 const productModel = require("../models/productModel");
 const receivableModel = require("../models/accountsReceivableModel");
 const payableModel = require("../models/accountsPayableModel");
-
-
+const cashFlowModel = require("../models/cashFlowModel");
 
 class SaleController {
 
   readList(req, res) {
-     /*
-      #swagger.tags = ['Venda']
-      #swagger.summary = 'Busca por venda'
-      #swagger.description = 'Retorna uma lista de vendas cadastradas'
-   
-      #swagger.parameters['Authorization'] = {
-        in: 'header',
-        description: 'Token JWT do usuário logado',
-        required: true,
-        type: 'string'
-      }
-   
-      #swagger.responses[200] = {
-        description: 'Consulta lista os vendas',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              additionalProperties: {
-                type: 'object',
-                properties: {
-                  IdSale: { type: 'integer' },
-                  CostPrice: { type: 'double' },
-                  SalePrice: { type: 'double' },
-                  IdClientSupplier: { type: 'integer' },
-                  ClientSupplierName: { type: 'string'},
-                  IdUser: { type: 'integer' },
-                  UserName: { type: 'string'},
-                  SaleDate: { type: 'date-time'},
-                  PaymentCondition: { type: 'string'},
-                  SaleStatus: { type: 'string'},
-                  StoreName: { type: 'string'}
-                }
-              }
-            }
-          }
-        }
-      }
-   
-      #swagger.responses[404] = {
-        description: 'Sem dados a retornar',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                message: { type: 'string', example: 'Nenhuma venda encontrada!' }
-              }
-            }
-          }
-        }
-      }
+    /*
+     #swagger.tags = ['Venda']
+     #swagger.summary = 'Busca por venda'
+     #swagger.description = 'Retorna uma lista de vendas cadastradas'
+  
+     #swagger.parameters['Authorization'] = {
+       in: 'header',
+       description: 'Token JWT do usuário logado',
+       required: true,
+       type: 'string'
+     }
+  
+     #swagger.responses[200] = {
+       description: 'Consulta lista os vendas',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             additionalProperties: {
+               type: 'object',
+               properties: {
+                 IdSale: { type: 'integer' },
+                 CostPrice: { type: 'double' },
+                 SalePrice: { type: 'double' },
+                 IdClientSupplier: { type: 'integer' },
+                 ClientSupplierName: { type: 'string'},
+                 IdUser: { type: 'integer' },
+                 UserName: { type: 'string'},
+                 SaleDate: { type: 'date-time'},
+                 PaymentCondition: { type: 'string'},
+                 SaleStatus: { type: 'string'},
+                 StoreName: { type: 'string'}
+               }
+             }
+           }
+         }
+       }
+     }
+  
+     #swagger.responses[404] = {
+       description: 'Sem dados a retornar',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               message: { type: 'string', example: 'Nenhuma venda encontrada!' }
+             }
+           }
+         }
+       }
+     }
 
-        #swagger.responses[401] = {
-        description: 'Token inválido, expirado ou sem o token',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                message: { type: 'string', example: 'Token inválido' }
-              }
-            }
-          }
-        }
-      }
-   
-      #swagger.responses[500] = {
-        description: 'Erro interno do servidor',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                error: { type: 'string' }
-              }
-            }
-          }
-        }
-      }
-    */
-    
+       #swagger.responses[401] = {
+       description: 'Token inválido, expirado ou sem o token',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               message: { type: 'string', example: 'Token inválido' }
+             }
+           }
+         }
+       }
+     }
+  
+     #swagger.responses[500] = {
+       description: 'Erro interno do servidor',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               error: { type: 'string' }
+             }
+           }
+         }
+       }
+     }
+   */
+
     const retorno = saleModel.readList();
     return retorno
       .then((result) => result.length == 0
@@ -313,92 +312,92 @@ class SaleController {
   }
 
   async create(req, res) {
-     /*
-       #swagger.tags = ['Venda']
-       #swagger.summary = 'Criar venda'
-       #swagger.description = 'Cria o venda no banco de dados com o objeto que veio no body'
-    
-       #swagger.parameters['Authorization'] = {
-         in: 'header',
-         description: 'Token JWT do usuário logado',
-         required: true,
-         type: 'string'
-       }
-
-      #swagger.requestBody = {
+    /*
+      #swagger.tags = ['Venda']
+      #swagger.summary = 'Criar venda'
+      #swagger.description = 'Cria o venda no banco de dados com o objeto que veio no body'
+   
+      #swagger.parameters['Authorization'] = {
+        in: 'header',
+        description: 'Token JWT do usuário logado',
         required: true,
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                userId: { type: 'integer'},
-                idclient: { type: 'integer'},
-                saledate: { type: 'date-time'},
-                paymentcondition: { type: 'string'},
-                products: { type: 'string'},
-                idstore: { type: 'integer'}
-              }
-            }
-          }
-        }
+        type: 'string'
       }
-        
-      #swagger.responses[201] = {
-        description: 'Cadastro efetuado com sucesso',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                message: { type: 'string', example: 'Venda criado com sucesso!' }
-              }
-            }
-          }
-        }
-      }
-    
-      #swagger.responses[500] = {
-        description: 'Erro interno do servidor',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                error: { type: 'string', example: 'Erro ao acessar o banco de dados.' }
-              }
-            }
-          }
-        }
-      }
-  
-      #swagger.responses[401] = {
-        description: 'Token inválido, expirado ou sem o token',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                message: { type: 'string', example: 'Token inválido' }
-              }
-            }
-          }
-        }
-      }
-        #swagger.responses[400] = {
-        description: 'Erro ao validar campos de entrada',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                error: { type: 'string' }
-              }
-            }
-          }
-        }
-      }
-  */
+
+     #swagger.requestBody = {
+       required: true,
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               userId: { type: 'integer'},
+               idclient: { type: 'integer'},
+               saledate: { type: 'date-time'},
+               paymentcondition: { type: 'string'},
+               products: { type: 'string'},
+               idstore: { type: 'integer'}
+             }
+           }
+         }
+       }
+     }
+       
+     #swagger.responses[201] = {
+       description: 'Cadastro efetuado com sucesso',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               message: { type: 'string', example: 'Venda criado com sucesso!' }
+             }
+           }
+         }
+       }
+     }
+   
+     #swagger.responses[500] = {
+       description: 'Erro interno do servidor',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               error: { type: 'string', example: 'Erro ao acessar o banco de dados.' }
+             }
+           }
+         }
+       }
+     }
+ 
+     #swagger.responses[401] = {
+       description: 'Token inválido, expirado ou sem o token',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               message: { type: 'string', example: 'Token inválido' }
+             }
+           }
+         }
+       }
+     }
+       #swagger.responses[400] = {
+       description: 'Erro ao validar campos de entrada',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               error: { type: 'string' }
+             }
+           }
+         }
+       }
+     }
+ */
 
     const reqBody = req.body;
     const errors = [];
@@ -485,10 +484,23 @@ class SaleController {
         }
       };
 
-      const createPayablePromises = reqBody.products.map(product => {
+      const createPayablePromises = reqBody.products.map(async (product) => {
         let payable = {
-          Amount: product.CostPrice, IdSale: idSale, IdClientSupplier: product.IdClientSupplier, IdStore: sale.IdStore, RegistrationDate: sale.SaleDate, DueDate: converter.nextMonthTenth(sale.SaleDate)
+          Amount: product.CostPrice,
+          IdSale: idSale,
+          IdClientSupplier: product.IdClientSupplier,
+          IdStore: sale.IdStore,
+          RegistrationDate: sale.SaleDate,
+          DueDate: converter.nextMonthTenth(sale.SaleDate)
         };
+
+        if (sale.PaymentCondition !== 'Cheque' && sale.PaymentCondition !== 'Crediário') {
+          let accumulated = await cashFlowModel.readBalance();
+          let sum = accumulated[0].Accumulated + product.SalePrice;
+          const cashFlow = { Origin: 'Venda', Description: `Id: ${idSale}. Venda efetuada.`, Amount: product.SalePrice, Accumulated: sum };
+          await cashFlowModel.create(cashFlow);
+        }
+
         return payableModel.create(payable);
       });
 
@@ -499,95 +511,95 @@ class SaleController {
       res.status(500).json({ error: error.message });
     }
   }
-  
-  async update(req, res) {
-     /*
-       #swagger.tags = ['Venda']
-       #swagger.summary = 'Atualizar venda'
-       #swagger.description = 'Atualiza o venda [id] no banco de dados com o objeto que veio no body'
-    
-       #swagger.parameters['Authorization'] = {
-         in: 'header',
-         description: 'Token JWT do usuário logado',
-         required: true,
-         type: 'string'
-       }
 
-      #swagger.requestBody = {
+  async update(req, res) {
+    /*
+      #swagger.tags = ['Venda']
+      #swagger.summary = 'Atualizar venda'
+      #swagger.description = 'Atualiza o venda [id] no banco de dados com o objeto que veio no body'
+   
+      #swagger.parameters['Authorization'] = {
+        in: 'header',
+        description: 'Token JWT do usuário logado',
         required: true,
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {                
-                userId: { type: 'integer'},
-                idclient: { type: 'integer'},
-                saledate: { type: 'date-time'},
-                paymentcondition: { type: 'string'},
-                products: { type: 'string'},
-                idstore: { type: 'integer'}
-              }
-            }
-          }
-        }
+        type: 'string'
       }
-        
-      #swagger.responses[200] = {
-        description: 'Atualizar efetuado com sucesso',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                message: { type: 'string', example: 'Venda atualizada com sucesso!' }
-              }
-            }
-          }
-        }
-      }
-    
-      #swagger.responses[500] = {
-        description: 'Erro interno do servidor',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                error: { type: 'string', example: 'Erro ao acessar o banco de dados.' }
-              }
-            }
-          }
-        }
-      }
-  
-      #swagger.responses[401] = {
-        description: 'Token inválido, expirado ou sem o token',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                message: { type: 'string', example: 'Token inválido' }
-              }
-            }
-          }
-        }
-      }
-    
-      #swagger.responses[400] = {
-        description: 'Erro ao validar campos de entrada',
-        content: {
-          "application/json": {
-            schema: {
-              type: 'object',
-              properties: {
-                error: { type: 'string' }
-              }
-            }
-          }
-        }
-      }
-  */
+
+     #swagger.requestBody = {
+       required: true,
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {                
+               userId: { type: 'integer'},
+               idclient: { type: 'integer'},
+               saledate: { type: 'date-time'},
+               paymentcondition: { type: 'string'},
+               products: { type: 'string'},
+               idstore: { type: 'integer'}
+             }
+           }
+         }
+       }
+     }
+       
+     #swagger.responses[200] = {
+       description: 'Atualizar efetuado com sucesso',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               message: { type: 'string', example: 'Venda atualizada com sucesso!' }
+             }
+           }
+         }
+       }
+     }
+   
+     #swagger.responses[500] = {
+       description: 'Erro interno do servidor',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               error: { type: 'string', example: 'Erro ao acessar o banco de dados.' }
+             }
+           }
+         }
+       }
+     }
+ 
+     #swagger.responses[401] = {
+       description: 'Token inválido, expirado ou sem o token',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               message: { type: 'string', example: 'Token inválido' }
+             }
+           }
+         }
+       }
+     }
+   
+     #swagger.responses[400] = {
+       description: 'Erro ao validar campos de entrada',
+       content: {
+         "application/json": {
+           schema: {
+             type: 'object',
+             properties: {
+               error: { type: 'string' }
+             }
+           }
+         }
+       }
+     }
+ */
 
     const { id } = req.params;
     const reqBody = req.body;
@@ -624,14 +636,22 @@ class SaleController {
 
         const saleDetail = await saleDetailModel.read(updateSale.IdSale);
 
-        const updateProductPromises = saleDetail.map(product => {
+        const updateProductPromises = saleDetail.map(async (product) => {
           const productSold = { IdProduct: product.IdProduct, Sold: false };
+          
+          if (updateSale.PaymentCondition !== 'Cheque' && updateSale.PaymentCondition !== 'Crediário') {
+            let accumulated = await cashFlowModel.readBalance();
+            let sum = accumulated[0].Accumulated - product.SalePrice;
+            const cashFlow = { Origin: 'Venda', Description: `Id: ${updateSale.IdSale}. Cancelamento da venda.`, Amount: product.SalePrice, Accumulated: sum };
+            await cashFlowModel.create(cashFlow);
+          }
+
           return productModel.updateSold(productSold);
         });
 
         const updateReceivablePromises = updateSale => {
-          if (updateSale.PaymentCondition === 'Cheque' || updateSale.PaymentCondition === 'Crediário') {  
-            const receivable ={IdSale: updateSale.IdSale, Active: false, Note: `Inativado pelo cancelamento da venda n°${updateSale.IdSale}.`}
+          if (updateSale.PaymentCondition === 'Cheque' || updateSale.PaymentCondition === 'Crediário') {
+            const receivable = { IdSale: updateSale.IdSale, Active: false, Note: `Inativado pelo cancelamento da venda n°${updateSale.IdSale}.` }
             return receivableModel.updateActive(receivable);
           } else {
             return Promise.resolve();
@@ -641,7 +661,7 @@ class SaleController {
         const payables = await payableModel.readSale(updateSale.IdSale);
 
         const updatePayablePromises = payables.map(payable => {
-          const updatePayable ={IdAccountPayable: payable.IdAccountPayable, Active: false, Note: `Inativado pelo cancelamento da venda n°${updateSale.IdSale}.`}
+          const updatePayable = { IdAccountPayable: payable.IdAccountPayable, Active: false, Note: `Inativado pelo cancelamento da venda n°${updateSale.IdSale}.` }
           return payableModel.updateActive(updatePayable);
         });
 
@@ -666,8 +686,8 @@ class SaleController {
         });
 
         const updateReceivablePromises = updateSale => {
-          if (updateSale.PaymentCondition === 'Cheque' || updateSale.PaymentCondition === 'Crediário') {  
-            const receivable ={IdSale: updateSale.IdSale, Active: true, Note: ``}
+          if (updateSale.PaymentCondition === 'Cheque' || updateSale.PaymentCondition === 'Crediário') {
+            const receivable = { IdSale: updateSale.IdSale, Active: true, Note: `` }
             return receivableModel.updateActive(receivable);
           } else {
             return Promise.resolve();
@@ -677,7 +697,7 @@ class SaleController {
         const payables = await payableModel.readSale(updateSale.IdSale);
 
         const updatePayablePromises = payables.map(payable => {
-          const updatePayable ={IdAccountPayable: payable.IdAccountPayable, Active: true, Note: ``}
+          const updatePayable = { IdAccountPayable: payable.IdAccountPayable, Active: true, Note: `` }
           return payableModel.updateActive(updatePayable);
         });
 
@@ -689,7 +709,6 @@ class SaleController {
       }
     }
   }
-
 }
 
 module.exports = new SaleController();
