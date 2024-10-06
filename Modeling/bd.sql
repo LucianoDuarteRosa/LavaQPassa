@@ -185,6 +185,15 @@ CREATE TABLE Tokens (
     FOREIGN KEY (IdUser) REFERENCES User(IdUser)
 );
 
+CREATE TABLE CashFlow (
+    IdCashFlow INT AUTO_INCREMENT PRIMARY KEY,
+    Origin VARCHAR(20) NOT NULL,
+    Description VARCHAR(255) NOT NULL,
+    Amount DOUBLE NOT NULL,
+    Accumulated DOUBLE NOT NULL,
+    RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 /* Insert initial data */
 INSERT INTO Profile (UserProfile) VALUES ('ADMINISTRADOR'), ('COLABORADOR'), ('USUARIO');
 
@@ -355,3 +364,7 @@ INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleD
 INSERT INTO Sale (CostPrice, SalePrice, IdClientSupplier, IdUser, IdStore, SaleDate, PaymentCondition, SaleStatus) VALUES
 (130.00, 3600.30, 3, 1, 1, '2024-08-05 12:00:00', 'Cheque', 'Finalizada'),
 (100.00, 2300.50, 4, 1, 1, '2024-08-18 15:00:00', 'Cartão Débito', 'Finalizada');
+
+INSERT INTO CashFlow (Origin, Description, Amount, Accumulated) VALUES
+('Saldo Inicial','Inicializando o caixa', 0.00, 0.00);
+
