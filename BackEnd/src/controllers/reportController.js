@@ -415,7 +415,7 @@ class ReportController {
           valign: 'center',
         });
         doc.moveDown(1);
-        doc.fontSize(25).font('Times-Bold').text(`Relatório de estoque ${result[0].ClientSupplierName}`, 80);
+        doc.fontSize(25).font('Times-Bold').text(`Estoque ${result[0].ClientSupplierName}`, 100);
         doc.fontSize(12).font('Times-Bold').text(`Nome: ${result[0].ClientSupplierName}`, 30);
         doc.fontSize(12).font('Times-Bold').text(`Telefone: ${result[0].Phone}`, 30);
         doc.fontSize(12).font('Times-Bold').text(
@@ -462,9 +462,9 @@ class ReportController {
         doc.text(product.ProductName, 120, y);
         doc.text(`R$ ${product.CostPrice.toFixed(2)}`, 280, y);
         doc.text(`R$ ${product.SalePrice.toFixed(2)}`, 380, y);
-        if (product.Sold) {
+        if (product.Sold) { 
           const checkImagePath = path.join(__dirname, '..', '..', 'public', 'image', 'check.png');
-          doc.image(checkImagePath, 500, y - 7, { width: 20, height: 20 });
+          doc.image(checkImagePath, 490, y - 7, { width: 20, height: 20 });
         }
 
         // Atualiza valores e desenha as linhas
