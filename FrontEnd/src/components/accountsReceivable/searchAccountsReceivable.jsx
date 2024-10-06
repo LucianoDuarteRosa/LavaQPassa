@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from '../login/authContext';
 import PaidIcon from '@mui/icons-material/Paid';
@@ -44,6 +44,8 @@ function SearchAccountsReceivable() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
+  const location = useLocation();
+  const isHomePage = location.pathname === "/"
 
   // Recupera o token do usuário armazenado no localStorage
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
@@ -421,15 +423,17 @@ function SearchAccountsReceivable() {
             )}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 0, width: '100%', maxWidth: 600 }}>
-            <Button
-              className='primary-button'
-              sx={{ width: '53%' }}
-              fullWidth
-              variant="contained"
-              onClick={handleVoltar}
-            >
-              Voltar
-            </Button>
+            {!isHomePage && (
+              <Button
+                className='primary-button'
+                sx={{ width: '53%' }}
+                fullWidth
+                variant="contained"
+                onClick={handleVoltar}
+              >
+                Voltar
+              </Button>
+            )}
           </Box>
           <DialogMessage
             open={dialogOpen}

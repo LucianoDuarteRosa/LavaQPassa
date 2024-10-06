@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from '../login/authContext';
 import Avatar from '@mui/material/Avatar';
@@ -24,9 +24,6 @@ function CreateAccountsPayable() {
     // Hooks para navegação e autenticação
     const { logout } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation();
-    const isHomePage = location.pathname === "/"
-
     // Recupera o token de autenticação salvo no localStorage
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
     const token = userToken.token || "";
@@ -381,7 +378,6 @@ function CreateAccountsPayable() {
                         >
                             Cadastrar
                         </Button>
-                        {!isHomePage && (
                             <Button
                                 variant="contained"
                                 fullWidth
@@ -390,7 +386,6 @@ function CreateAccountsPayable() {
                             >
                                 Voltar
                             </Button>
-                        )}
                     </Box>
                 </Box>
             </Container>

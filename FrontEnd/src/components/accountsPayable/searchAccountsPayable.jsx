@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from '../login/authContext';
 import PaidIcon from '@mui/icons-material/Paid';
@@ -31,6 +31,8 @@ function SearchAccountsPayable() {
   // Hook para obter a função de logout e para navegação
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === "/"
 
   // Estados para armazenar dados e controlar o comportamento do componente
   const [searchTerm, setSearchTerm] = useState("");
@@ -420,15 +422,17 @@ function SearchAccountsPayable() {
             )}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 0, width: '100%', maxWidth: 600 }}>
-            <Button
-              className='primary-button'
-              sx={{ width: '53%' }}
-              fullWidth
-              variant="contained"
-              onClick={handleVoltar}
-            >
-              Voltar
-            </Button>
+            {!isHomePage && (
+              <Button
+                className='primary-button'
+                sx={{ width: '53%' }}
+                fullWidth
+                variant="contained"
+                onClick={handleVoltar}
+              >
+                Voltar
+              </Button>
+            )}
           </Box>
           <DialogMessage
             open={dialogOpen}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from '../login/authContext.jsx';
 import Avatar from '@mui/material/Avatar';
@@ -24,8 +24,6 @@ function CreateAccountsReceivable() {
     // Hook para obter a função de logout e redirecionar
     const { logout } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation();
-    const isHomePage = location.pathname === "/"
 
     // Recupera o token do usuário armazenado no localStorage
     const userToken = JSON.parse(localStorage.getItem('user')) || {};
@@ -378,16 +376,14 @@ function CreateAccountsReceivable() {
                         >
                             Cadastrar
                         </Button>
-                        {!isHomePage && (
-                            <Button
-                                variant="contained"
-                                fullWidth
-                                className='primary-button'
-                                onClick={handleVoltar}
-                            >
-                                Voltar
-                            </Button>
-                        )}
+                        <Button
+                            variant="contained"
+                            fullWidth
+                            className='primary-button'
+                            onClick={handleVoltar}
+                        >
+                            Voltar
+                        </Button>
                     </Box>
                 </Box>
             </Container>

@@ -195,7 +195,7 @@ function Report() {
                                 <Button
                                     variant="contained"
                                     href={downloadUrl}
-                                    download={`relatorio-${name}.pdf`}
+                                    download={`relatorio-${clientName}.pdf`}
                                     className='primary-button' sx={{ width: '15%', marginRight: '20px' }}
                                 >
                                     Baixar PDF
