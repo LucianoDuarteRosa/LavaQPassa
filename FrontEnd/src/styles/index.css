@@ -185,6 +185,22 @@ body {
     background-color: var(--btn-primary-hover) !important;
 }
 
+.primary-button-cashflow {
+    background-color: var(--btn-primary) !important;
+    color: var(--font-color)"important";
+    border: none;
+    height: 45px!important;
+    border-radius: 4px!important;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+}
+
+.primary-button-cashflow:hover {
+    background-color: var(--btn-primary-hover) !important;
+}
+
 .secundary-button {
     background-color: var(--btn-secundary);
     color: var(--btn-secundary-color);

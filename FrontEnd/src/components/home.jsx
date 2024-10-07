@@ -13,6 +13,7 @@ import SsidChartIcon from '@mui/icons-material/SsidChart';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
+import SavingsIcon from '@mui/icons-material/Savings';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -30,6 +31,7 @@ import MonthPayment from '../components/monthPayment/monthPayment';
 import Document from '../components/documentation/aplication';
 import Backup from '../components/backup/backup';
 import Report from '../components/report/report';
+import CashFlow from '../components/cashflow/cashFlow';
 import "../styles/index.css"
 
 const drawerWidth = 240;
@@ -119,6 +121,15 @@ export default function PermanentDrawerLeft() {
             </ListItemButton>
           </ListItem>
 
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => handleDrawerItemClick('cashflow')}>
+              <ListItemIcon>
+                <SavingsIcon fontSize="large" className='list-icon' />
+              </ListItemIcon>
+              <ListItemText className='list-item' primary="Fluxo de Caixa" />
+            </ListItemButton>
+          </ListItem>
 
           <Divider />
 
@@ -221,6 +232,13 @@ export default function PermanentDrawerLeft() {
         {selectedItem === 'receivable' && (
           <Typography>
             <Receivable />
+          </Typography>
+        )}
+
+
+        {selectedItem === 'cashflow' && (
+          <Typography>
+            <CashFlow />
           </Typography>
         )}
 

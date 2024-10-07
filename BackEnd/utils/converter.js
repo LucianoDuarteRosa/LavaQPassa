@@ -52,12 +52,12 @@ class Converter {
     monthTenth(year, month) {
         // Cria uma nova data baseada no ano e no mês fornecido, ajustando para o dia 10
         const date = new Date(year, month - 1, 10);
-    
+
         // Formata os valores de ano, mês, dia, horas, minutos e segundos
         const formattedYear = date.getFullYear();
         const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-    
+
         // Retorna a data formatada no padrão MySQL
         return `${formattedYear}-${formattedMonth}-${day}`;
     }
@@ -129,6 +129,26 @@ class Converter {
 
         return dateReturn
     }
+
+    getMonthStartAndEndDatesCashFlow(month, year) {
+        // Definir o primeiro dia do mês
+        const firstDay = new Date(year, month - 1, 1); // month - 1 porque o mês em JavaScript é baseado em 0 (Janeiro é 0)
+        // Definir o último dia do mês
+        const lastDay = new Date(year, month, 0); // Passando o próximo mês e o dia 0 retorna o último dia do mês anterior
+
+        // Formatar as datas para ISO sem a parte milissegundos
+        const firstDayFormatted = firstDay.toISOString().split('.')[0];
+        const lastDayFormatted = lastDay.toISOString().split('.')[0];
+
+        // Retornar as datas formatadas
+        let dateReturn = {
+            firstDay: firstDayFormatted,
+            lastDay: lastDayFormatted
+        };
+
+        return dateReturn;
+    }
+
 }
 
 module.exports = new Converter();

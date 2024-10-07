@@ -12,6 +12,7 @@ const accountsReceivableRouters = require("./accountsReceivableRouter.js");
 const dashboardRouters = require("./dashboardRouter.js");
 const reportRouters = require("./reportRouter.js");
 const backupRouters = require("./backup.js")
+const cashFlow = require("./cashFlowRouter.js")
 
 module.exports = function (app, express) {
   app.use(express.json());
@@ -30,4 +31,5 @@ module.exports = function (app, express) {
   app.use(accountsReceivableRouters);
   app.use(dashboardRouters);
   app.use(reportRouters);
+  app.use(cashFlow);
 };
