@@ -414,7 +414,7 @@ function CreateProduct() {
                                     type="number"
                                     required
                                     fullWidth
-                                    label="Preço de Custo"
+                                    label="% do Cliente"
                                     name="costprice"
                                     autoComplete="costprice"
                                     value={costprice}

@@ -242,11 +242,11 @@ function SearchProduct() {
                     <TableRow>
                       <TableCell sx={{ minWidth: 50 }}>Id</TableCell>
                       <TableCell sx={{ minWidth: 130 }}>Nome</TableCell>
-                      <TableCell sx={{ minWidth: 50 }}>Custo</TableCell>
+                      <TableCell sx={{ minWidth: 100 }}>% Cliente</TableCell>
                       <TableCell sx={{ minWidth: 50 }}>Venda</TableCell>
-                      <TableCell sx={{ minWidth: 150 }}>Fornecedor</TableCell>
+                      {/* <TableCell sx={{ minWidth: 150 }}>Cliente</TableCell> */}
                       <TableCell sx={{ minWidth: 80 }}>Loja</TableCell>
-                      <TableCell sx={{ minWidth: 40 }}>Grupo</TableCell>
+                      <TableCell sx={{ minWidth: 30 }}>Grupo</TableCell>
                       <TableCell sx={{ minWidth: 40 }}>SubGrupo</TableCell>
                       <TableCell>Vendido</TableCell>
                       <TableCell>Ativo</TableCell>
@@ -261,7 +261,7 @@ function SearchProduct() {
                         <TableCell>{product.CostPrice.toFixed('2')}</TableCell>
                         <TableCell>{product.SalePrice.toFixed('2')}</TableCell>
                         <TableCell>{product.ClientSupplierName}</TableCell>
-                        <TableCell>{product.StoreName}</TableCell>
+                        {/* <TableCell>{product.StoreName}</TableCell> */}
                         <TableCell>{product.GroupName}</TableCell>
                         <TableCell>{product.SubGroupName}</TableCell>
                         <TableCell>

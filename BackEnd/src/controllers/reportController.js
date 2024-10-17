@@ -414,13 +414,12 @@ class ReportController {
           align: 'right',
           valign: 'center',
         });
-        doc.moveDown(1);
-        doc.fontSize(25).font('Times-Bold').text(`Estoque ${result[0].ClientSupplierName}`, 100);
-        doc.fontSize(12).font('Times-Bold').text(`Nome: ${result[0].ClientSupplierName}`, 30);
-        doc.fontSize(12).font('Times-Bold').text(`Telefone: ${result[0].Phone}`, 30);
+        doc.fontSize(23).font('Times-Bold').text(`Desapegos ${result[0].ClientSupplierName}`, 100,170);
+        doc.fontSize(12).font('Times-Bold').text(`Nome: ${result[0].ClientSupplierName}`, 30,222);
+        doc.fontSize(12).font('Times-Bold').text(`Telefone: ${result[0].Phone}`, 30,236);
         doc.fontSize(12).font('Times-Bold').text(
           `Endereço: ${result[0].Address}, n° ${result[0].Number}, ${result[0].Neighborhood}, ${result[0].City}-${result[0].State}`,
-          30
+          30,250
         );
 
         const tableTop = 280; // Altura inicial da tabela
@@ -432,7 +431,7 @@ class ReportController {
         doc.fontSize(10).font('Times-Bold');
         doc.text('Cód.Prod.', codProductX, tableTop);
         doc.text('Descrição', nameProductX, tableTop);
-        doc.text('Preço de Custo', costX, tableTop);
+        doc.text('% do Cliente', costX, tableTop);
         doc.text('Preço de Venda', priceX, tableTop);
         doc.text('Vendido', saleX, tableTop);
         drawTableLine(doc, tableTop + 20);
