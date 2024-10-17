@@ -28,9 +28,19 @@ class TokenModel {
     return this.executeSQL(sql, id); 
   }
 
+  readIdUser(id) {
+    const sql = "SELECT IdToken, IdUser, Token, CreateToken, ExpiresToken FROM Tokens WHERE IdUser = ?"; 
+    return this.executeSQL(sql, id); 
+  }
+
   create(newToken) {
     const sql = "INSERT INTO Tokens SET ?"; 
     return this.executeSQL(sql, newToken);
+  }
+
+  update(updateToken, id) {
+    const sql = "UPDATE Tokens SET ? WHERE IdUser = ?";
+    return this.executeSQL(sql, [updateToken, id]);
   }
 }
 

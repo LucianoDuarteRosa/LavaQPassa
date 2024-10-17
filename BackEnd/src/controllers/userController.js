@@ -671,8 +671,13 @@ class UserController {
       if (isPasswordValid) {
         const token = jwt.sign({}, process.env.JWT_SECRET, { expiresIn: '8h' });
         const expiresAt = moment().add(8, 'hours').format('YYYY-MM-DD HH:mm:ss');
-        const tokenCreate = { IdUser: user[0].IdUser, Token: token, ExpiresToken: expiresAt }
-        tokenModel.create(tokenCreate);
+        const tokenCreate = { IdUser: user[0].IdUser, Token: token, CreateToken: moment().format('YYYY-MM-DD HH:mm:ss'), ExpiresToken: expiresAt }
+        const searchIdUser = await tokenModel.readIdUser(tokenCreate.IdUser);
+        if(searchIdUser.length > 0){
+          await tokenModel.update(tokenCreate, tokenCreate.IdUser);
+        }else{
+          await tokenModel.create(tokenCreate);
+        }
 
         return res.status(200).json({
           token: token,
