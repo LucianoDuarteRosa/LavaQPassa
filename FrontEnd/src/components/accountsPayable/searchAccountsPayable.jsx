@@ -76,7 +76,6 @@ function SearchAccountsPayable() {
           'Authorization': `Bearer ${token}`
         }
       });
-      console.log(response.data);
       setPayables(response.data);
       applyFilters(response.data);
     } catch (error) {
